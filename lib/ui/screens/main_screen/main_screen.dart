@@ -38,8 +38,8 @@ class MainScreen extends StatelessWidget {
                 BlocBuilder<MainScreenBloc, MainScreenState>(
                     bloc: _mainScreenBloc,
                     builder: (context, state) {
-                      if (state is MainScreenButtonsLoaded) {
-                        return ButtonsList(buttons: state.buttons);
+                      if (state is MainScreenLoaded) {
+                        return Text(state.message);
                       }
 
                       return Column(

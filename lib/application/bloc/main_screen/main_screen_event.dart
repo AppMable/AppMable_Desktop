@@ -10,7 +10,3 @@ class MainScreenEventLoad extends MainScreenEvent {
   @override
   List<Object?> get props => [];
 }
-
-class MainScreenEventLoadAllButtons extends MainScreenEventLoad {
-  const MainScreenEventLoadAllButtons();
-}

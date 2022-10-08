@@ -12,17 +12,17 @@ class MainScreenInitial extends MainScreenState {
   List<Object> get props => [];
 }
 
-class MainScreenLoadingButtons extends MainScreenInitial {
-  const MainScreenLoadingButtons();
+class MainScreenLoading extends MainScreenInitial {
+  const MainScreenLoading();
 }
 
-class MainScreenButtonsLoaded extends MainScreenState {
-  final List<Button> buttons;
+class MainScreenLoaded extends MainScreenState {
+  final String message;
 
-  const MainScreenButtonsLoaded({
-    required this.buttons,
+  const MainScreenLoaded({
+    required this.message,
   });
 
   @override
-  List<Object> get props => [buttons];
+  List<Object> get props => [message];
 }

@@ -22,7 +22,7 @@ class NavDrawer extends StatelessWidget {
                   buildMenuItem(
                     text: 'All',
                     iconText: '👥',
-                    onClicked: () => _mainScreenBloc.add(const MainScreenEventLoadAllButtons()),
+                    onClicked: () => _mainScreenBloc.add(const MainScreenEventLoad()),
                   ),
                 ],
               ),
