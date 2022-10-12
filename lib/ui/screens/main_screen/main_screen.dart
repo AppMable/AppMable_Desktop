@@ -54,7 +54,7 @@ class MainScreen extends StatelessWidget {
                                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
                               ),
                               SizedBox(width: 20),
-                              Center(child: CircularProgressIndicator(color: AppTheme.primaryButton)),
+                              Center(child: CircularProgressIndicator(color: AppTheme.primary900)),
                               SizedBox(height: 50),
                             ],
                           ),

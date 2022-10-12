@@ -24,7 +24,7 @@ class _NavigationState extends State<Navigation> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppTheme.primaryButton,
+      color: AppTheme.primary900,
       padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
       child: Row(
         children: [

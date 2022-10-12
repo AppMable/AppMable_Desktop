@@ -11,7 +11,7 @@ class NavDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Material(
-        color: AppTheme.primaryButton,
+        color: AppTheme.primary900,
         child: ListView(
           children: <Widget>[
             Container(

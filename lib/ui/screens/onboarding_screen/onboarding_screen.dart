@@ -37,7 +37,7 @@ class OnboardingScreen extends StatelessWidget {
                 const SizedBox(height: 152),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white, backgroundColor: AppTheme.primaryButton, elevation: 3,
+                    foregroundColor: Colors.white, backgroundColor: AppTheme.primary900, elevation: 3,
                     padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(50)),

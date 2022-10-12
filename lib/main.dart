@@ -14,5 +14,5 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  runApp(const ButtonYuki());
+  runApp(const AppMable());
 }
