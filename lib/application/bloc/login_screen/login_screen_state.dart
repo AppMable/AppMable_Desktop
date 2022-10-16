@@ -11,3 +11,20 @@ class LoginScreenInitial extends LoginScreenState {
   @override
   List<Object> get props => [];
 }
+
+class LoginScreenLoaded extends LoginScreenInitial {
+  const LoginScreenLoaded();
+}
+
+class RegisterScreenLoaded extends LoginScreenInitial {
+  const RegisterScreenLoaded();
+}
+
+
+class UserLogged extends LoginScreenInitial {
+  const UserLogged();
+}
+
+class UserLoggedOut extends LoginScreenInitial {
+  const UserLoggedOut();
+}
