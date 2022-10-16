@@ -11,35 +11,13 @@ part 'widgets/login/widgets/btn_log_in.dart';
 part 'widgets/login/widgets/custom_text_field.dart';
 part 'widgets/register/register.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   static const routeName = '/login-screen';
 
-  const LoginScreen({Key? key}) : super(key: key);
-
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
   final LoginScreenBloc _loginScreenBloc =
       GetIt.instance.get<LoginScreenBloc>();
 
-  late TextEditingController _passwordController;
-  late TextEditingController _emailController;
-
-  @override
-  void initState() {
-    super.initState();
-    _passwordController = TextEditingController();
-    _emailController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _passwordController.dispose();
-    _emailController.dispose();
-    super.dispose();
-  }
+  LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

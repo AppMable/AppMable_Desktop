@@ -13,25 +13,11 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  late TextEditingController _usernameController;
-  late TextEditingController _passwordController;
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   bool showUsernameMessageError = false;
   bool showPasswordMessageError = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _usernameController = TextEditingController();
-    _passwordController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _usernameController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {

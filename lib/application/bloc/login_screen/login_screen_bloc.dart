@@ -16,7 +16,7 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
     LogInEvent event,
     Emitter<LoginScreenState> emit,
   ) {
+    //emit(const UserLogged());
     event.onLogInSuccess();
-    emit(const UserLogged());
   }
 }

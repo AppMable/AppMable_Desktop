@@ -17,7 +17,7 @@ Map<String, WidgetBuilder> _routeGenerator() {
       },
     ),
     OnboardingScreen.routeName: (_) => const OnboardingScreen(),
-    LoginScreen.routeName: (_) => const LoginScreen(),
+    LoginScreen.routeName: (_) => LoginScreen(),
     DashboardScreen.routeName: (_) => const DashboardScreen(),
     MainScreen.routeName: (_) => MainScreen(),
   };

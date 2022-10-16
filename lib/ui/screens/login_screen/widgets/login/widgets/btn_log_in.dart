@@ -36,10 +36,12 @@ class BtnLogIn extends StatelessWidget {
         ),
       ),
       onPressed: () {
-        usernameController.value.text.isEmpty ? onUserNameError() : onUserNameSuccess();
-        passwordController.value.text.isEmpty ? onPasswordError() : onPasswordSuccess();
+        if (usernameController.value.text.isNotEmpty && passwordController.value.text.isNotEmpty) {
+          usernameController.clear();
+          usernameController.dispose();
+          passwordController.clear();
+          passwordController.dispose();
 
-        if(usernameController.value.text.isNotEmpty && passwordController.value.text.isNotEmpty){
           loginScreenBloc.add(LogInEvent(
             username: usernameController.value.text,
             password: passwordController.value.text,
@@ -47,6 +49,9 @@ class BtnLogIn extends StatelessWidget {
               Navigator.of(context).pushReplacementNamed(DashboardScreen.routeName);
             },
           ));
+        } else {
+          usernameController.value.text.isEmpty ? onUserNameError() : onUserNameSuccess();
+          passwordController.value.text.isEmpty ? onPasswordError() : onPasswordSuccess();
         }
       },
       child: const Text(
