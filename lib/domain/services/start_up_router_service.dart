@@ -1,4 +1,5 @@
 import 'package:appmable_desktop/domain/services/connectivity_checker_service.dart';
+import 'package:appmable_desktop/ui/screens/login_screen/login_screen.dart';
 import 'package:appmable_desktop/ui/screens/main_screen/main_screen.dart';
 import 'package:injectable/injectable.dart';
 
@@ -13,13 +14,12 @@ class StartUpRouterService {
   Future<String> execute() async {
 
     final bool hasConnectivity = await _connectivityCheckerService.hasConnection();
-
-    await Future<void>.delayed(const Duration(milliseconds: 5000));
+    const bool isLogged = false;
 
     String route;
 
-    if (hasConnectivity) {
-      route = MainScreen.routeName;
+    if (!isLogged) {
+      route = LoginScreen.routeName;
     } else {
       route = MainScreen.routeName;
     }
