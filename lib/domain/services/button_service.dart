@@ -1,18 +1,18 @@
 import 'package:injectable/injectable.dart';
 import 'package:appmable_desktop/domain/model/objects/button.dart';
-import 'package:appmable_desktop/domain/repositories/button_api_repository.dart';
+import 'package:appmable_desktop/domain/repositories/button_repository.dart';
 
 @injectable
 class ButtonService {
-  final ButtonApiRepository _buttonApiRepository;
+  final ButtonRepository _buttonRepository;
 
   const ButtonService(
-    this._buttonApiRepository,
+    this._buttonRepository,
   );
 
   Future<List<Button>> readAll() async {
     try {
-      return await _buttonApiRepository.readAll();
+      return await _buttonRepository.readAll();
     } catch (_) {
       rethrow;
     }

@@ -4,11 +4,11 @@ import 'package:injectable/injectable.dart';
 import 'package:appmable_desktop/domain/exceptions/buttons_not_found_exception.dart';
 import 'package:appmable_desktop/domain/model/objects/button.dart';
 import 'package:appmable_desktop/domain/model/value_object/response.dart';
-import 'package:appmable_desktop/domain/repositories/button_api_repository.dart';
+import 'package:appmable_desktop/domain/repositories/button_repository.dart';
 import 'package:appmable_desktop/domain/services/http_service.dart';
 
-@Injectable(as: ButtonApiRepository)
-class HttpButtonRepository implements ButtonApiRepository {
+@Injectable(as: ButtonRepository)
+class HttpButtonRepository implements ButtonRepository {
   final HttpService _httpService;
 
   HttpButtonRepository(
