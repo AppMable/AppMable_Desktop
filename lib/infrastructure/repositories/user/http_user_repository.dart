@@ -1,3 +1,4 @@
+import 'package:appmable_desktop/domain/model/value_object/response.dart';
 import 'package:appmable_desktop/domain/repositories/user_repository.dart';
 import 'package:injectable/injectable.dart';
 import 'package:appmable_desktop/domain/services/http_service.dart';
@@ -10,10 +11,23 @@ class HttpButtonRepository implements UserRepository {
     this._httpService,
   );
 
+  static const String urlUserLogin = 'http://127.0.0.1:8000/users/login/<username>/<password>/';
+
   @override
   Future<bool> logIn({
     required String username,
     required String password,
-  }) async =>
-      Future.value(true);
+  }) async {
+    final String urlLogin = urlUserLogin.replaceAll('<username>', username).replaceAll('<password>', password);
+
+    final Response response = await _httpService.get(Uri.parse(urlLogin));
+
+    if (response.statusCode == 200) {
+      return true;
+    } else if (response.statusCode == 403) {
+      // Make throw with error
+      return false;
+    }
+    return false;
+  }
 }

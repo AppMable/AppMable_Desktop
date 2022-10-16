@@ -1,3 +1,4 @@
+import 'package:appmable_desktop/domain/services/user_service.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
@@ -8,15 +9,28 @@ part 'login_screen_state.dart';
 
 @lazySingleton
 class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
-  LoginScreenBloc() : super(const LoginScreenInitial()) {
+  final UserService _userService;
+
+  LoginScreenBloc(
+    this._userService,
+  ) : super(const LoginScreenInitial()) {
     on<LogInEvent>(_handleLogin);
   }
 
-  void _handleLogin(
+  Future<void> _handleLogin(
     LogInEvent event,
     Emitter<LoginScreenState> emit,
-  ) {
-    //emit(const UserLogged());
-    event.onLogInSuccess();
+  ) async {
+    try {
+      if (await _userService.logIn(
+        username: event.username,
+        password: event.password,
+      )) {
+        emit(const UserLogged());
+        event.onLogInSuccess();
+      }
+    } catch (_) {
+      event.onLogInError();
+    }
   }
 }
