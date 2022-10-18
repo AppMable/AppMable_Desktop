@@ -13,6 +13,7 @@ part 'widgets/register/register.dart';
 
 class LoginScreen extends StatelessWidget {
   static const routeName = '/login-screen';
+  static const userLogged = 'userLogged';
 
   final LoginScreenBloc _loginScreenBloc =
       GetIt.instance.get<LoginScreenBloc>();

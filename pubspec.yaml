@@ -16,6 +16,7 @@ dependencies:
   equatable: ^2.0.5
   flutter_bloc: ^8.1.1
   get_it: 7.2.0
+  get_storage:
   injectable: 1.5.3
   http: ^0.13.5
 

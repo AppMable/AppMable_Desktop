@@ -1,20 +1,18 @@
-import 'package:appmable_desktop/domain/services/connectivity_checker_service.dart';
+import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
 import 'package:appmable_desktop/ui/screens/login_screen/login_screen.dart';
 import 'package:appmable_desktop/ui/screens/main_screen/main_screen.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
 class StartUpRouterService {
-  final ConnectivityCheckerService _connectivityCheckerService;
+  final LocalStorageService _localStorageService;
 
   const StartUpRouterService(
-    this._connectivityCheckerService,
+    this._localStorageService,
   );
 
   Future<String> execute() async {
-
-    final bool hasConnectivity = await _connectivityCheckerService.hasConnection();
-    const bool isLogged = false;
+    final bool isLogged = _localStorageService.read(LoginScreen.userLogged) ?? false;
 
     String route;
 

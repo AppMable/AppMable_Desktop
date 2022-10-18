@@ -38,7 +38,7 @@ class LogInEvent extends LoginScreenEvent {
   final String username;
   final String password;
   final Function onLogInSuccess;
-  final Function onLogInError;
+  final Function(String error) onLogInError;
 
   const LogInEvent({
     required this.username,

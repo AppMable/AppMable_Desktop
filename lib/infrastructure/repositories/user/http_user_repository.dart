@@ -1,3 +1,4 @@
+import 'package:appmable_desktop/domain/exceptions/login_exception.dart';
 import 'package:appmable_desktop/domain/model/value_object/response.dart';
 import 'package:appmable_desktop/domain/repositories/user_repository.dart';
 import 'package:injectable/injectable.dart';
@@ -25,8 +26,7 @@ class HttpButtonRepository implements UserRepository {
     if (response.statusCode == 200) {
       return true;
     } else if (response.statusCode == 403) {
-      // Make throw with error
-      return false;
+      throw LoginException(response.body);
     }
     return false;
   }

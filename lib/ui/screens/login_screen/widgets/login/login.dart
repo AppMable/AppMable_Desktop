@@ -19,6 +19,7 @@ class _LoginState extends State<Login> {
   bool showUsernameMessageError = false;
   bool showPasswordMessageError = false;
   bool showIncorrectLoginError = false;
+  String loginErrorMessage = '';
 
   @override
   Widget build(BuildContext context) {
@@ -60,22 +61,30 @@ class _LoginState extends State<Login> {
                   passwordController: _passwordController,
                   usernameController: _usernameController,
                   loginScreenBloc: widget.loginScreenBloc,
-                  onUserNameError: ()  => setState(() => showUsernameMessageError = true),
-                  onUserNameSuccess: ()  => setState(() => showUsernameMessageError = false),
-                  onPasswordError: ()  => setState(() => showPasswordMessageError = true),
-                  onPasswordSuccess: ()  => setState(() => showPasswordMessageError = false),
-                  onLoginError: ()  => setState(() => showIncorrectLoginError = true),
+                  onUserNameError: () =>
+                      setState(() => showUsernameMessageError = true),
+                  onUserNameSuccess: () =>
+                      setState(() => showUsernameMessageError = false),
+                  onPasswordError: () =>
+                      setState(() => showPasswordMessageError = true),
+                  onPasswordSuccess: () =>
+                      setState(() => showPasswordMessageError = false),
+                  onLoginError: (String errorMsg) => setState(() {
+                    showIncorrectLoginError = true;
+                    loginErrorMessage = errorMsg;
+                  }),
                 ),
-                showIncorrectLoginError ? Column(
-                  children: const [
-                    SizedBox(height: 20),
-                    Text(
-                      'Usuario y/o contraseña incorrectos',
-                      style: TextStyle(color: AppTheme.error600),
-                    ),
-                  ],
-                ) : const SizedBox.shrink(),
-
+                showIncorrectLoginError
+                    ? Column(
+                        children: [
+                          const SizedBox(height: 20),
+                          Text(
+                            loginErrorMessage,
+                            style: const TextStyle(color: AppTheme.error600),
+                          ),
+                        ],
+                      )
+                    : const SizedBox.shrink(),
               ],
             ),
           ),

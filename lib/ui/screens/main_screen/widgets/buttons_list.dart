@@ -21,6 +21,7 @@ class ButtonsList extends StatelessWidget {
         if (index == 0) top = 0;
 
         return InkWell(
+          // ignore: avoid_print
           onTap: () => print(buttons[index].action),
           child: Container(
             alignment: Alignment.topLeft,

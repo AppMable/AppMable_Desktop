@@ -8,7 +8,7 @@ class BtnLogIn extends StatelessWidget {
   final Function onUserNameSuccess;
   final Function onPasswordError;
   final Function onPasswordSuccess;
-  final Function onLoginError;
+  final Function(String error) onLoginError;
 
   const BtnLogIn({
     required this.usernameController,
@@ -49,8 +49,8 @@ class BtnLogIn extends StatelessWidget {
             onLogInSuccess: () {
               Navigator.of(context).pushReplacementNamed(DashboardScreen.routeName);
             },
-            onLogInError: () {
-              onLoginError();
+            onLogInError: (String error) {
+              onLoginError(error);
             },
           ));
 
