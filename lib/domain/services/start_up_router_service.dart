@@ -16,7 +16,7 @@ class StartUpRouterService {
 
     String route;
 
-    if (!isLogged) {
+    if (true) {
       route = LoginScreen.routeName;
     } else {
       route = MainScreen.routeName;
