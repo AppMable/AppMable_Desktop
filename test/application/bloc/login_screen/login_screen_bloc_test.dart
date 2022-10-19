@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:appmable_desktop/application/bloc/login_screen/login_screen_bloc.dart';
+import 'package:appmable_desktop/domain/exceptions/login_exception.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
 import 'package:appmable_desktop/domain/services/user_service.dart';
 import 'package:appmable_desktop/ui/screens/login_screen/login_screen.dart';
@@ -19,7 +20,6 @@ import 'login_screen_bloc_test.mocks.dart';
 ])
 void main() {
   final UserService userService = MockUserService();
-  final LocalStorageService localStorageService = LocalStorageServiceMock();
 
   final Faker faker = Faker();
 
@@ -28,13 +28,15 @@ void main() {
   onLogInSuccess() => log('success');
   onLogInError(String error) => log(error);
 
+  group('Login Screen BLoC - SuccessLogin', () {
 
-  group('Login Screen BLoC', () {
-    when(userService.logIn(username: username, password: password))
-        .thenAnswer((_) => Future.value(true));
+    final LocalStorageService localStorageService = LocalStorageServiceMock();
 
     blocTest<LoginScreenBloc, LoginScreenState>(
       'Success Login',
+      setUp: () {
+        when(userService.logIn(username: username, password: password)).thenAnswer((_) => Future.value(true));
+      },
       build: () => LoginScreenBloc(
         userService,
         localStorageService,
@@ -50,8 +52,72 @@ void main() {
       ],
       verify: (_) {
         assert(
-        localStorageService.read(LoginScreen.userLogged) as bool == true,
-        'LoginScreen.userLogged value in local storage should be same than ${true}',
+          localStorageService.read(LoginScreen.userLogged) as bool == true,
+          'LoginScreen.userLogged value in local storage should be same than ${true}',
+        );
+        verifyInOrder([
+          userService.logIn(username: username, password: password),
+        ]);
+      },
+    );
+  });
+
+  group('Login Screen BLoC - LoginException', () {
+
+    final LocalStorageService localStorageService = LocalStorageServiceMock();
+
+    blocTest<LoginScreenBloc, LoginScreenState>(
+      'LoginException',
+      setUp: () {
+        when(userService.logIn(username: username, password: password),).thenThrow((_) => LoginException(faker.lorem.words(5).toString()));
+      },
+      build: () => LoginScreenBloc(
+        userService,
+        localStorageService,
+      ),
+      act: (LoginScreenBloc bloc) => bloc.add(LogInEvent(
+        username: username,
+        password: password,
+        onLogInSuccess: onLogInSuccess,
+        onLogInError: onLogInError,
+      )),
+      expect: () => [],
+      verify: (_) {
+        assert(
+          localStorageService.read(LoginScreen.userLogged) == null,
+          'LoginScreen.userLogged value in local storage should be same than ${false}',
+        );
+        verifyInOrder([
+          userService.logIn(username: username, password: password),
+        ]);
+      },
+    );
+  });
+
+  group('Login Screen BLoC - Random Exception', () {
+
+    final LocalStorageService localStorageService = LocalStorageServiceMock();
+
+    blocTest<LoginScreenBloc, LoginScreenState>(
+      'RandomException',
+      setUp: () {
+        when(userService.logIn(username: username, password: password),).thenThrow((_) => UnimplementedError());
+      },
+      build: () => LoginScreenBloc(
+        userService,
+        localStorageService,
+      ),
+      act: (LoginScreenBloc bloc) => bloc.add(LogInEvent(
+        username: username,
+        password: password,
+        onLogInSuccess: onLogInSuccess,
+        onLogInError: onLogInError,
+      )),
+      expect: () => [],
+      verify: (_) {
+        assert(
+        localStorageService.read(LoginScreen.userLogged) == null,
+        'LoginScreen.userLogged value in local storage should be same than ${false}',
         );
         verifyInOrder([
           userService.logIn(username: username, password: password),
