@@ -1,3 +1,4 @@
+import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
 import 'package:appmable_desktop/domain/repositories/user_repository.dart';
 import 'package:injectable/injectable.dart';
 
@@ -9,7 +10,7 @@ class UserService {
     this._userRepository,
   );
 
-  Future<bool> logIn({
+  Future<UserLoginInformation?> logIn({
     required String username,
     required String password,
   }) async {

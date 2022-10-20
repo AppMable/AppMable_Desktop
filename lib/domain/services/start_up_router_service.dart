@@ -12,7 +12,7 @@ class StartUpRouterService {
   );
 
   Future<String> execute() async {
-    final bool isLogged = _localStorageService.read(LoginScreen.userLogged) ?? false;
+    final bool isLogged = _localStorageService.read(LoginScreen.userInformation) ?? false;
 
     String route;
 
