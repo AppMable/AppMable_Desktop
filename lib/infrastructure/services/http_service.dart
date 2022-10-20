@@ -12,6 +12,7 @@ class FlutterHttpService implements HttpService {
     return Response(
       statusCode: response.statusCode,
       body: response.body,
+      bodyBytes: response.bodyBytes,
       headers: response.headers,
     );
   }

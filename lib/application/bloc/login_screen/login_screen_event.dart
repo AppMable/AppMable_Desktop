@@ -38,11 +38,13 @@ class LogInEvent extends LoginScreenEvent {
   final String username;
   final String password;
   final Function onLogInSuccess;
+  final Function(String error) onLogInError;
 
   const LogInEvent({
     required this.username,
     required this.password,
     required this.onLogInSuccess,
+    required this.onLogInError,
   });
 
   @override
@@ -50,5 +52,6 @@ class LogInEvent extends LoginScreenEvent {
         username,
         password,
         onLogInSuccess,
+        onLogInError,
       ];
 }

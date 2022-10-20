@@ -1,4 +1,6 @@
 import 'package:appmable_desktop/domain/services/navigator_service.dart';
+import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
+import 'package:appmable_desktop/infrastructure/services/storage/get_storage_local_storage_service.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -23,4 +25,5 @@ abstract class RegisterModule {
 
   // Core Singletons
   NavigatorService get navigatorService => NavigatorService.instance;
+  LocalStorageService get localStorageService => GetStorageLocalStorageService.instance;
 }

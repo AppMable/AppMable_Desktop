@@ -8,6 +8,7 @@ class BtnLogIn extends StatelessWidget {
   final Function onUserNameSuccess;
   final Function onPasswordError;
   final Function onPasswordSuccess;
+  final Function(String error) onLoginError;
 
   const BtnLogIn({
     required this.usernameController,
@@ -17,6 +18,7 @@ class BtnLogIn extends StatelessWidget {
     required this.onUserNameSuccess,
     required this.onPasswordError,
     required this.onPasswordSuccess,
+    required this.onLoginError,
     Key? key,
   }) : super(key: key);
 
@@ -37,10 +39,9 @@ class BtnLogIn extends StatelessWidget {
       ),
       onPressed: () {
         if (usernameController.value.text.isNotEmpty && passwordController.value.text.isNotEmpty) {
-          usernameController.clear();
-          usernameController.dispose();
-          passwordController.clear();
-          passwordController.dispose();
+
+          onUserNameSuccess();
+          onPasswordSuccess();
 
           loginScreenBloc.add(LogInEvent(
             username: usernameController.value.text,
@@ -48,7 +49,11 @@ class BtnLogIn extends StatelessWidget {
             onLogInSuccess: () {
               Navigator.of(context).pushReplacementNamed(DashboardScreen.routeName);
             },
+            onLogInError: (String error) {
+              onLoginError(error);
+            },
           ));
+
         } else {
           usernameController.value.text.isEmpty ? onUserNameError() : onUserNameSuccess();
           passwordController.value.text.isEmpty ? onPasswordError() : onPasswordSuccess();

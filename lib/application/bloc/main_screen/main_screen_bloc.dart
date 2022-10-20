@@ -1,5 +1,3 @@
-
-import 'package:appmable_desktop/domain/services/api_test_service.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,21 +8,17 @@ part 'main_screen_state.dart';
 
 @lazySingleton
 class MainScreenBloc extends Bloc<MainScreenEvent, MainScreenState> {
-  final ApiTestService _apiTestService;
-
-  MainScreenBloc(
-    this._apiTestService,
-  ) : super(const MainScreenInitial()) {
+  MainScreenBloc() : super(const MainScreenInitial()) {
     on<MainScreenEventLoad>(_handleLoad);
     add(const MainScreenEventLoad());
   }
 
   void _handleLoad(
-      MainScreenEventLoad event,
+    MainScreenEventLoad event,
     Emitter<MainScreenState> emit,
   ) async {
     try {
-      emit(MainScreenLoaded(message: await _apiTestService.readMessage()));
+      emit(const MainScreenLoaded(message: 'test'));
     } on Exception catch (_, e) {
       if (kDebugMode) {
         print(e);
