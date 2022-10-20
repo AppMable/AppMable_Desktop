@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
 import 'package:appmable_desktop/domain/services/user_service.dart';
 import 'package:appmable_desktop/domain/exceptions/login_exception.dart';
@@ -12,7 +15,6 @@ part 'login_screen_state.dart';
 
 @lazySingleton
 class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
-
   final UserService _userService;
   final LocalStorageService _localStorageService;
 
@@ -28,14 +30,19 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
     Emitter<LoginScreenState> emit,
   ) async {
     try {
-      if (await _userService.logIn(
+      final UserLoginInformation? userLoginInformation = await _userService.logIn(
         username: event.username,
         password: event.password,
-      )) {
+      );
+
+      if (userLoginInformation != null) {
         emit(const UserLogged());
-        _localStorageService.write(LoginScreen.userLogged, true);
+        _localStorageService.write(LoginScreen.userInformation, userLoginInformation);
         event.onLogInSuccess();
+      } else {
+        event.onLogInError('Algo inesperado ocurrió, vuelve a intentar');
       }
+
     } on LoginException catch (loginException) {
       event.onLogInError(loginException.message);
     } catch (e) {
