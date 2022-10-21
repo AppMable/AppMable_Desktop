@@ -12,6 +12,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../domain/model/value_objects/mock/barcode_search_result_mock.dart';
 import '../../../domain/services/storage/mock/local_storage_service_mock.dart';
 import 'login_screen_bloc_test.mocks.dart';
 
@@ -35,7 +36,7 @@ void main() {
     blocTest<LoginScreenBloc, LoginScreenState>(
       'Success Login',
       setUp: () {
-        when(userService.logIn(username: username, password: password)).thenAnswer((_) => Future.value(true));
+        when(userService.logIn(username: username, password: password)).thenAnswer((_) => Future.value(userLoginInformationMockGenerator()));
       },
       build: () => LoginScreenBloc(
         userService,
@@ -52,8 +53,8 @@ void main() {
       ],
       verify: (_) {
         assert(
-          localStorageService.read(LoginScreen.userLogged) as bool == true,
-          'LoginScreen.userLogged value in local storage should be same than ${true}',
+          localStorageService.read(LoginScreen.userInformation) is String,
+          'LoginScreen.userLogged value in local storage should be a String',
         );
         verifyInOrder([
           userService.logIn(username: username, password: password),
@@ -84,8 +85,8 @@ void main() {
       expect: () => [],
       verify: (_) {
         assert(
-          localStorageService.read(LoginScreen.userLogged) == null,
-          'LoginScreen.userLogged value in local storage should be same than ${false}',
+          localStorageService.read(LoginScreen.userInformation) == null,
+          'LoginScreen.userLogged value in local storage should be same than ${null}',
         );
         verifyInOrder([
           userService.logIn(username: username, password: password),
@@ -116,8 +117,8 @@ void main() {
       expect: () => [],
       verify: (_) {
         assert(
-        localStorageService.read(LoginScreen.userLogged) == null,
-        'LoginScreen.userLogged value in local storage should be same than ${false}',
+        localStorageService.read(LoginScreen.userInformation) == null,
+        'LoginScreen.userLogged value in local storage should be same than ${null}',
         );
         verifyInOrder([
           userService.logIn(username: username, password: password),

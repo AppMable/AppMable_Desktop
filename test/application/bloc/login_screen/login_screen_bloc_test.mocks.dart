@@ -5,6 +5,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i3;
 
+import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart'
+    as _i4;
 import 'package:appmable_desktop/domain/services/user_service.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -28,7 +30,7 @@ class MockUserService extends _i1.Mock implements _i2.UserService {
   }
 
   @override
-  _i3.Future<bool> logIn({
+  _i3.Future<_i4.UserLoginInformation?> logIn({
     required String? username,
     required String? password,
   }) =>
@@ -41,6 +43,6 @@ class MockUserService extends _i1.Mock implements _i2.UserService {
             #password: password,
           },
         ),
-        returnValue: _i3.Future<bool>.value(false),
-      ) as _i3.Future<bool>);
+        returnValue: _i3.Future<_i4.UserLoginInformation?>.value(),
+      ) as _i3.Future<_i4.UserLoginInformation?>);
 }
