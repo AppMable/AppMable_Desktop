@@ -142,7 +142,7 @@ void main() {
 
   group('Login Screen BLoC - SuccessLogout', () {
     final LocalStorageService localStorageService = LocalStorageServiceMock();
-    localStorageService.write(LoginScreen.userInformation, userLoginInformation);
+    localStorageService.write(LoginScreen.userInformation, userLoginInformation.toJson());
 
     blocTest<LoginScreenBloc, LoginScreenState>(
       'Success Login',
@@ -174,6 +174,7 @@ void main() {
 
   group('Login Screen BLoC - LogoutException', () {
     final LocalStorageService localStorageService = LocalStorageServiceMock();
+    localStorageService.write(LoginScreen.userInformation, userLoginInformation.toJson());
 
     blocTest<LoginScreenBloc, LoginScreenState>(
       'LogOutException',
@@ -205,6 +206,7 @@ void main() {
 
   group('Login Screen BLoC - Random in LogOutEvent Exception', () {
     final LocalStorageService localStorageService = LocalStorageServiceMock();
+    localStorageService.write(LoginScreen.userInformation, userLoginInformation.toJson());
 
     blocTest<LoginScreenBloc, LoginScreenState>(
       'RandomException',
