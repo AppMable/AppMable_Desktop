@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:appmable_desktop/domain/exceptions/login_exception.dart';
+import 'package:appmable_desktop/domain/exceptions/logout_exception.dart';
 import 'package:appmable_desktop/domain/model/value_object/response.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
 import 'package:faker/faker.dart';
@@ -27,6 +28,10 @@ void main() {
         HttpUserRepository.urlUserLogin.replaceAll('<username>', username).replaceAll('<password>', password);
 
     final UserLoginInformation userLoginInformation = userLoginInformationMockGenerator();
+    final String userToken = userLoginInformation.userToken;
+    final String urlLogout = HttpUserRepository.urlUserLogOut.replaceAll('<userToken>', userToken);
+
+    // Log In
 
     test('Login OK', () async {
       when(httpService.get(Uri.parse(urlLogin))).thenAnswer(
@@ -105,6 +110,58 @@ void main() {
       );
 
       expect(await repository.logIn(username: username, password: password), null);
+    });
+
+    // Log Out
+
+    test('LogOut OK', () async {
+      when(httpService.get(Uri.parse(urlLogout))).thenAnswer(
+        (_) => Future.value(
+          Response(
+            body: jsonEncode(faker.lorem.words(1).join('')),
+            statusCode: 200,
+            headers: const {'header': 'mock'},
+            bodyBytes: Uint8List.fromList(faker.randomGenerator.numbers(5, 5)),
+          ),
+        ),
+      );
+
+      expect(await repository.logOut(userToken: userToken), true);
+    });
+
+    test('LogOut KO - Http Code is 403', () async {
+      when(httpService.get(Uri.parse(urlLogout))).thenAnswer(
+        (_) => Future.value(
+          Response(
+            body: jsonEncode(faker.lorem.words(1).join('')),
+            statusCode: 403,
+            headers: const {'header': 'mock'},
+            bodyBytes: Uint8List.fromList(faker.randomGenerator.numbers(5, 5)),
+          ),
+        ),
+      );
+
+      expect(
+        () async => await repository.logOut(userToken: userToken),
+        throwsA(
+          predicate((e) => e is LogOutException),
+        ),
+      );
+    });
+
+    test('LogOut KO - Http Code is 400', () async {
+      when(httpService.get(Uri.parse(urlLogout))).thenAnswer(
+        (_) => Future.value(
+          Response(
+            body: jsonEncode(faker.lorem.words(1).join('')),
+            statusCode: 400,
+            headers: const {'header': 'mock'},
+            bodyBytes: Uint8List.fromList(faker.randomGenerator.numbers(5, 5)),
+          ),
+        ),
+      );
+
+      expect(await repository.logOut(userToken: userToken), false);
     });
   });
 }

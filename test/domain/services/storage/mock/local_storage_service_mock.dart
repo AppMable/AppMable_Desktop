@@ -36,4 +36,9 @@ class LocalStorageServiceMock extends LocalStorageService {
   void writeInMemory(String key, dynamic value) {
     _storage[key] = value;
   }
+
+  @override
+  Future<void> remove(String key) async {
+    _storage.remove(key);
+  }
 }

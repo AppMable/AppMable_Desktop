@@ -16,5 +16,5 @@ UserLoginInformation userLoginInformationMockGenerator({
 }
 
 String getUserLoginHttpStringFromUserLoginInformation(UserLoginInformation userLoginInformation){
-  return '[\"login:${userLoginInformation.loginType}:${userLoginInformation.userRole}:${userLoginInformation.userName}:${userLoginInformation.userToken}\"]';
+  return '["login:${userLoginInformation.loginType}:${userLoginInformation.userRole}:${userLoginInformation.userName}:${userLoginInformation.userToken}"]';
 }

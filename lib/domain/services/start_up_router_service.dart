@@ -1,6 +1,6 @@
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
+import 'package:appmable_desktop/ui/screens/dashboard_screen/dashboard_screen.dart';
 import 'package:appmable_desktop/ui/screens/login_screen/login_screen.dart';
-import 'package:appmable_desktop/ui/screens/main_screen/main_screen.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
@@ -19,7 +19,7 @@ class StartUpRouterService {
     if (!isLogged) {
       route = LoginScreen.routeName;
     } else {
-      route = MainScreen.routeName;
+      route = DashboardScreen.routeName;
     }
 
     return route;

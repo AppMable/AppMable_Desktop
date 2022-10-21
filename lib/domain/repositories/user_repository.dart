@@ -5,4 +5,8 @@ abstract class UserRepository {
     required String username,
     required String password,
   });
+
+  Future<bool> logOut({
+    required String userToken,
+  });
 }

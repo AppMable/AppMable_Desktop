@@ -47,4 +47,10 @@ class GetStorageLocalStorageService implements LocalStorageService {
     guardClause();
     _storage.writeInMemory(key, value);
   }
+
+  @override
+  Future<void> remove(String key) async {
+    guardClause();
+    _storage.remove(key);
+  }
 }

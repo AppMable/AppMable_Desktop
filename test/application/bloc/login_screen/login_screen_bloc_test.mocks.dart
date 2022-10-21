@@ -45,4 +45,13 @@ class MockUserService extends _i1.Mock implements _i2.UserService {
         ),
         returnValue: _i3.Future<_i4.UserLoginInformation?>.value(),
       ) as _i3.Future<_i4.UserLoginInformation?>);
+  @override
+  _i3.Future<bool> logOut({required String? userToken}) => (super.noSuchMethod(
+        Invocation.method(
+          #logOut,
+          [],
+          {#userToken: userToken},
+        ),
+        returnValue: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
 }

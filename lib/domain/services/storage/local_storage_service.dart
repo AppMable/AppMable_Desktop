@@ -10,4 +10,6 @@ abstract class LocalStorageService {
   Future<void> write(String key, dynamic value);
 
   void writeInMemory(String key, dynamic value);
+
+  Future<void> remove(String key);
 }

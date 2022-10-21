@@ -1,7 +1,7 @@
 import 'package:appmable_desktop/domain/services/start_up_router_service.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
 import 'package:appmable_desktop/ui/screens/login_screen/login_screen.dart';
-import 'package:appmable_desktop/ui/screens/main_screen/main_screen.dart';
+import 'package:appmable_desktop/ui/screens/dashboard_screen/dashboard_screen.dart';
 import 'package:test/test.dart';
 
 import '../model/value_objects/mock/barcode_search_result_mock.dart';
@@ -47,7 +47,7 @@ void main() {
 
       final String route = await startupRouterService.execute();
 
-      expect(route, equals(MainScreen.routeName));
+      expect(route, equals(DashboardScreen.routeName));
     });
   });
 }

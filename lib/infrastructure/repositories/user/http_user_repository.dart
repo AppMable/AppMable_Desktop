@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:appmable_desktop/domain/exceptions/login_exception.dart';
+import 'package:appmable_desktop/domain/exceptions/logout_exception.dart';
 import 'package:appmable_desktop/domain/model/value_object/response.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
 import 'package:appmable_desktop/domain/repositories/user_repository.dart';
@@ -16,6 +17,7 @@ class HttpUserRepository implements UserRepository {
   );
 
   static const String urlUserLogin = 'http://127.0.0.1:8000/users/login/<username>/<password>/';
+  static const String urlUserLogOut = 'http://127.0.0.1:8000/users/logout/<userToken>/';
 
   @override
   Future<UserLoginInformation?> logIn({
@@ -38,5 +40,22 @@ class HttpUserRepository implements UserRepository {
       throw LoginException(jsonDecode(utf8.decode(response.bodyBytes))[0]);
     }
     return null;
+  }
+
+  @override
+  Future<bool> logOut({
+    required String userToken,
+  }) async {
+
+    final String urlLogOut = urlUserLogOut.replaceAll('<userToken>', userToken);
+
+    final Response response = await _httpService.get(Uri.parse(urlLogOut));
+
+    if (response.statusCode == 200) {
+      return true;
+    } else if (response.statusCode == 403) {
+      throw const LogOutException('No tienes permisos para hacer LogOut');
+    }
+    return false;
   }
 }

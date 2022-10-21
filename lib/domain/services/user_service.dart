@@ -23,4 +23,16 @@ class UserService {
       rethrow;
     }
   }
+
+  Future<bool> logOut({
+    required String userToken,
+  }) async {
+    try {
+      return await _userRepository.logOut(
+        userToken: userToken,
+      );
+    } catch (_) {
+      rethrow;
+    }
+  }
 }

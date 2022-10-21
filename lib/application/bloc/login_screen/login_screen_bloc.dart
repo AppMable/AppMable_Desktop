@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:appmable_desktop/domain/exceptions/logout_exception.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
 import 'package:appmable_desktop/domain/services/user_service.dart';
@@ -23,6 +24,7 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
     this._localStorageService,
   ) : super(const LoginScreenInitial()) {
     on<LogInEvent>(_handleLogin);
+    on<LogOutEvent>(_handleLogOut);
   }
 
   Future<void> _handleLogin(
@@ -42,11 +44,32 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
       } else {
         event.onLogInError('Algo inesperado ocurrió, vuelve a intentar');
       }
-
     } on LoginException catch (loginException) {
       event.onLogInError(loginException.message);
     } catch (e) {
       event.onLogInError('Algo inesperado ocurrió, vuelve a intentar');
+    }
+  }
+
+  Future<void> _handleLogOut(
+    LogOutEvent event,
+    Emitter<LoginScreenState> emit,
+  ) async {
+    final UserLoginInformation userLoginInformation =
+        UserLoginInformation.fromMap(jsonDecode(_localStorageService.read(LoginScreen.userInformation)));
+
+    try {
+      if (await _userService.logOut(userToken: userLoginInformation.userToken)) {
+        emit(const UserLoggedOut());
+        _localStorageService.remove(LoginScreen.userInformation);
+        event.onLogOutSuccess();
+      } else {
+        event.onLogOutError('Algo inesperado ocurrió, vuelve a intentar');
+      }
+    } on LogOutException catch (logOutException) {
+      event.onLogOutError(logOutException.message);
+    } catch (e) {
+      event.onLogOutError('Algo inesperado ocurrió, vuelve a intentar');
     }
   }
 }
