@@ -60,8 +60,9 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
 
     try {
       if (await _userService.logOut(userToken: userLoginInformation.userToken)) {
-        event.onLogOutSuccess();
         emit(const UserLoggedOut());
+        _localStorageService.remove(LoginScreen.userInformation);
+        event.onLogOutSuccess();
       } else {
         event.onLogOutError('Algo inesperado ocurrió, vuelve a intentar');
       }

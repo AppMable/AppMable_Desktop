@@ -44,5 +44,27 @@ void main() {
       assert(localStorageServiceMock.read('test8') as dynamic == null, 'LocalStorage with key test8 must be null');
       assert(localStorageServiceMock.read('test9') as dynamic == null, 'LocalStorage with key test9 must be null');
     });
+
+    test('Tests over Get Storage Local Storage Service - nonexisting elements removing elements', () async {
+      await localStorageServiceMock.write('test10', 'test');
+      await localStorageServiceMock.write('test11', true);
+      await localStorageServiceMock.write('test12', 12345);
+
+      assert(localStorageServiceMock.hasData('test10'), 'LocalStorage with key test10 must has data');
+      assert(localStorageServiceMock.hasData('test11'), 'LocalStorage with key test11 must has data');
+      assert(localStorageServiceMock.hasData('test12'), 'LocalStorage with key test12 must has data');
+
+      await localStorageServiceMock.remove('test10');
+      await localStorageServiceMock.remove('test11');
+      await localStorageServiceMock.remove('test12');
+
+      assert(!localStorageServiceMock.hasData('test10'), "LocalStorage with key test10 shouldn't has data");
+      assert(!localStorageServiceMock.hasData('test11'), "LocalStorage with key test11 shouldn't has data");
+      assert(!localStorageServiceMock.hasData('test12'), "LocalStorage with key test12 shouldn't has data");
+
+      assert(localStorageServiceMock.read('test10') as dynamic == null, 'LocalStorage with key test10 must be null');
+      assert(localStorageServiceMock.read('test11') as dynamic == null, 'LocalStorage with key test11 must be null');
+      assert(localStorageServiceMock.read('test12') as dynamic == null, 'LocalStorage with key test12 must be null');
+    });
   });
 }

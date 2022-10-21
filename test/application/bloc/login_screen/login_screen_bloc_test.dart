@@ -162,8 +162,8 @@ void main() {
       ],
       verify: (_) {
         assert(
-          localStorageService.read(LoginScreen.userInformation) is String,
-          'LoginScreen.userLogged value in local storage should be a String',
+          localStorageService.read(LoginScreen.userInformation) == null,
+          'LoginScreen.userLogged value in local storage should be null',
         );
         verifyInOrder([
           userService.logOut(userToken: userToken),
