@@ -17,7 +17,6 @@ class HttpUserRepository implements UserRepository {
   );
 
   static const String urlUserLogin = 'http://127.0.0.1:8000/users/login/?u=<username>&p=<password>';
-
   static const String urlUserLogOut = 'http://127.0.0.1:8000/users/logout/?c=<userToken>';
 
   @override
@@ -47,7 +46,6 @@ class HttpUserRepository implements UserRepository {
   Future<bool> logOut({
     required String userToken,
   }) async {
-
     final String urlLogOut = urlUserLogOut.replaceAll('<userToken>', userToken);
 
     final Response response = await _httpService.get(Uri.parse(urlLogOut));
