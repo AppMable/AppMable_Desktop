@@ -8,10 +8,10 @@ import 'package:injectable/injectable.dart';
 import 'package:appmable_desktop/domain/services/http_service.dart';
 
 @Injectable(as: UserRepository)
-class HttpButtonRepository implements UserRepository {
+class HttpUserRepository implements UserRepository {
   final HttpService _httpService;
 
-  HttpButtonRepository(
+  HttpUserRepository(
     this._httpService,
   );
 

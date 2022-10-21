@@ -55,7 +55,7 @@ _i1.GetIt $initGetIt(
         get<_i8.LocalStorageService>(),
       ));
   gh.factory<_i14.UserRepository>(
-      () => _i15.HttpButtonRepository(get<_i6.HttpService>()));
+      () => _i15.HttpUserRepository(get<_i6.HttpService>()));
   gh.factory<_i16.UserService>(
       () => _i16.UserService(get<_i14.UserRepository>()));
   gh.lazySingleton<_i17.LoginScreenBloc>(() => _i17.LoginScreenBloc(
