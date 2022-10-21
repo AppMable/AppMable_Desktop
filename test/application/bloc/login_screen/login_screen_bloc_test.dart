@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:appmable_desktop/application/bloc/login_screen/login_screen_bloc.dart';
 import 'package:appmable_desktop/domain/exceptions/login_exception.dart';
+import 'package:appmable_desktop/domain/exceptions/logout_exception.dart';
+import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
 import 'package:appmable_desktop/domain/services/user_service.dart';
 import 'package:appmable_desktop/ui/screens/login_screen/login_screen.dart';
@@ -29,14 +31,21 @@ void main() {
   onLogInSuccess() => log('success');
   onLogInError(String error) => log(error);
 
-  group('Login Screen BLoC - SuccessLogin', () {
+  final UserLoginInformation userLoginInformation = userLoginInformationMockGenerator();
+  final String userToken = userLoginInformation.userToken;
+  onLogOutSuccess() => log('success');
+  onLogOutError(String error) => log(error);
 
+  // LogInEvent
+
+  group('Login Screen BLoC - SuccessLogin', () {
     final LocalStorageService localStorageService = LocalStorageServiceMock();
 
     blocTest<LoginScreenBloc, LoginScreenState>(
       'Success Login',
       setUp: () {
-        when(userService.logIn(username: username, password: password)).thenAnswer((_) => Future.value(userLoginInformationMockGenerator()));
+        when(userService.logIn(username: username, password: password))
+            .thenAnswer((_) => Future.value(userLoginInformation));
       },
       build: () => LoginScreenBloc(
         userService,
@@ -64,13 +73,14 @@ void main() {
   });
 
   group('Login Screen BLoC - LoginException', () {
-
     final LocalStorageService localStorageService = LocalStorageServiceMock();
 
     blocTest<LoginScreenBloc, LoginScreenState>(
       'LoginException',
       setUp: () {
-        when(userService.logIn(username: username, password: password),).thenThrow((_) => LoginException(faker.lorem.words(5).toString()));
+        when(
+          userService.logIn(username: username, password: password),
+        ).thenThrow((_) => LoginException(faker.lorem.words(5).toString()));
       },
       build: () => LoginScreenBloc(
         userService,
@@ -95,14 +105,15 @@ void main() {
     );
   });
 
-  group('Login Screen BLoC - Random Exception', () {
-
+  group('Login Screen BLoC - Random in LogInEvent Exception', () {
     final LocalStorageService localStorageService = LocalStorageServiceMock();
 
     blocTest<LoginScreenBloc, LoginScreenState>(
       'RandomException',
       setUp: () {
-        when(userService.logIn(username: username, password: password),).thenThrow((_) => UnimplementedError());
+        when(
+          userService.logIn(username: username, password: password),
+        ).thenThrow((_) => UnimplementedError());
       },
       build: () => LoginScreenBloc(
         userService,
@@ -117,11 +128,107 @@ void main() {
       expect: () => [],
       verify: (_) {
         assert(
-        localStorageService.read(LoginScreen.userInformation) == null,
-        'LoginScreen.userLogged value in local storage should be same than ${null}',
+          localStorageService.read(LoginScreen.userInformation) == null,
+          'LoginScreen.userLogged value in local storage should be same than ${null}',
         );
         verifyInOrder([
           userService.logIn(username: username, password: password),
+        ]);
+      },
+    );
+  });
+
+  // LogOutEvent
+
+  group('Login Screen BLoC - SuccessLogout', () {
+    final LocalStorageService localStorageService = LocalStorageServiceMock();
+    localStorageService.write(LoginScreen.userInformation, userLoginInformation);
+
+    blocTest<LoginScreenBloc, LoginScreenState>(
+      'Success Login',
+      setUp: () {
+        when(userService.logOut(userToken: userToken)).thenAnswer((_) => Future.value(true));
+      },
+      build: () => LoginScreenBloc(
+        userService,
+        localStorageService,
+      ),
+      act: (LoginScreenBloc bloc) => bloc.add(LogOutEvent(
+        onLogOutSuccess: onLogOutSuccess,
+        onLogOutError: onLogOutError,
+      )),
+      expect: () => [
+        const UserLoggedOut(),
+      ],
+      verify: (_) {
+        assert(
+          localStorageService.read(LoginScreen.userInformation) is String,
+          'LoginScreen.userLogged value in local storage should be a String',
+        );
+        verifyInOrder([
+          userService.logOut(userToken: userToken),
+        ]);
+      },
+    );
+  });
+
+  group('Login Screen BLoC - LogoutException', () {
+    final LocalStorageService localStorageService = LocalStorageServiceMock();
+
+    blocTest<LoginScreenBloc, LoginScreenState>(
+      'LogOutException',
+      setUp: () {
+        when(
+          userService.logOut(userToken: userToken),
+        ).thenThrow((_) => LogOutException(faker.lorem.words(5).toString()));
+      },
+      build: () => LoginScreenBloc(
+        userService,
+        localStorageService,
+      ),
+      act: (LoginScreenBloc bloc) => bloc.add(LogOutEvent(
+        onLogOutSuccess: onLogOutSuccess,
+        onLogOutError: onLogOutError,
+      )),
+      expect: () => [],
+      verify: (_) {
+        assert(
+          localStorageService.read(LoginScreen.userInformation) is String,
+          'LoginScreen.userLogged value in local storage should be a String',
+        );
+        verifyInOrder([
+          userService.logOut(userToken: userToken),
+        ]);
+      },
+    );
+  });
+
+  group('Login Screen BLoC - Random in LogOutEvent Exception', () {
+    final LocalStorageService localStorageService = LocalStorageServiceMock();
+
+    blocTest<LoginScreenBloc, LoginScreenState>(
+      'RandomException',
+      setUp: () {
+        when(
+          userService.logOut(userToken: userToken),
+        ).thenThrow((_) => UnimplementedError());
+      },
+      build: () => LoginScreenBloc(
+        userService,
+        localStorageService,
+      ),
+      act: (LoginScreenBloc bloc) => bloc.add(LogOutEvent(
+        onLogOutSuccess: onLogOutSuccess,
+        onLogOutError: onLogOutError,
+      )),
+      expect: () => [],
+      verify: (_) {
+        assert(
+        localStorageService.read(LoginScreen.userInformation) is String,
+        'LoginScreen.userLogged value in local storage should be a String',
+        );
+        verifyInOrder([
+          userService.logOut(userToken: userToken),
         ]);
       },
     );

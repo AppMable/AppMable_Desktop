@@ -15,8 +15,7 @@ class LoginScreen extends StatelessWidget {
   static const routeName = '/login-screen';
   static const userInformation = 'userInformation';
 
-  final LoginScreenBloc _loginScreenBloc =
-      GetIt.instance.get<LoginScreenBloc>();
+  final LoginScreenBloc _loginScreenBloc = GetIt.instance.get<LoginScreenBloc>();
 
   LoginScreen({Key? key}) : super(key: key);
 
