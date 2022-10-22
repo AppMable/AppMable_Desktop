@@ -10,7 +10,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:appmable_desktop/domain/services/http_service.dart';
-import 'package:appmable_desktop/infrastructure/repositories/user/http_user_repository.dart';
+import 'package:appmable_desktop/infrastructure/repositories/userLogin/http_user_login_repository.dart';
 
 import '../../../domain/model/value_objects/mock/barcode_search_result_mock.dart';
 import 'http_user_repository_test.mocks.dart';
@@ -20,16 +20,16 @@ void main() {
   group('Tests over User Repository', () {
     final Faker faker = Faker();
     final HttpService httpService = MockHttpService();
-    final HttpUserRepository repository = HttpUserRepository(httpService);
+    final HttpUserLoginRepository repository = HttpUserLoginRepository(httpService);
 
     final String username = faker.lorem.words(1).join('');
     final String password = faker.lorem.words(1).join('');
     final String urlLogin =
-        HttpUserRepository.urlUserLogin.replaceAll('<username>', username).replaceAll('<password>', password);
+        HttpUserLoginRepository.urlUserLogin.replaceAll('<username>', username).replaceAll('<password>', password);
 
     final UserLoginInformation userLoginInformation = userLoginInformationMockGenerator();
     final String userToken = userLoginInformation.userToken;
-    final String urlLogout = HttpUserRepository.urlUserLogOut.replaceAll('<userToken>', userToken);
+    final String urlLogout = HttpUserLoginRepository.urlUserLogOut.replaceAll('<userToken>', userToken);
 
     // Log In
 

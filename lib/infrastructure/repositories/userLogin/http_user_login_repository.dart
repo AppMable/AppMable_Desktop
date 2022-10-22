@@ -4,15 +4,15 @@ import 'package:appmable_desktop/domain/exceptions/login_exception.dart';
 import 'package:appmable_desktop/domain/exceptions/logout_exception.dart';
 import 'package:appmable_desktop/domain/model/value_object/response.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
-import 'package:appmable_desktop/domain/repositories/user_repository.dart';
+import 'package:appmable_desktop/domain/repositories/user_login_repository.dart';
 import 'package:injectable/injectable.dart';
 import 'package:appmable_desktop/domain/services/http_service.dart';
 
-@Injectable(as: UserRepository)
-class HttpUserRepository implements UserRepository {
+@Injectable(as: UserLoginRepository)
+class HttpUserLoginRepository implements UserLoginRepository {
   final HttpService _httpService;
 
-  HttpUserRepository(
+  HttpUserLoginRepository(
     this._httpService,
   );
 

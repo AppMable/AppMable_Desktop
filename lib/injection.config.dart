@@ -11,7 +11,7 @@ import 'package:injectable/injectable.dart' as _i2;
 
 import 'application/bloc/login_screen/login_screen_bloc.dart' as _i17;
 import 'application/bloc/main_screen/main_screen_bloc.dart' as _i9;
-import 'domain/repositories/user_repository.dart' as _i14;
+import 'domain/repositories/user_login_repository.dart' as _i14;
 import 'domain/services/connectivity_checker_service.dart' as _i4;
 import 'domain/services/http_service.dart' as _i6;
 import 'domain/services/navigator_service.dart' as _i10;
@@ -19,8 +19,9 @@ import 'domain/services/start_up_router_service.dart' as _i12;
 import 'domain/services/start_up_service.dart' as _i13;
 import 'domain/services/storage/local_storage_service.dart' as _i8;
 import 'domain/services/storage/session_storage_service.dart' as _i11;
-import 'domain/services/user_service.dart' as _i16;
-import 'infrastructure/repositories/user/http_user_repository.dart' as _i15;
+import 'domain/services/user_login_service.dart' as _i16;
+import 'infrastructure/repositories/userLogin/http_user_login_repository.dart'
+    as _i15;
 import 'infrastructure/services/flutter_connectivity_checker_service.dart'
     as _i5;
 import 'infrastructure/services/http_service.dart' as _i7;
@@ -54,12 +55,12 @@ _i1.GetIt $initGetIt(
         get<_i12.StartUpRouterService>(),
         get<_i8.LocalStorageService>(),
       ));
-  gh.factory<_i14.UserRepository>(
-      () => _i15.HttpUserRepository(get<_i6.HttpService>()));
-  gh.factory<_i16.UserService>(
-      () => _i16.UserService(get<_i14.UserRepository>()));
+  gh.factory<_i14.UserLoginRepository>(
+      () => _i15.HttpUserLoginRepository(get<_i6.HttpService>()));
+  gh.factory<_i16.UserLoginService>(
+      () => _i16.UserLoginService(get<_i14.UserLoginRepository>()));
   gh.lazySingleton<_i17.LoginScreenBloc>(() => _i17.LoginScreenBloc(
-        get<_i16.UserService>(),
+        get<_i16.UserLoginService>(),
         get<_i8.LocalStorageService>(),
       ));
   return get;

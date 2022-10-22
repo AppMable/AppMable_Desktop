@@ -1,13 +1,13 @@
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
-import 'package:appmable_desktop/domain/repositories/user_repository.dart';
+import 'package:appmable_desktop/domain/repositories/user_login_repository.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class UserService {
-  final UserRepository _userRepository;
+class UserLoginService {
+  final UserLoginRepository _userLoginRepository;
 
-  const UserService(
-    this._userRepository,
+  const UserLoginService(
+    this._userLoginRepository,
   );
 
   Future<UserLoginInformation?> logIn({
@@ -15,7 +15,7 @@ class UserService {
     required String password,
   }) async {
     try {
-      return await _userRepository.logIn(
+      return await _userLoginRepository.logIn(
         username: username,
         password: password,
       );
@@ -28,7 +28,7 @@ class UserService {
     required String userToken,
   }) async {
     try {
-      return await _userRepository.logOut(
+      return await _userLoginRepository.logOut(
         userToken: userToken,
       );
     } catch (_) {

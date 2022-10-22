@@ -7,7 +7,8 @@ import 'dart:async' as _i3;
 
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart'
     as _i4;
-import 'package:appmable_desktop/domain/services/user_service.dart' as _i2;
+import 'package:appmable_desktop/domain/services/user_login_service.dart'
+    as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -21,11 +22,11 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-/// A class which mocks [UserService].
+/// A class which mocks [UserLoginService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockUserService extends _i1.Mock implements _i2.UserService {
-  MockUserService() {
+class MockUserLoginService extends _i1.Mock implements _i2.UserLoginService {
+  MockUserLoginService() {
     _i1.throwOnMissingStub(this);
   }
 

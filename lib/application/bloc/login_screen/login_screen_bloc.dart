@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:appmable_desktop/domain/exceptions/logout_exception.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
-import 'package:appmable_desktop/domain/services/user_service.dart';
+import 'package:appmable_desktop/domain/services/user_login_service.dart';
 import 'package:appmable_desktop/domain/exceptions/login_exception.dart';
 import 'package:appmable_desktop/ui/screens/login_screen/login_screen.dart';
 import 'package:equatable/equatable.dart';
@@ -16,11 +16,11 @@ part 'login_screen_state.dart';
 
 @lazySingleton
 class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
-  final UserService _userService;
+  final UserLoginService _userLoginService;
   final LocalStorageService _localStorageService;
 
   LoginScreenBloc(
-    this._userService,
+    this._userLoginService,
     this._localStorageService,
   ) : super(const LoginScreenInitial()) {
     on<LogInEvent>(_handleLogin);
@@ -32,7 +32,7 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
     Emitter<LoginScreenState> emit,
   ) async {
     try {
-      final UserLoginInformation? userLoginInformation = await _userService.logIn(
+      final UserLoginInformation? userLoginInformation = await _userLoginService.logIn(
         username: event.username,
         password: event.password,
       );
@@ -59,7 +59,7 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
         UserLoginInformation.fromMap(jsonDecode(_localStorageService.read(LoginScreen.userInformation)));
 
     try {
-      if (await _userService.logOut(userToken: userLoginInformation.userToken)) {
+      if (await _userLoginService.logOut(userToken: userLoginInformation.userToken)) {
         emit(const UserLoggedOut());
         _localStorageService.remove(LoginScreen.userInformation);
         event.onLogOutSuccess();

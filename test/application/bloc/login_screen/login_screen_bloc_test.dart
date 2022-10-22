@@ -5,7 +5,7 @@ import 'package:appmable_desktop/domain/exceptions/login_exception.dart';
 import 'package:appmable_desktop/domain/exceptions/logout_exception.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
-import 'package:appmable_desktop/domain/services/user_service.dart';
+import 'package:appmable_desktop/domain/services/user_login_service.dart';
 import 'package:appmable_desktop/ui/screens/login_screen/login_screen.dart';
 
 import 'package:bloc_test/bloc_test.dart';
@@ -19,10 +19,10 @@ import '../../../domain/services/storage/mock/local_storage_service_mock.dart';
 import 'login_screen_bloc_test.mocks.dart';
 
 @GenerateMocks([
-  UserService,
+  UserLoginService,
 ])
 void main() {
-  final UserService userService = MockUserService();
+  final UserLoginService userLoginService = MockUserLoginService();
 
   final Faker faker = Faker();
 
@@ -44,11 +44,11 @@ void main() {
     blocTest<LoginScreenBloc, LoginScreenState>(
       'Success Login',
       setUp: () {
-        when(userService.logIn(username: username, password: password))
+        when(userLoginService.logIn(username: username, password: password))
             .thenAnswer((_) => Future.value(userLoginInformation));
       },
       build: () => LoginScreenBloc(
-        userService,
+        userLoginService,
         localStorageService,
       ),
       act: (LoginScreenBloc bloc) => bloc.add(LogInEvent(
@@ -66,7 +66,7 @@ void main() {
           'LoginScreen.userLogged value in local storage should be a String',
         );
         verifyInOrder([
-          userService.logIn(username: username, password: password),
+          userLoginService.logIn(username: username, password: password),
         ]);
       },
     );
@@ -79,11 +79,11 @@ void main() {
       'LoginException',
       setUp: () {
         when(
-          userService.logIn(username: username, password: password),
+          userLoginService.logIn(username: username, password: password),
         ).thenThrow((_) => LoginException(faker.lorem.words(5).toString()));
       },
       build: () => LoginScreenBloc(
-        userService,
+        userLoginService,
         localStorageService,
       ),
       act: (LoginScreenBloc bloc) => bloc.add(LogInEvent(
@@ -99,7 +99,7 @@ void main() {
           'LoginScreen.userLogged value in local storage should be same than ${null}',
         );
         verifyInOrder([
-          userService.logIn(username: username, password: password),
+          userLoginService.logIn(username: username, password: password),
         ]);
       },
     );
@@ -112,11 +112,11 @@ void main() {
       'RandomException',
       setUp: () {
         when(
-          userService.logIn(username: username, password: password),
+          userLoginService.logIn(username: username, password: password),
         ).thenThrow((_) => UnimplementedError());
       },
       build: () => LoginScreenBloc(
-        userService,
+        userLoginService,
         localStorageService,
       ),
       act: (LoginScreenBloc bloc) => bloc.add(LogInEvent(
@@ -132,7 +132,7 @@ void main() {
           'LoginScreen.userLogged value in local storage should be same than ${null}',
         );
         verifyInOrder([
-          userService.logIn(username: username, password: password),
+          userLoginService.logIn(username: username, password: password),
         ]);
       },
     );
@@ -147,10 +147,10 @@ void main() {
     blocTest<LoginScreenBloc, LoginScreenState>(
       'Success Login',
       setUp: () {
-        when(userService.logOut(userToken: userToken)).thenAnswer((_) => Future.value(true));
+        when(userLoginService.logOut(userToken: userToken)).thenAnswer((_) => Future.value(true));
       },
       build: () => LoginScreenBloc(
-        userService,
+        userLoginService,
         localStorageService,
       ),
       act: (LoginScreenBloc bloc) => bloc.add(LogOutEvent(
@@ -166,7 +166,7 @@ void main() {
           'LoginScreen.userLogged value in local storage should be null',
         );
         verifyInOrder([
-          userService.logOut(userToken: userToken),
+          userLoginService.logOut(userToken: userToken),
         ]);
       },
     );
@@ -180,11 +180,11 @@ void main() {
       'LogOutException',
       setUp: () {
         when(
-          userService.logOut(userToken: userToken),
+          userLoginService.logOut(userToken: userToken),
         ).thenThrow((_) => LogOutException(faker.lorem.words(5).toString()));
       },
       build: () => LoginScreenBloc(
-        userService,
+        userLoginService,
         localStorageService,
       ),
       act: (LoginScreenBloc bloc) => bloc.add(LogOutEvent(
@@ -198,7 +198,7 @@ void main() {
           'LoginScreen.userLogged value in local storage should be a String',
         );
         verifyInOrder([
-          userService.logOut(userToken: userToken),
+          userLoginService.logOut(userToken: userToken),
         ]);
       },
     );
@@ -212,11 +212,11 @@ void main() {
       'RandomException',
       setUp: () {
         when(
-          userService.logOut(userToken: userToken),
+          userLoginService.logOut(userToken: userToken),
         ).thenThrow((_) => UnimplementedError());
       },
       build: () => LoginScreenBloc(
-        userService,
+        userLoginService,
         localStorageService,
       ),
       act: (LoginScreenBloc bloc) => bloc.add(LogOutEvent(
@@ -230,7 +230,7 @@ void main() {
         'LoginScreen.userLogged value in local storage should be a String',
         );
         verifyInOrder([
-          userService.logOut(userToken: userToken),
+          userLoginService.logOut(userToken: userToken),
         ]);
       },
     );
