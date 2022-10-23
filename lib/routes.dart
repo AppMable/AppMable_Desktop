@@ -5,8 +5,6 @@ import 'package:appmable_desktop/ui/screens/splash_screen/splash_screen.dart';
 import 'package:appmable_desktop/ui/screens/splash_screen/widgets/splash_holder.dart';
 import 'package:appmable_desktop/ui/screens/users_screen/users_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:appmable_desktop/ui/screens/main_screen/main_screen.dart';
-import 'package:appmable_desktop/ui/screens/onboarding_screen/onboarding_screen.dart';
 import 'package:get_it/get_it.dart';
 
 Map<String, WidgetBuilder> _routeGenerator() {
@@ -17,10 +15,8 @@ Map<String, WidgetBuilder> _routeGenerator() {
         return GetIt.I.get<StartUpService>().execute();
       },
     ),
-    OnboardingScreen.routeName: (_) => const OnboardingScreen(),
     LoginScreen.routeName: (_) => LoginScreen(),
     DashboardScreen.routeName: (_) => const DashboardScreen(),
-    MainScreen.routeName: (_) => MainScreen(),
     UsersScreen.routeName: (_) => UsersScreen(),
   };
 
