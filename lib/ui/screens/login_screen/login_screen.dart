@@ -22,6 +22,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: BlocBuilder<LoginScreenBloc, LoginScreenState>(
         bloc: _loginScreenBloc,
         builder: (context, state) {

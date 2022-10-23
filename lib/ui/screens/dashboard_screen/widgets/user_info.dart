@@ -1,22 +1,53 @@
 part of '../dashboard_screen.dart';
 
-class UserInfo extends StatelessWidget {
-  const UserInfo({Key? key}) : super(key: key);
+class UserInfo extends StatefulWidget {
+  UserInfo({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<UserInfo> createState() => _UserInfoState();
+}
+
+class _UserInfoState extends State<UserInfo> {
+  bool showIncorrectLogOutError = false;
+  String logOutErrorMessage = '';
+
+  final DashboardScreenBloc _dashboardScreenBloc = GetIt.instance.get<DashboardScreenBloc>();
+  final LoginScreenBloc _loginScreenBloc = GetIt.instance.get<LoginScreenBloc>();
 
   @override
   Widget build(BuildContext context) {
-    return CategoryBox(
-      suffix: Container(),
-      title: "User Info",
-      children: [
-        Expanded(
-          child: _userInfo(),
-        ),
-      ],
+    return BlocBuilder<DashboardScreenBloc, DashboardScreenState>(
+      bloc: _dashboardScreenBloc,
+      builder: (context, state) {
+        if (state is DashboardScreenLoaded) {
+          return CategoryBox(
+            suffix: Container(),
+            title: "Información del usuario",
+            children: [
+              Expanded(
+                child: _userInfo(userLoginInformation: state.userLoginInformation),
+              ),
+            ],
+          );
+        }
+
+        return Column(
+          children: const [
+            SizedBox(height: 100),
+            CircularProgressIndicator(
+              color: AppTheme.primary600,
+            )
+          ],
+        );
+      },
     );
   }
 
-  Widget _userInfo() {
+  Widget _userInfo({
+    required UserLoginInformation userLoginInformation,
+  }) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
@@ -27,10 +58,10 @@ class UserInfo extends StatelessWidget {
       child: Column(
         children: [
           Row(
-            children: const [
+            children: [
               Text('Nombre usuario:', style: TextStyle(fontWeight: FontWeight.bold)),
               SizedBox(width: 10),
-              Text('Amaresma'),
+              Text(userLoginInformation.userName),
             ],
           ),
           const SizedBox(height: 20),
@@ -72,7 +103,17 @@ class UserInfo extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              print('logout');
+              _loginScreenBloc.add(LogOutEvent(
+                onLogOutSuccess: () {
+                  Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+                },
+                onLogOutError: (String error) {
+                  setState(() {
+                    showIncorrectLogOutError = true;
+                    logOutErrorMessage = error;
+                  });
+                },
+              ));
             },
             child: const Text(
               'Cerrar Sessión',
@@ -83,6 +124,17 @@ class UserInfo extends StatelessWidget {
               ),
             ),
           ),
+          showIncorrectLogOutError
+              ? Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    Text(
+                      logOutErrorMessage,
+                      style: const TextStyle(color: AppTheme.error600),
+                    ),
+                  ],
+                )
+              : const SizedBox.shrink(),
         ],
       ),
     );

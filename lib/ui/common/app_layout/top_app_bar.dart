@@ -1,6 +1,5 @@
 import 'package:appmable_desktop/ui/common/app_layout/responsive.dart';
 import 'package:appmable_desktop/ui/theme/app_theme.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TopAppBar extends StatelessWidget {
