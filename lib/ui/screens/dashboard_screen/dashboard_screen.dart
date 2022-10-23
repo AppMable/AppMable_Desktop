@@ -96,7 +96,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   child: Padding(
                     padding: EdgeInsets.only(left: Styles.defaultPadding),
                     child: Column(
-                      children: [
+                      children: const [
                         Expanded(
                           child: UserInfo(),
                         ),

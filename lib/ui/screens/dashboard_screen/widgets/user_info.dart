@@ -1,7 +1,7 @@
 part of '../dashboard_screen.dart';
 
 class UserInfo extends StatefulWidget {
-  UserInfo({
+  const UserInfo({
     Key? key,
   }) : super(key: key);
 
@@ -59,8 +59,8 @@ class _UserInfoState extends State<UserInfo> {
         children: [
           Row(
             children: [
-              Text('Nombre usuario:', style: TextStyle(fontWeight: FontWeight.bold)),
-              SizedBox(width: 10),
+              const Text('Nombre usuario:', style: TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(width: 10),
               Text(userLoginInformation.userName),
             ],
           ),

@@ -1,5 +1,4 @@
 import 'package:appmable_desktop/application/bloc/users_screen/users_screen_bloc.dart';
-import 'package:appmable_desktop/domain/model/objects/user.dart';
 import 'package:appmable_desktop/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,7 +29,7 @@ class UsersScreen extends StatelessWidget {
                       const SizedBox(width: 50),
                       IconButton(
                         onPressed: () {
-                          print('Tengo que eliminar el usuario: ' + state.users[index].name);
+                          print('Tengo que eliminar el usuario: ${state.users[index].name}');
                         },
                         icon: const Icon(Icons.remove_circle_rounded),
                         color: Colors.red,
