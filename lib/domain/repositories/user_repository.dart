@@ -24,4 +24,10 @@ abstract class UserRepository {
     required String userType,
     required String userToken,
   });
+
+  Future<bool> updateUser({
+    required Map<String, dynamic> user,
+    required String userType,
+    required String userToken,
+  });
 }

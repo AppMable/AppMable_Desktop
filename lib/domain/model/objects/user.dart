@@ -17,6 +17,7 @@ class User extends Equatable {
   final DateTime? dateOfBirth;
   final DateTime? dateCreated;
   final DateTime? dateLastLogin;
+  final DateTime? dateLastLogout;
   final int? idUserRole;
   final int? idUserReference;
 
@@ -32,6 +33,7 @@ class User extends Equatable {
     this.dateOfBirth,
     this.dateCreated,
     this.dateLastLogin,
+    this.dateLastLogout,
     this.healthCardIdentifier,
     this.idUserRole,
     this.idUserReference,
@@ -51,28 +53,39 @@ class User extends Equatable {
         dateOfBirth,
         dateCreated,
         dateLastLogin,
+        dateLastLogout,
         idUserRole,
         idUserReference,
       ];
 
   String toJson() => jsonEncode(toMap());
 
-  Map<String, dynamic> toMap() => {
-        'id': id,
-        'identity_number': identityNumber,
-        'health_card_identifier': healthCardIdentifier,
-        'username': username,
-        'password': password,
-        'name': name,
-        'surname': surname,
-        'email': email,
-        'phone_number': phoneNumber,
-        'date_of_birth': dateOfBirth.toString(),
-        'date_created': dateCreated.toString(),
-        'date_last_login': dateLastLogin.toString(),
-        'id_user_role': idUserRole,
-        'id_user_reference': idUserReference,
-      };
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {
+      'id': id,
+      'identity_number': identityNumber,
+      'health_card_identifier': healthCardIdentifier,
+      'username': username,
+      'password': password,
+      'name': name,
+      'surname': surname,
+      'email': email,
+      'phone_number': phoneNumber,
+      'date_of_birth': dateOfBirth != null ? dateOfBirth.toString() : dateOfBirth,
+      'date_created': dateCreated != null ? dateCreated.toString() : dateCreated,
+      'date_last_login': dateLastLogin != null ? dateLastLogin.toString() : dateLastLogin,
+      'date_last_logout': dateLastLogout != null ? dateLastLogout.toString() : dateLastLogout,
+      'id_user_role': idUserRole,
+      'id_user_reference': idUserReference,
+    };
+
+    if(dateOfBirth == null) map.remove('date_of_birth');
+    if(dateCreated == null) map.remove('date_created');
+    if(dateLastLogin == null) map.remove('date_last_login');
+    if(dateLastLogout == null) map.remove('date_last_logout');
+
+    return map;
+  }
 
   factory User.fromMap(Map<String, dynamic> map) {
     if (map['id'] is! int ||
@@ -88,6 +101,7 @@ class User extends Equatable {
         (map['date_of_birth'] is! String) ||
         (map['date_created'] is! String) ||
         (map['date_last_login'] is! String?) ||
+        (map['date_last_logout'] is! String?) ||
         (map['phone_number'] is! String)) throw MalformedButtonMapException(map);
 
     return User(
@@ -100,9 +114,10 @@ class User extends Equatable {
       surname: map['surname'],
       email: map['email'],
       phoneNumber: map['phone_number'],
-      dateOfBirth: map['date_of_birth'] != null ? DateUtils.dateOnly(DateTime.parse(map['date_of_birth'])) : null,
-      dateCreated: map['date_created'] != null ? DateTime.parse(map['date_created']) : null,
-      dateLastLogin: map['date_last_login'] != null ? DateTime.parse(map['date_last_login']) : null,
+      dateOfBirth: map['date_of_birth'] != null && map['date_of_birth'] != 'null' ? DateUtils.dateOnly(DateTime.parse(map['date_of_birth'])) : null,
+      dateCreated: map['date_created'] != null && map['date_created'] != 'null' ? DateTime.parse(map['date_created']) : null,
+      dateLastLogin: map['date_last_login'] != null && map['date_last_login'] != 'null' ? DateTime.parse(map['date_last_login']) : null,
+      dateLastLogout: map['date_last_logout'] != null && map['date_last_logout'] != 'null' ? DateTime.parse(map['date_last_logout']) : null,
       idUserRole: map['id_user_role'],
       idUserReference: map['id_user_reference'],
     );

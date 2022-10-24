@@ -57,4 +57,16 @@ class UserService {
       userToken: userToken,
     );
   }
+
+  Future<bool> updateUser({
+    required Map<String, dynamic> user,
+    required String userType,
+    required userToken,
+  }) async {
+    return _userRepository.updateUser(
+      user: user,
+      userType: userType,
+      userToken: userToken,
+    );
+  }
 }

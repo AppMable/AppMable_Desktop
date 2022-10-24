@@ -71,6 +71,7 @@ class HttpUserRepository implements UserRepository {
             : null,
         dateCreated: userDecoded['date_created'] != null ? DateTime.parse(userDecoded['date_created']) : null,
         dateLastLogin: userDecoded['date_last_login'] != null ? DateTime.parse(userDecoded['date_last_login']) : null,
+        dateLastLogout: userDecoded['date_last_logout'] != null ? DateTime.parse(userDecoded['date_last_logout']) : null,
         healthCardIdentifier: userDecoded['health_card_identifier'],
         idUserRole: userDecoded['id_user_role'],
         idUserReference: userDecoded['id_user_reference'],
@@ -110,6 +111,28 @@ class HttpUserRepository implements UserRepository {
         body: jsonEncode(user),
       );
       return response.statusCode == 201;
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<bool> updateUser({
+    required Map<String, dynamic> user,
+    required String userType,
+    required String userToken,
+  }) async {
+    final String urlUpdateUser = urlCrud.replaceAll('<userId>', user['id'].toString()).replaceAll('<userType>', userType).replaceAll('<userToken>', userToken);
+
+    try {
+      final Response response = await _httpService.put(
+        Uri.parse(urlUpdateUser),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(user),
+      );
+      return response.statusCode == 200;
     } catch (_) {
       rethrow;
     }

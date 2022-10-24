@@ -6,6 +6,7 @@ typedef StringCallback = void Function(String val);
 class TextInput extends StatefulWidget {
   final String label;
   final String? placeholder;
+  final String? value;
   final StringCallback callback;
   final bool isLabelCaption;
   final int? maxLimitCharacters;
@@ -13,6 +14,7 @@ class TextInput extends StatefulWidget {
   const TextInput({
     required this.label,
     required this.callback,
+    this.value,
     this.placeholder,
     this.isLabelCaption = false,
     this.maxLimitCharacters,
@@ -31,6 +33,7 @@ class _TextInputState extends State<TextInput> {
   @override
   void initState() {
     super.initState();
+    _textController.text = widget.value ?? '';
     _focus.addListener(_onFocusChange);
   }
 

@@ -11,38 +11,39 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
 
-part 'create_user_screen_event.dart';
-part 'create_user_screen_state.dart';
+part 'update_user_screen_event.dart';
+part 'update_user_screen_state.dart';
 
 @lazySingleton
-class CreateUserScreenBloc extends Bloc<CreateUserScreenEvent, CreateUserScreenState> {
+class UpdateUserScreenBloc extends Bloc<UpdateUserScreenEvent, UpdateUserScreenState> {
   final UsersScreenBloc _usersScreenBloc;
   final UserService _userService;
   final LocalStorageService _localStorageService;
 
-  CreateUserScreenBloc(
-      this._usersScreenBloc,
+  UpdateUserScreenBloc(
+    this._usersScreenBloc,
     this._userService,
     this._localStorageService,
-  ) : super(const CreateUserScreenInitial()) {
-    on<CreateUserEvent>(_handleCreateUser);
+  ) : super(const UpdateUserScreenInitial()) {
+    on<UpdateUserEvent>(_handleUpdateUser);
   }
 
-  Future<void> _handleCreateUser(
-    CreateUserEvent event,
-    Emitter<CreateUserScreenState> emit,
+  Future<void> _handleUpdateUser(
+    UpdateUserEvent event,
+    Emitter<UpdateUserScreenState> emit,
   ) async {
     final UserLoginInformation userLoginInformation =
         UserLoginInformation.fromMap(jsonDecode(_localStorageService.read(LoginScreen.userLoginInformation)));
 
-    event.user['id_user_reference'] = 1;
+    if (event.user['date_of_birth'] != null) {
+      DateTime dateOfBirth = DateFormat("dd-MM-yyyy").parse(event.user['date_of_birth']);
+      event.user['date_of_birth'] = DateFormat('yyyy-MM-dd').format(dateOfBirth);
+    }
 
-    DateTime dateOfBirth = DateFormat("dd-MM-yyyy").parse(event.user['date_of_birth']);
-
-    event.user['date_of_birth'] = DateFormat('yyyy-MM-dd').format(dateOfBirth);
+    event.user.remove('id_user_role');
 
     try {
-      if (await _userService.createUser(
+      if (await _userService.updateUser(
         user: event.user,
         userType: 'user',
         userToken: userLoginInformation.userToken,
@@ -50,12 +51,12 @@ class CreateUserScreenBloc extends Bloc<CreateUserScreenEvent, CreateUserScreenS
         _usersScreenBloc.add(const UsersScreenEventLoad());
         event.onSuccess();
       } else {
-        event.onError('No se ha podido crear el usuario');
+        event.onError('No se ha modificar el usuario');
       }
     } catch (_) {
-      event.onError('No se ha podido crear el usuario');
+      event.onError('No se ha podido modificar el usuario');
     }
 
-    emit(const UserCreated());
+    emit(const UserUpdated());
   }
 }

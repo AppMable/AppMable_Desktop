@@ -13,6 +13,8 @@ import 'application/bloc/dashboard_screen/dashboard_screen_bloc.dart' as _i21;
 import 'application/bloc/login_screen/login_screen_bloc.dart' as _i22;
 import 'application/bloc/users/create_user_screen/create_user_screen_bloc.dart'
     as _i20;
+import 'application/bloc/users/update_user_screen/update_user_screen_bloc.dart'
+    as _i23;
 import 'application/bloc/users/users_screen/users_screen_bloc.dart' as _i19;
 import 'domain/repositories/user_login_repository.dart' as _i13;
 import 'domain/repositories/user_repository.dart' as _i16;
@@ -31,7 +33,7 @@ import 'infrastructure/repositories/userLogin/http_user_login_repository.dart'
 import 'infrastructure/services/flutter_connectivity_checker_service.dart'
     as _i5;
 import 'infrastructure/services/http_service.dart' as _i7;
-import 'injection.dart' as _i23; // ignore_for_file: unnecessary_lambdas
+import 'injection.dart' as _i24; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -73,6 +75,7 @@ _i1.GetIt $initGetIt(
         get<_i8.LocalStorageService>(),
       ));
   gh.lazySingleton<_i20.CreateUserScreenBloc>(() => _i20.CreateUserScreenBloc(
+        get<_i19.UsersScreenBloc>(),
         get<_i18.UserService>(),
         get<_i8.LocalStorageService>(),
       ));
@@ -84,7 +87,12 @@ _i1.GetIt $initGetIt(
         get<_i15.UserLoginService>(),
         get<_i8.LocalStorageService>(),
       ));
+  gh.lazySingleton<_i23.UpdateUserScreenBloc>(() => _i23.UpdateUserScreenBloc(
+        get<_i19.UsersScreenBloc>(),
+        get<_i18.UserService>(),
+        get<_i8.LocalStorageService>(),
+      ));
   return get;
 }
 
-class _$RegisterModule extends _i23.RegisterModule {}
+class _$RegisterModule extends _i24.RegisterModule {}

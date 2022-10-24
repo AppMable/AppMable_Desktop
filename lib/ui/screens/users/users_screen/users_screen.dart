@@ -6,6 +6,7 @@ import 'package:appmable_desktop/ui/common/app_layout/styles.dart';
 import 'package:appmable_desktop/ui/common/app_layout/widgets/category_box.dart';
 import 'package:appmable_desktop/ui/screens/dashboard_screen/dashboard_screen.dart';
 import 'package:appmable_desktop/ui/screens/users/create_user_screen/create_user_screen.dart';
+import 'package:appmable_desktop/ui/screens/users/update_user_screen/update_user_screen.dart';
 import 'package:appmable_desktop/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -57,6 +58,7 @@ class UsersScreen extends StatelessWidget {
                                       child: SingleChildScrollView(
                                         scrollDirection: Axis.vertical,
                                         child: DataTable(
+                                          showCheckboxColumn: false,
                                           columnSpacing: 0,
                                           columns: const [
                                             DataColumn(
@@ -100,6 +102,14 @@ class UsersScreen extends StatelessWidget {
                                           rows: state.users
                                               .map(
                                                 ((User user) => DataRow(
+                                                      onSelectChanged: (_) {
+                                                        Navigator.of(context).pushNamed(
+                                                          UpdateUserScreen.routeName,
+                                                          arguments: UpdateScreenParams(
+                                                            user: user,
+                                                          ),
+                                                        );
+                                                      },
                                                       cells: <DataCell>[
                                                         DataCell(Row(
                                                           children: [
