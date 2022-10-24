@@ -82,10 +82,13 @@ class User extends Equatable {
         map['name'] is! String ||
         map['surname'] is! String ||
         map['email'] is! String ||
-        map['date_of_birth'] is! String ||
-        map['date_created'] is! String ||
-        map['date_last_login'] is! String ||
-        map['phone_number'] is! String) throw MalformedButtonMapException(map);
+        (map['health_card_identifier'] is! String?) ||
+        (map['id_user_role'] is! int?) ||
+        (map['id_user_reference'] is! int?) ||
+        (map['date_of_birth'] is! String) ||
+        (map['date_created'] is! String) ||
+        (map['date_last_login'] is! String?) ||
+        (map['phone_number'] is! String)) throw MalformedButtonMapException(map);
 
     return User(
       id: map['id'],

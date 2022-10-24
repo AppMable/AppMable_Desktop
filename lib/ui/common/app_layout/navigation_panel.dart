@@ -1,6 +1,8 @@
 import 'package:appmable_desktop/ui/common/app_layout/responsive.dart';
 import 'package:appmable_desktop/ui/common/app_layout/widgets/navigation_button.dart';
 import 'package:appmable_desktop/ui/screens/dashboard_screen/dashboard_screen.dart';
+import 'package:appmable_desktop/ui/screens/users/create_user_screen/create_user_screen.dart';
+import 'package:appmable_desktop/ui/screens/users/update_user_screen/update_user_screen.dart';
 import 'package:appmable_desktop/ui/screens/users/users_screen/users_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +41,9 @@ class _NavigationPanelState extends State<NavigationPanel> {
                   NavigationButton(
                     onPressed: () => Navigator.of(context).pushReplacementNamed(UsersScreen.routeName),
                     icon: Icons.supervised_user_circle_outlined,
-                    isActive: ModalRoute.of(context)!.settings.name == UsersScreen.routeName,
+                    isActive: ModalRoute.of(context)!.settings.name == UsersScreen.routeName ||
+                        ModalRoute.of(context)!.settings.name == CreateUserScreen.routeName ||
+                        ModalRoute.of(context)!.settings.name == UpdateUserScreen.routeName,
                   ),
                   NavigationButton(
                     onPressed: () {},

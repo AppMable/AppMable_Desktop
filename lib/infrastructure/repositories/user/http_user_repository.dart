@@ -34,7 +34,7 @@ class HttpUserRepository implements UserRepository {
       List<dynamic> usersDecoded = jsonDecode(utf8.decode(response.bodyBytes));
 
       for (Map<String, dynamic> user in usersDecoded) {
-        if(user['id_user_reference'] == currentUserId) users.add(User.fromMap(user));
+        if (user['id_user_reference'] == currentUserId) users.add(User.fromMap(user));
       }
 
       return users;
@@ -85,13 +85,33 @@ class HttpUserRepository implements UserRepository {
     required String userType,
     required String userToken,
   }) async {
-    final String urlDelete = urlCrud
-        .replaceAll('<userId>', userId)
-        .replaceAll('<userType>', userType)
-        .replaceAll('<userToken>', userToken);
+    final String urlDelete =
+        urlCrud.replaceAll('<userId>', userId).replaceAll('<userType>', userType).replaceAll('<userToken>', userToken);
 
     final Response response = await _httpService.delete(Uri.parse(urlDelete));
 
     return response.statusCode == 200;
+  }
+
+  @override
+  Future<bool> createUser({
+    required Map<String, dynamic> user,
+    required String userType,
+    required String userToken,
+  }) async {
+    final String urlCreateUser = urlGetAllUsers.replaceAll('<userToken>', userToken).replaceAll('<userType>', userType);
+
+    try {
+      final Response response = await _httpService.post(
+        Uri.parse(urlCreateUser),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(user),
+      );
+      return response.statusCode == 201;
+    } catch (_) {
+      rethrow;
+    }
   }
 }

@@ -18,6 +18,7 @@ dependencies:
   get_it: 7.2.0
   get_storage:
   injectable: 1.5.3
+  intl: ^0.17.0
   http: ^0.13.5
 
 dev_dependencies:
