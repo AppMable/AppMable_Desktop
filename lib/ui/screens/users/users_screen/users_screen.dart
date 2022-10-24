@@ -1,17 +1,18 @@
-import 'package:appmable_desktop/application/bloc/users_screen/users_screen_bloc.dart';
+import 'package:appmable_desktop/application/bloc/users/users_screen/users_screen_bloc.dart';
 import 'package:appmable_desktop/domain/model/objects/user.dart';
 import 'package:appmable_desktop/ui/common/app_layout/app_layout.dart';
 import 'package:appmable_desktop/ui/common/app_layout/responsive.dart';
 import 'package:appmable_desktop/ui/common/app_layout/styles.dart';
 import 'package:appmable_desktop/ui/common/app_layout/widgets/category_box.dart';
 import 'package:appmable_desktop/ui/screens/dashboard_screen/dashboard_screen.dart';
+import 'package:appmable_desktop/ui/screens/users/create_user_screen/create_user_screen.dart';
 import 'package:appmable_desktop/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 class UsersScreen extends StatelessWidget {
-  static const String routeName = '/userScreens';
+  static const String routeName = '/users-screen';
 
   UsersScreen({Key? key}) : super(key: key);
 
@@ -41,9 +42,7 @@ class UsersScreen extends StatelessWidget {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          onPressed: () {
-                            print('Add tutelado');
-                          },
+                          onPressed: () => Navigator.of(context).pushNamed(CreateUserScreen.routeName),
                         ),
                         children: [
                           const SizedBox(height: 25),

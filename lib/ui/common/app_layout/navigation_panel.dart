@@ -1,7 +1,7 @@
 import 'package:appmable_desktop/ui/common/app_layout/responsive.dart';
 import 'package:appmable_desktop/ui/common/app_layout/widgets/navigation_button.dart';
 import 'package:appmable_desktop/ui/screens/dashboard_screen/dashboard_screen.dart';
-import 'package:appmable_desktop/ui/screens/users_screen/users_screen.dart';
+import 'package:appmable_desktop/ui/screens/users/users_screen/users_screen.dart';
 import 'package:flutter/material.dart';
 
 class NavigationPanel extends StatefulWidget {

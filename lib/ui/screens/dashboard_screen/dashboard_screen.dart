@@ -7,7 +7,7 @@ import 'package:appmable_desktop/ui/common/app_layout/styles.dart';
 import 'package:appmable_desktop/ui/common/app_layout/widgets/category_box.dart';
 import 'package:appmable_desktop/ui/common/mixin/user_mixin.dart';
 import 'package:appmable_desktop/ui/screens/login_screen/login_screen.dart';
-import 'package:appmable_desktop/ui/screens/users_screen/users_screen.dart';
+import 'package:appmable_desktop/ui/screens/users/users_screen/users_screen.dart';
 import 'package:appmable_desktop/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

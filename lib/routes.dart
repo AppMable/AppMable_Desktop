@@ -3,7 +3,8 @@ import 'package:appmable_desktop/ui/screens/dashboard_screen/dashboard_screen.da
 import 'package:appmable_desktop/ui/screens/login_screen/login_screen.dart';
 import 'package:appmable_desktop/ui/screens/splash_screen/splash_screen.dart';
 import 'package:appmable_desktop/ui/screens/splash_screen/widgets/splash_holder.dart';
-import 'package:appmable_desktop/ui/screens/users_screen/users_screen.dart';
+import 'package:appmable_desktop/ui/screens/users/create_user_screen/create_user_screen.dart';
+import 'package:appmable_desktop/ui/screens/users/users_screen/users_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -18,6 +19,7 @@ Map<String, WidgetBuilder> _routeGenerator() {
     LoginScreen.routeName: (_) => LoginScreen(),
     DashboardScreen.routeName: (_) => const DashboardScreen(),
     UsersScreen.routeName: (_) => UsersScreen(),
+    CreateUserScreen.routeName: (_) => CreateUserScreen(),
   };
 
   return routes;

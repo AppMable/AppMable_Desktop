@@ -11,7 +11,7 @@ import 'package:injectable/injectable.dart' as _i2;
 
 import 'application/bloc/dashboard_screen/dashboard_screen_bloc.dart' as _i20;
 import 'application/bloc/login_screen/login_screen_bloc.dart' as _i21;
-import 'application/bloc/users_screen/users_screen_bloc.dart' as _i19;
+import 'application/bloc/users/users_screen/users_screen_bloc.dart' as _i19;
 import 'domain/repositories/user_login_repository.dart' as _i13;
 import 'domain/repositories/user_repository.dart' as _i16;
 import 'domain/services/connectivity_checker_service.dart' as _i4;

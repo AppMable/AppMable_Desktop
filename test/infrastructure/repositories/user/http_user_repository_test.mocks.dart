@@ -59,4 +59,64 @@ class MockHttpService extends _i1.Mock implements _i3.HttpService {
           ),
         )),
       ) as _i4.Future<_i2.Response>);
+  @override
+  _i4.Future<_i2.Response> post(
+    Uri? url, {
+    Map<String, String>? headers,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #post,
+          [url],
+          {#headers: headers},
+        ),
+        returnValue: _i4.Future<_i2.Response>.value(_FakeResponse_0(
+          this,
+          Invocation.method(
+            #post,
+            [url],
+            {#headers: headers},
+          ),
+        )),
+      ) as _i4.Future<_i2.Response>);
+  @override
+  _i4.Future<_i2.Response> put(
+    Uri? url, {
+    Map<String, String>? headers,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #put,
+          [url],
+          {#headers: headers},
+        ),
+        returnValue: _i4.Future<_i2.Response>.value(_FakeResponse_0(
+          this,
+          Invocation.method(
+            #put,
+            [url],
+            {#headers: headers},
+          ),
+        )),
+      ) as _i4.Future<_i2.Response>);
+  @override
+  _i4.Future<_i2.Response> delete(
+    Uri? url, {
+    Map<String, String>? headers,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #delete,
+          [url],
+          {#headers: headers},
+        ),
+        returnValue: _i4.Future<_i2.Response>.value(_FakeResponse_0(
+          this,
+          Invocation.method(
+            #delete,
+            [url],
+            {#headers: headers},
+          ),
+        )),
+      ) as _i4.Future<_i2.Response>);
 }
