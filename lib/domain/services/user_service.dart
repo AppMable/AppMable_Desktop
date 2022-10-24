@@ -15,4 +15,16 @@ class UserService {
   }) async {
     return _userRepository.readAllUsers(userToken: userToken);
   }
+
+  Future<User?> getUser({
+    required String userId,
+    required String userType,
+    required userToken,
+  }) async {
+    return _userRepository.getUser(
+      userId: userId,
+      userType: userType,
+      userToken: userToken,
+    );
+  }
 }

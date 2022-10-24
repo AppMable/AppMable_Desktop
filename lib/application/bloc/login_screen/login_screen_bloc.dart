@@ -39,7 +39,7 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
 
       if (userLoginInformation != null) {
         emit(const UserLogged());
-        _localStorageService.write(LoginScreen.userInformation, userLoginInformation.toJson());
+        _localStorageService.write(LoginScreen.userLoginInformation, userLoginInformation.toJson());
         event.onLogInSuccess();
       } else {
         event.onLogInError('Algo inesperado ocurrió, vuelve a intentar');
@@ -56,12 +56,12 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
     Emitter<LoginScreenState> emit,
   ) async {
     final UserLoginInformation userLoginInformation =
-        UserLoginInformation.fromMap(jsonDecode(_localStorageService.read(LoginScreen.userInformation)));
+        UserLoginInformation.fromMap(jsonDecode(_localStorageService.read(LoginScreen.userLoginInformation)));
 
     try {
       if (await _userLoginService.logOut(userToken: userLoginInformation.userToken)) {
         emit(const UserLoggedOut());
-        _localStorageService.remove(LoginScreen.userInformation);
+        _localStorageService.remove(LoginScreen.userLoginInformation);
         event.onLogOutSuccess();
       } else {
         event.onLogOutError('Algo inesperado ocurrió, vuelve a intentar');

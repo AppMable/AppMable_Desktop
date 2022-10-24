@@ -1,10 +1,11 @@
 import 'package:appmable_desktop/application/bloc/dashboard_screen/dashboard_screen_bloc.dart';
 import 'package:appmable_desktop/application/bloc/login_screen/login_screen_bloc.dart';
-import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
+import 'package:appmable_desktop/domain/model/objects/user.dart';
 import 'package:appmable_desktop/ui/common/app_layout/app_layout.dart';
 import 'package:appmable_desktop/ui/common/app_layout/responsive.dart';
 import 'package:appmable_desktop/ui/common/app_layout/styles.dart';
 import 'package:appmable_desktop/ui/common/app_layout/widgets/category_box.dart';
+import 'package:appmable_desktop/ui/common/mixin/user_mixin.dart';
 import 'package:appmable_desktop/ui/screens/login_screen/login_screen.dart';
 import 'package:appmable_desktop/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ part 'widgets/user_info.dart';
 
 class DashboardScreen extends StatefulWidget {
   static const String routeName = '/dashboard';
+  static const userInformation = 'userInformation';
 
   const DashboardScreen({Key? key}) : super(key: key);
 

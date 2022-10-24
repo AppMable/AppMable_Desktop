@@ -15,6 +15,8 @@ class UserLoginInformation extends Equatable {
     required this.userToken,
   });
 
+  String get userType => userRole == 'Administrador' ? 'admin' : 'user';
+
   Map<String, dynamic> toMap() => {
     'userRole': userRole,
     'userName': userName,

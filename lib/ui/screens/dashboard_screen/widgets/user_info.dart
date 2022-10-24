@@ -9,7 +9,7 @@ class UserInfo extends StatefulWidget {
   State<UserInfo> createState() => _UserInfoState();
 }
 
-class _UserInfoState extends State<UserInfo> {
+class _UserInfoState extends State<UserInfo> with UserMixin {
   bool showIncorrectLogOutError = false;
   String logOutErrorMessage = '';
 
@@ -27,7 +27,7 @@ class _UserInfoState extends State<UserInfo> {
             title: "Información del usuario",
             children: [
               Expanded(
-                child: _userInfo(userLoginInformation: state.userLoginInformation),
+                child: _userInfo(),
               ),
             ],
           );
@@ -45,9 +45,10 @@ class _UserInfoState extends State<UserInfo> {
     );
   }
 
-  Widget _userInfo({
-    required UserLoginInformation userLoginInformation,
-  }) {
+  Widget _userInfo() {
+
+    final User user = getUser();
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
@@ -61,31 +62,31 @@ class _UserInfoState extends State<UserInfo> {
             children: [
               const Text('Nombre usuario:', style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(width: 10),
-              Text(userLoginInformation.userName),
+              Text(user.username),
             ],
           ),
           const SizedBox(height: 20),
           Row(
-            children: const [
-              Text('Nombre usuario:', style: TextStyle(fontWeight: FontWeight.bold)),
-              SizedBox(width: 10),
-              Text('Amaresma'),
+            children: [
+              const Text('Nombre y Apellidos:', style: TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(width: 10),
+              Text('${user.name} ${user.surname}'),
             ],
           ),
           const SizedBox(height: 20),
           Row(
-            children: const [
-              Text('Nombre usuario:', style: TextStyle(fontWeight: FontWeight.bold)),
-              SizedBox(width: 10),
-              Text('Amaresma'),
+            children: [
+              const Text('Email:', style: TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(width: 10),
+              Text(user.email),
             ],
           ),
           const SizedBox(height: 20),
           Row(
-            children: const [
-              Text('Nombre usuario:', style: TextStyle(fontWeight: FontWeight.bold)),
-              SizedBox(width: 10),
-              Text('Amaresma'),
+            children: [
+              const Text('Teléfono de contacto:', style: TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(width: 10),
+              Text(user.phoneNumber),
             ],
           ),
           const SizedBox(height: 50),

@@ -70,8 +70,10 @@ _i1.GetIt $initGetIt(
         get<_i18.UserService>(),
         get<_i8.LocalStorageService>(),
       ));
-  gh.lazySingleton<_i20.DashboardScreenBloc>(
-      () => _i20.DashboardScreenBloc(get<_i8.LocalStorageService>()));
+  gh.lazySingleton<_i20.DashboardScreenBloc>(() => _i20.DashboardScreenBloc(
+        get<_i8.LocalStorageService>(),
+        get<_i18.UserService>(),
+      ));
   gh.lazySingleton<_i21.LoginScreenBloc>(() => _i21.LoginScreenBloc(
         get<_i15.UserLoginService>(),
         get<_i8.LocalStorageService>(),

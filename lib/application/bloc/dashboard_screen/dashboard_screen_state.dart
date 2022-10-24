@@ -17,12 +17,9 @@ class DashboardScreenLoading extends DashboardScreenInitial {
 }
 
 class DashboardScreenLoaded extends DashboardScreenState {
-  final UserLoginInformation userLoginInformation;
 
-  const DashboardScreenLoaded({
-    required this.userLoginInformation,
-  });
+  const DashboardScreenLoaded();
 
   @override
-  List<Object> get props => [userLoginInformation];
+  List<Object> get props => [];
 }

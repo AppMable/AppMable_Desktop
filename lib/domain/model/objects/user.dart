@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:appmable_desktop/domain/exceptions/malformed_map_exception.dart';
+import 'package:flutter/material.dart';
 
 class User extends Equatable {
   final int id;
@@ -11,9 +14,9 @@ class User extends Equatable {
   final String surname;
   final String email;
   final String phoneNumber;
-  final DateTime dateOfBirth;
-  final DateTime dateCreated;
-  final DateTime dateLastLogin;
+  final DateTime? dateOfBirth;
+  final DateTime? dateCreated;
+  final DateTime? dateLastLogin;
   final int? idUserRole;
   final int? idUserReference;
 
@@ -26,9 +29,9 @@ class User extends Equatable {
     required this.surname,
     required this.email,
     required this.phoneNumber,
-    required this.dateOfBirth,
-    required this.dateCreated,
-    required this.dateLastLogin,
+    this.dateOfBirth,
+    this.dateCreated,
+    this.dateLastLogin,
     this.healthCardIdentifier,
     this.idUserRole,
     this.idUserReference,
@@ -52,21 +55,23 @@ class User extends Equatable {
         idUserReference,
       ];
 
+  String toJson() => jsonEncode(toMap());
+
   Map<String, dynamic> toMap() => {
         'id': id,
-        'identityNumber': identityNumber,
-        'healthCardIdentifier': healthCardIdentifier,
+        'identity_number': identityNumber,
+        'health_card_identifier': healthCardIdentifier,
         'username': username,
         'password': password,
         'name': name,
         'surname': surname,
         'email': email,
-        'phoneNumber': phoneNumber,
-        'dateOfBirth': dateOfBirth,
-        'dateCreated': dateCreated,
-        'dateLastLogin': dateLastLogin,
-        'idUserRole': idUserRole,
-        'idUserReference': idUserReference,
+        'phone_number': phoneNumber,
+        'date_of_birth': dateOfBirth.toString(),
+        'date_created': dateCreated.toString(),
+        'date_last_login': dateLastLogin.toString(),
+        'id_user_role': idUserRole,
+        'id_user_reference': idUserReference,
       };
 
   factory User.fromMap(Map<String, dynamic> map) {
@@ -77,6 +82,9 @@ class User extends Equatable {
         map['name'] is! String ||
         map['surname'] is! String ||
         map['email'] is! String ||
+        map['date_of_birth'] is! String ||
+        map['date_created'] is! String ||
+        map['date_last_login'] is! String ||
         map['phone_number'] is! String) throw MalformedButtonMapException(map);
 
     return User(
@@ -89,9 +97,9 @@ class User extends Equatable {
       surname: map['surname'],
       email: map['email'],
       phoneNumber: map['phone_number'],
-      dateOfBirth: DateTime.now(),
-      dateCreated: DateTime.now(),
-      dateLastLogin: DateTime.now(),
+      dateOfBirth: map['date_of_birth'] != null ? DateUtils.dateOnly(DateTime.parse(map['date_of_birth'])) : null,
+      dateCreated: map['date_created'] != null ? DateTime.parse(map['date_created']) : null,
+      dateLastLogin: map['date_last_login'] != null ? DateTime.parse(map['date_last_login']) : null,
       idUserRole: map['id_user_role'],
       idUserReference: map['id_user_reference'],
     );

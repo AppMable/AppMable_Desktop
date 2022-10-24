@@ -33,7 +33,7 @@ class UsersScreenBloc extends Bloc<UsersScreenEvent, UsersScreenState> {
     emit(const UsersScreenLoading());
 
     final UserLoginInformation userLoginInformation =
-        UserLoginInformation.fromMap(jsonDecode(_localStorageService.read(LoginScreen.userInformation)));
+        UserLoginInformation.fromMap(jsonDecode(_localStorageService.read(LoginScreen.userLoginInformation)));
 
     List<User> users = await _userService.readAllUsers(userToken: userLoginInformation.userToken);
 

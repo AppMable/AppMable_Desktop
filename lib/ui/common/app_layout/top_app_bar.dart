@@ -1,12 +1,17 @@
+import 'package:appmable_desktop/domain/model/objects/user.dart';
 import 'package:appmable_desktop/ui/common/app_layout/responsive.dart';
+import 'package:appmable_desktop/ui/common/mixin/user_mixin.dart';
 import 'package:appmable_desktop/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
-class TopAppBar extends StatelessWidget {
-  const TopAppBar({Key? key}) : super(key: key);
+class TopAppBar extends StatelessWidget with UserMixin {
+  TopAppBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+    final User user = getUser();
+
     return Padding(
       padding: const EdgeInsets.all(18.0),
       child: Row(
@@ -27,7 +32,7 @@ class TopAppBar extends StatelessWidget {
           Expanded(
             child: _nameAndProfilePicture(
               context,
-              "Albert Maresma",
+              '${user.name} ${user.surname}',
             ),
           ),
         ],

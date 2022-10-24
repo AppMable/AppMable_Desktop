@@ -16,4 +16,42 @@ class FlutterHttpService implements HttpService {
       headers: response.headers,
     );
   }
+
+  @override
+  Future<Response> delete(Uri url, {Map<String, String>? headers}) async {
+    final http.Response response = await http.delete(url, headers: headers);
+
+    return Response(
+      statusCode: response.statusCode,
+      body: response.body,
+      bodyBytes: response.bodyBytes,
+      headers: response.headers,
+    );
+  }
+
+  @override
+  Future<Response> post(Uri url, {Map<String, String>? headers}) async {
+    final http.Response response = await http.post(url, headers: headers);
+
+    return Response(
+      statusCode: response.statusCode,
+      body: response.body,
+      bodyBytes: response.bodyBytes,
+      headers: response.headers,
+    );
+  }
+
+  @override
+  Future<Response> put(Uri url, {Map<String, String>? headers}) async {
+    final http.Response response = await http.put(url, headers: headers);
+
+    return Response(
+      statusCode: response.statusCode,
+      body: response.body,
+      bodyBytes: response.bodyBytes,
+      headers: response.headers,
+    );
+  }
+
+
 }
