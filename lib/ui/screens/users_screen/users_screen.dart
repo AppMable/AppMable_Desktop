@@ -16,7 +16,6 @@ class UsersScreen extends StatelessWidget {
   UsersScreen({Key? key}) : super(key: key);
 
   final UsersScreenBloc _usersScreenBloc = GetIt.instance.get<UsersScreenBloc>();
-  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +49,9 @@ class UsersScreen extends StatelessWidget {
                           const SizedBox(height: 25),
                           (state.users.isEmpty)
                               ? const Padding(
-                                padding: EdgeInsets.all(25.0),
-                                child: Text('No se han encontrado usuarios'),
-                              )
+                                  padding: EdgeInsets.all(25.0),
+                                  child: Text('No se han encontrado usuarios'),
+                                )
                               : Row(
                                   children: [
                                     Expanded(
@@ -139,7 +138,36 @@ class UsersScreen extends StatelessWidget {
                                                         DataCell(Center(
                                                           child: IconButton(
                                                             onPressed: () {
-                                                              print('Tengo que eliminar el usuario: ${user.id}');
+                                                              _usersScreenBloc.add(
+                                                                UsersScreenDeleteEvent(
+                                                                  userId: user.id.toString(),
+                                                                  onError: (String errorMsg) {
+                                                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                                      backgroundColor: AppTheme.error600,
+                                                                      content: Text(
+                                                                        errorMsg,
+                                                                        style: const TextStyle(
+                                                                          fontWeight: FontWeight.bold,
+                                                                          color: Colors.white,
+                                                                        ),
+                                                                      ),
+                                                                    ));
+                                                                  },
+                                                                  onSuccess: () {
+                                                                    ScaffoldMessenger.of(context)
+                                                                        .showSnackBar(const SnackBar(
+                                                                      backgroundColor: Color(0xff5cb85c),
+                                                                      content: Text(
+                                                                        'Se ha eliminado correctamente',
+                                                                        style: TextStyle(
+                                                                          fontWeight: FontWeight.bold,
+                                                                          color: Colors.white,
+                                                                        ),
+                                                                      ),
+                                                                    ));
+                                                                  },
+                                                                ),
+                                                              );
                                                             },
                                                             icon: const Icon(Icons.remove_circle_rounded),
                                                             color: Colors.red,

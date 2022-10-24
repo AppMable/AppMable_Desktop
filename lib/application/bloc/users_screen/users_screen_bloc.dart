@@ -57,7 +57,7 @@ class UsersScreenBloc extends Bloc<UsersScreenEvent, UsersScreenState> {
     try {
       if (await _userService.deleteUser(
         userId: event.userId,
-        userType: event.userType,
+        userType: 'user',
         userToken: userLoginInformation.userToken,
       )) {
         event.onSuccess();

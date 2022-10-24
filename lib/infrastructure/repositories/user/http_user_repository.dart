@@ -86,7 +86,7 @@ class HttpUserRepository implements UserRepository {
     required String userToken,
   }) async {
     final String urlDelete = urlCrud
-        .replaceAll('<userId>', userToken)
+        .replaceAll('<userId>', userId)
         .replaceAll('<userType>', userType)
         .replaceAll('<userToken>', userToken);
 
