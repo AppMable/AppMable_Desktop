@@ -11,9 +11,15 @@ class UserService {
   );
 
   Future<List<User>> readAllUsers({
+    required currentUserId,
     required userToken,
+    required String userType,
   }) async {
-    return _userRepository.readAllUsers(userToken: userToken);
+    return _userRepository.readAllUsers(
+      currentUserId: currentUserId,
+      userToken: userToken,
+      userType: userType,
+    );
   }
 
   Future<User?> getUser({
@@ -22,6 +28,18 @@ class UserService {
     required userToken,
   }) async {
     return _userRepository.getUser(
+      userId: userId,
+      userType: userType,
+      userToken: userToken,
+    );
+  }
+
+  Future<bool> deleteUser({
+    required String userId,
+    required String userType,
+    required userToken,
+  }) async {
+    return _userRepository.deleteUser(
       userId: userId,
       userType: userType,
       userToken: userToken,

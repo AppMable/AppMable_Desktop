@@ -5,11 +5,15 @@ import 'package:appmable_desktop/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class TopAppBar extends StatelessWidget with UserMixin {
-  TopAppBar({Key? key}) : super(key: key);
+  final String title;
+
+  TopAppBar({
+    required this.title,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     final User user = getUser();
 
     return Padding(
@@ -18,11 +22,11 @@ class TopAppBar extends StatelessWidget with UserMixin {
         children: [
           Visibility(
             visible: Responsive.isDesktop(context),
-            child: const Padding(
-              padding: EdgeInsets.only(right: 30.0),
+            child: Padding(
+              padding: const EdgeInsets.only(right: 30.0),
               child: Text(
-                "Dashboard",
-                style: TextStyle(
+                title,
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 26,
                 ),
@@ -40,8 +44,7 @@ class TopAppBar extends StatelessWidget with UserMixin {
     );
   }
 
-  Widget _nameAndProfilePicture(
-      BuildContext context, String username) {
+  Widget _nameAndProfilePicture(BuildContext context, String username) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -55,13 +58,13 @@ class TopAppBar extends StatelessWidget with UserMixin {
         const SizedBox(width: 6),
         Visibility(
           visible: !Responsive.isMobile(context),
-          child: const Padding(
-            padding: EdgeInsets.only(left: 8.0),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 8.0),
             child: CircleAvatar(
               backgroundColor: AppTheme.primary400,
               child: Text(
-                'A',
-                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                username[0].toUpperCase(),
+                style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
               ),
             ),
           ),

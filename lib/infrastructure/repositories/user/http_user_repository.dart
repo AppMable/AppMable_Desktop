@@ -15,24 +15,26 @@ class HttpUserRepository implements UserRepository {
     this._httpService,
   );
 
-  static const String urlGetAllUsers = 'http://127.0.0.1:8000/users/?c=<userToken>';
+  static const String urlGetAllUsers = 'http://127.0.0.1:8000/users/?c=<userToken>&t=<userType>';
   static const String urlCrud = 'http://127.0.0.1:8000/users/d/?id=<userId>&t=<userType>&c=<userToken>';
 
   @override
   Future<List<User>> readAllUsers({
+    required int currentUserId,
     required String userToken,
+    required String userType,
   }) async {
-    final String urlAllUsers = urlGetAllUsers.replaceAll('<userToken>', userToken);
+    final String urlAllUsers = urlGetAllUsers.replaceAll('<userToken>', userToken).replaceAll('<userType>', userType);
 
     final Response response = await _httpService.get(Uri.parse(urlAllUsers));
 
     if (response.statusCode == 200) {
       List<User> users = [];
 
-      List<dynamic> usersDecoded = jsonDecode(response.body);
+      List<dynamic> usersDecoded = jsonDecode(utf8.decode(response.bodyBytes));
 
       for (Map<String, dynamic> user in usersDecoded) {
-        users.add(User.fromMap(user));
+        if(user['id_user_reference'] == currentUserId) users.add(User.fromMap(user));
       }
 
       return users;
@@ -47,10 +49,8 @@ class HttpUserRepository implements UserRepository {
     required String userType,
     required String userToken,
   }) async {
-    final String url = urlCrud
-        .replaceAll('<userId>', userId)
-        .replaceAll('<userType>', userType)
-        .replaceAll('<userToken>', userToken);
+    final String url =
+        urlCrud.replaceAll('<userId>', userId).replaceAll('<userType>', userType).replaceAll('<userToken>', userToken);
 
     final Response response = await _httpService.get(Uri.parse(url));
 
@@ -66,7 +66,9 @@ class HttpUserRepository implements UserRepository {
         surname: userDecoded['surname'],
         email: userDecoded['email'],
         phoneNumber: userDecoded['phone_number'],
-        dateOfBirth: userDecoded['date_of_birth'] != null ? DateUtils.dateOnly(DateTime.parse(userDecoded['date_of_birth'])) : null,
+        dateOfBirth: userDecoded['date_of_birth'] != null
+            ? DateUtils.dateOnly(DateTime.parse(userDecoded['date_of_birth']))
+            : null,
         dateCreated: userDecoded['date_created'] != null ? DateTime.parse(userDecoded['date_created']) : null,
         dateLastLogin: userDecoded['date_last_login'] != null ? DateTime.parse(userDecoded['date_last_login']) : null,
         healthCardIdentifier: userDecoded['health_card_identifier'],
@@ -77,6 +79,7 @@ class HttpUserRepository implements UserRepository {
     return null;
   }
 
+  @override
   Future<bool> deleteUser({
     required String userId,
     required String userType,

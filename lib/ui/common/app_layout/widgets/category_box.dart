@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 
 class CategoryBox extends StatelessWidget {
   final List<Widget> children;
-  final Widget suffix;
-  final String title;
+  final Widget? suffix;
+  final String? title;
 
   const CategoryBox({
     Key? key,
-    required this.suffix,
+    this.suffix,
+    this.title,
     required this.children,
-    required this.title,
   }) : super(key: key);
 
   @override
@@ -28,14 +28,15 @@ class CategoryBox extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                if (title != null)
+                  Text(
+                    title!,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
                   ),
-                ),
-                suffix
+                if (suffix != null) suffix!,
               ],
             ),
           ),

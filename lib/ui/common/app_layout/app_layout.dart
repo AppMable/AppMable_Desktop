@@ -4,9 +4,14 @@ import 'package:appmable_desktop/ui/common/app_layout/top_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 
 class AppLayout extends StatelessWidget {
+  final String title;
   final Widget content;
 
-  const AppLayout({Key? key, required this.content}) : super(key: key);
+  const AppLayout({
+    Key? key,
+    required this.title,
+    required this.content,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Responsive(
@@ -37,7 +42,7 @@ class AppLayout extends StatelessWidget {
                 children: [
                   SizedBox(
                     height: 100,
-                    child: TopAppBar(),
+                    child: TopAppBar(title: title),
                   ),
                   Expanded(child: content),
                 ],

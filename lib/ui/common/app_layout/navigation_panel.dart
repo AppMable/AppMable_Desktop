@@ -1,5 +1,7 @@
 import 'package:appmable_desktop/ui/common/app_layout/responsive.dart';
 import 'package:appmable_desktop/ui/common/app_layout/widgets/navigation_button.dart';
+import 'package:appmable_desktop/ui/screens/dashboard_screen/dashboard_screen.dart';
+import 'package:appmable_desktop/ui/screens/users_screen/users_screen.dart';
 import 'package:flutter/material.dart';
 
 class NavigationPanel extends StatefulWidget {
@@ -30,8 +32,14 @@ class _NavigationPanelState extends State<NavigationPanel> {
                 Image.asset("assets/images/splashBranding.png", height: 50),
                 Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
                   NavigationButton(
-                    onPressed: () {},
+                    onPressed: () => Navigator.of(context).pushReplacementNamed(DashboardScreen.routeName),
+                    icon: Icons.home,
+                    isActive: ModalRoute.of(context)!.settings.name == DashboardScreen.routeName,
+                  ),
+                  NavigationButton(
+                    onPressed: () => Navigator.of(context).pushReplacementNamed(UsersScreen.routeName),
                     icon: Icons.supervised_user_circle_outlined,
+                    isActive: ModalRoute.of(context)!.settings.name == UsersScreen.routeName,
                   ),
                   NavigationButton(
                     onPressed: () {},

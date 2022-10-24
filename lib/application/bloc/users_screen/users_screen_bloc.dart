@@ -23,6 +23,7 @@ class UsersScreenBloc extends Bloc<UsersScreenEvent, UsersScreenState> {
     this._localStorageService,
   ) : super(const UsersScreenInitial()) {
     on<UsersScreenEventLoad>(_handleLoad);
+    on<UsersScreenDeleteEvent>(_handleDeleteUser);
     add(const UsersScreenEventLoad());
   }
 
@@ -35,8 +36,37 @@ class UsersScreenBloc extends Bloc<UsersScreenEvent, UsersScreenState> {
     final UserLoginInformation userLoginInformation =
         UserLoginInformation.fromMap(jsonDecode(_localStorageService.read(LoginScreen.userLoginInformation)));
 
-    List<User> users = await _userService.readAllUsers(userToken: userLoginInformation.userToken);
+    List<User> users = await _userService.readAllUsers(
+      currentUserId: 2,
+      userType: 'user',
+      userToken: userLoginInformation.userToken,
+    );
 
     emit(UsersScreenLoaded(users: users));
+  }
+
+  Future<void> _handleDeleteUser(
+    UsersScreenDeleteEvent event,
+    Emitter<UsersScreenState> emit,
+  ) async {
+    emit(const UsersScreenLoading());
+
+    final UserLoginInformation userLoginInformation =
+        UserLoginInformation.fromMap(jsonDecode(_localStorageService.read(LoginScreen.userLoginInformation)));
+
+    try {
+      if (await _userService.deleteUser(
+        userId: event.userId,
+        userType: event.userType,
+        userToken: userLoginInformation.userToken,
+      )) {
+        event.onSuccess();
+        add(const UsersScreenEventLoad());
+      } else {
+        event.onError('No se ha podido eliminar');
+      }
+    } catch (_) {
+      event.onError('No se ha podido eliminar por algo raro');
+    }
   }
 }
