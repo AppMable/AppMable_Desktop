@@ -17,7 +17,7 @@ void main() {
         localStorageService,
       );
 
-      await localStorageService.write(LoginScreen.userInformation, null);
+      await localStorageService.write(LoginScreen.userLoginInformation, null);
 
       final String route = await startupRouterService.execute();
 
@@ -39,7 +39,7 @@ void main() {
     test('Startup Router Service - User logged --> Show Dashboard Screen', () async {
       final LocalStorageService localStorageService = LocalStorageServiceMock();
 
-      await localStorageService.write(LoginScreen.userInformation, userLoginInformationMockGenerator());
+      await localStorageService.write(LoginScreen.userLoginInformation, userLoginInformationMockGenerator());
 
       final StartUpRouterService startupRouterService = StartUpRouterService(
         localStorageService,

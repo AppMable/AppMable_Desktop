@@ -116,7 +116,7 @@ class _LoginState extends State<Login> {
                   TextButton(
                     style: ButtonStyle(
                       padding: MaterialStateProperty.all<EdgeInsets>(
-                          const EdgeInsets.symmetric(vertical: 15, horizontal: 40)),
+                          const EdgeInsets.symmetric(vertical: 20, horizontal: 40)),
                       overlayColor: MaterialStateProperty.all<Color>(AppTheme.primary900),
                       shape: MaterialStateProperty.all(
                         RoundedRectangleBorder(

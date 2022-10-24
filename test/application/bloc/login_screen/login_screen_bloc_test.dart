@@ -62,7 +62,7 @@ void main() {
       ],
       verify: (_) {
         assert(
-          localStorageService.read(LoginScreen.userInformation) is String,
+          localStorageService.read(LoginScreen.userLoginInformation) is String,
           'LoginScreen.userLogged value in local storage should be a String',
         );
         verifyInOrder([
@@ -95,7 +95,7 @@ void main() {
       expect: () => [],
       verify: (_) {
         assert(
-          localStorageService.read(LoginScreen.userInformation) == null,
+          localStorageService.read(LoginScreen.userLoginInformation) == null,
           'LoginScreen.userLogged value in local storage should be same than ${null}',
         );
         verifyInOrder([
@@ -128,7 +128,7 @@ void main() {
       expect: () => [],
       verify: (_) {
         assert(
-          localStorageService.read(LoginScreen.userInformation) == null,
+          localStorageService.read(LoginScreen.userLoginInformation) == null,
           'LoginScreen.userLogged value in local storage should be same than ${null}',
         );
         verifyInOrder([
@@ -142,7 +142,7 @@ void main() {
 
   group('Login Screen BLoC - SuccessLogout', () {
     final LocalStorageService localStorageService = LocalStorageServiceMock();
-    localStorageService.write(LoginScreen.userInformation, userLoginInformation.toJson());
+    localStorageService.write(LoginScreen.userLoginInformation, userLoginInformation.toJson());
 
     blocTest<LoginScreenBloc, LoginScreenState>(
       'Success Login',
@@ -162,7 +162,7 @@ void main() {
       ],
       verify: (_) {
         assert(
-          localStorageService.read(LoginScreen.userInformation) == null,
+          localStorageService.read(LoginScreen.userLoginInformation) == null,
           'LoginScreen.userLogged value in local storage should be null',
         );
         verifyInOrder([
@@ -174,7 +174,7 @@ void main() {
 
   group('Login Screen BLoC - LogoutException', () {
     final LocalStorageService localStorageService = LocalStorageServiceMock();
-    localStorageService.write(LoginScreen.userInformation, userLoginInformation.toJson());
+    localStorageService.write(LoginScreen.userLoginInformation, userLoginInformation.toJson());
 
     blocTest<LoginScreenBloc, LoginScreenState>(
       'LogOutException',
@@ -194,7 +194,7 @@ void main() {
       expect: () => [],
       verify: (_) {
         assert(
-          localStorageService.read(LoginScreen.userInformation) is String,
+          localStorageService.read(LoginScreen.userLoginInformation) is String,
           'LoginScreen.userLogged value in local storage should be a String',
         );
         verifyInOrder([
@@ -206,7 +206,7 @@ void main() {
 
   group('Login Screen BLoC - Random in LogOutEvent Exception', () {
     final LocalStorageService localStorageService = LocalStorageServiceMock();
-    localStorageService.write(LoginScreen.userInformation, userLoginInformation.toJson());
+    localStorageService.write(LoginScreen.userLoginInformation, userLoginInformation.toJson());
 
     blocTest<LoginScreenBloc, LoginScreenState>(
       'RandomException',
@@ -226,7 +226,7 @@ void main() {
       expect: () => [],
       verify: (_) {
         assert(
-        localStorageService.read(LoginScreen.userInformation) is String,
+        localStorageService.read(LoginScreen.userLoginInformation) is String,
         'LoginScreen.userLogged value in local storage should be a String',
         );
         verifyInOrder([
