@@ -18,6 +18,8 @@ class _LoginState extends State<Login> {
 
   bool showUsernameMessageError = false;
   bool showPasswordMessageError = false;
+  bool showIncorrectLoginError = false;
+  String loginErrorMessage = '';
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +34,7 @@ class _LoginState extends State<Login> {
               children: [
                 const Text(
                   'Iniciar Sesión',
-                  style: TextStyle(
-                      fontSize: 42,
-                      color: Colors.black,
-                      fontStyle: FontStyle.italic),
+                  style: TextStyle(fontSize: 42, color: Colors.black, fontStyle: FontStyle.italic),
                 ),
                 const SizedBox(height: 50),
                 CustomTextField(
@@ -50,6 +49,7 @@ class _LoginState extends State<Login> {
                   labelText: 'Contraseña',
                   showError: showPasswordMessageError,
                   errorMessage: 'El campo de contraseña debe estar rellenado',
+                  isPasswordField: true,
                 ),
                 const SizedBox(height: 50),
                 const BtnRestorePassword(),
@@ -58,11 +58,26 @@ class _LoginState extends State<Login> {
                   passwordController: _passwordController,
                   usernameController: _usernameController,
                   loginScreenBloc: widget.loginScreenBloc,
-                  onUserNameError: ()  => setState(() => showUsernameMessageError = true),
-                  onUserNameSuccess: ()  => setState(() => showUsernameMessageError = false),
-                  onPasswordError: ()  => setState(() => showPasswordMessageError = true),
-                  onPasswordSuccess: ()  => setState(() => showPasswordMessageError = false),
+                  onUserNameError: () => setState(() => showUsernameMessageError = true),
+                  onUserNameSuccess: () => setState(() => showUsernameMessageError = false),
+                  onPasswordError: () => setState(() => showPasswordMessageError = true),
+                  onPasswordSuccess: () => setState(() => showPasswordMessageError = false),
+                  onLoginError: (String errorMsg) => setState(() {
+                    showIncorrectLoginError = true;
+                    loginErrorMessage = errorMsg;
+                  }),
                 ),
+                showIncorrectLoginError
+                    ? Column(
+                        children: [
+                          const SizedBox(height: 20),
+                          Text(
+                            loginErrorMessage,
+                            style: const TextStyle(color: AppTheme.error600),
+                          ),
+                        ],
+                      )
+                    : const SizedBox.shrink(),
               ],
             ),
           ),
@@ -90,27 +105,19 @@ class _LoginState extends State<Login> {
                 children: [
                   const Text(
                     'Hola!!!',
-                    style: TextStyle(
-                        fontSize: 42,
-                        color: Colors.black,
-                        fontStyle: FontStyle.italic),
+                    style: TextStyle(fontSize: 42, color: Colors.black, fontStyle: FontStyle.italic),
                   ),
                   const SizedBox(height: 50),
                   const Text(
                     'Para crear tu cuenta, pulsa al botón de debajo',
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black,
-                        fontStyle: FontStyle.italic),
+                    style: TextStyle(fontSize: 16, color: Colors.black, fontStyle: FontStyle.italic),
                   ),
                   const SizedBox(height: 50),
                   TextButton(
                     style: ButtonStyle(
                       padding: MaterialStateProperty.all<EdgeInsets>(
-                          const EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 40)),
-                      overlayColor:
-                          MaterialStateProperty.all<Color>(AppTheme.primary900),
+                          const EdgeInsets.symmetric(vertical: 20, horizontal: 40)),
+                      overlayColor: MaterialStateProperty.all<Color>(AppTheme.primary900),
                       shape: MaterialStateProperty.all(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),

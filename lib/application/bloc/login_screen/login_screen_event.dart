@@ -11,38 +11,17 @@ class LoadLogInScreen extends LoginScreenEvent {
   const LoadLogInScreen();
 }
 
-class LoadLogOutScreen extends LoginScreenEvent {
-  const LoadLogOutScreen();
-}
-
-class LogOutEvent extends LoginScreenEvent {
-  final String username;
-  final String password;
-  final Function onLogOutSuccess;
-
-  const LogOutEvent({
-    required this.username,
-    required this.password,
-    required this.onLogOutSuccess,
-  });
-
-  @override
-  List<Object?> get props => [
-        username,
-        password,
-        onLogOutSuccess,
-      ];
-}
-
 class LogInEvent extends LoginScreenEvent {
   final String username;
   final String password;
   final Function onLogInSuccess;
+  final Function(String error) onLogInError;
 
   const LogInEvent({
     required this.username,
     required this.password,
     required this.onLogInSuccess,
+    required this.onLogInError,
   });
 
   @override
@@ -50,5 +29,22 @@ class LogInEvent extends LoginScreenEvent {
         username,
         password,
         onLogInSuccess,
+        onLogInError,
       ];
+}
+
+class LogOutEvent extends LoginScreenEvent {
+  final Function onLogOutSuccess;
+  final Function(String error) onLogOutError;
+
+  const LogOutEvent({
+    required this.onLogOutSuccess,
+    required this.onLogOutError,
+  });
+
+  @override
+  List<Object?> get props => [
+    onLogOutSuccess,
+    onLogOutError,
+  ];
 }

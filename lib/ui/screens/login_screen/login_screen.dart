@@ -13,15 +13,16 @@ part 'widgets/register/register.dart';
 
 class LoginScreen extends StatelessWidget {
   static const routeName = '/login-screen';
+  static const userLoginInformation = 'userLoginInformation';
 
-  final LoginScreenBloc _loginScreenBloc =
-      GetIt.instance.get<LoginScreenBloc>();
+  final LoginScreenBloc _loginScreenBloc = GetIt.instance.get<LoginScreenBloc>();
 
   LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: BlocBuilder<LoginScreenBloc, LoginScreenState>(
         bloc: _loginScreenBloc,
         builder: (context, state) {
