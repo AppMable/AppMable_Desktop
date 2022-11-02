@@ -1,18 +1,15 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:appmable_desktop/domain/exceptions/login_exception.dart';
-import 'package:appmable_desktop/domain/exceptions/logout_exception.dart';
+import 'package:appmable_desktop/domain/model/objects/user.dart';
 import 'package:appmable_desktop/domain/model/value_object/response.dart';
-import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
+import 'package:appmable_desktop/infrastructure/repositories/user/http_user_repository.dart';
 import 'package:faker/faker.dart';
 import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:appmable_desktop/domain/services/http_service.dart';
-import 'package:appmable_desktop/infrastructure/repositories/userLogin/http_user_login_repository.dart';
-
-import '../../../domain/model/value_objects/mock/barcode_search_result_mock.dart';
+import 'package:mockito/mockito.dart';
+import '../../../domain/model/objects/mock/user_mock.dart';
 import 'http_user_repository_test.mocks.dart';
 
 @GenerateMocks([HttpService])
@@ -20,22 +17,14 @@ void main() {
   group('Tests over User Repository', () {
     final Faker faker = Faker();
     final HttpService httpService = MockHttpService();
-    final HttpUserLoginRepository repository = HttpUserLoginRepository(httpService);
+    final HttpUserRepository repository = HttpUserRepository(httpService);
 
-    final String username = faker.lorem.words(1).join('');
-    final String password = faker.lorem.words(1).join('');
-    final String urlLogin =
-        HttpUserLoginRepository.urlUserLogin.replaceAll('<username>', username).replaceAll('<password>', password);
+    // Read All Users
 
-    final UserLoginInformation userLoginInformation = userLoginInformationMockGenerator();
-    final String userToken = userLoginInformation.userToken;
-    final String urlLogout = HttpUserLoginRepository.urlUserLogOut.replaceAll('<userToken>', userToken);
-
-    // Log In
-
-    test('Login OK', () async {
+    /*
+    test('readAllUsers - OK', () async {
       when(httpService.get(Uri.parse(urlLogin))).thenAnswer(
-        (_) => Future.value(
+            (_) => Future.value(
           Response(
             body: getUserLoginHttpStringFromUserLoginInformation(userLoginInformation),
             statusCode: 200,
@@ -46,79 +35,28 @@ void main() {
       );
 
       expect(await repository.logIn(username: username, password: password), userLoginInformation);
-    });
 
-    test('Login KO - Http Code is 403', () async {
-      when(httpService.get(Uri.parse(urlLogin))).thenAnswer(
+    });
+    */
+
+    // Get User
+
+    // Delete User
+
+    test('Delete User - OK', () async {
+      final String userId = faker.randomGenerator.integer(5).toString();
+      final String userType = faker.lorem.words(1).first;
+      final String userToken = faker.lorem.words(1).first;
+
+      final String urlDelete = HttpUserRepository.urlCrud
+          .replaceAll('<userId>', userId)
+          .replaceAll('<userType>', userType)
+          .replaceAll('<userToken>', userToken);
+
+      when(httpService.delete(Uri.parse(urlDelete))).thenAnswer(
         (_) => Future.value(
           Response(
-            body: jsonEncode(faker.lorem.words(1).join('')),
-            statusCode: 403,
-            headers: const {'header': 'mock'},
-            bodyBytes: Uint8List.fromList(
-              [
-                91,
-                34,
-                67,
-                111,
-                110,
-                116,
-                114,
-                97,
-                115,
-                101,
-                110,
-                121,
-                97,
-                32,
-                105,
-                110,
-                99,
-                111,
-                114,
-                114,
-                101,
-                99,
-                116,
-                97,
-                34,
-                93
-              ],
-            ),
-          ),
-        ),
-      );
-
-      expect(
-        () async => await repository.logIn(username: username, password: password),
-        throwsA(
-          predicate((e) => e is LoginException),
-        ),
-      );
-    });
-
-    test('Login KO - Http Code is 400', () async {
-      when(httpService.get(Uri.parse(urlLogin))).thenAnswer(
-        (_) => Future.value(
-          Response(
-            body: jsonEncode(faker.lorem.words(1).join('')),
-            statusCode: 400,
-            headers: const {'header': 'mock'},
-            bodyBytes: Uint8List.fromList(faker.randomGenerator.numbers(5, 5)),
-          ),
-        ),
-      );
-
-      expect(await repository.logIn(username: username, password: password), null);
-    });
-
-    // Log Out
-
-    test('LogOut OK', () async {
-      when(httpService.get(Uri.parse(urlLogout))).thenAnswer(
-        (_) => Future.value(
-          Response(
-            body: jsonEncode(faker.lorem.words(1).join('')),
+            body: '',
             statusCode: 200,
             headers: const {'header': 'mock'},
             bodyBytes: Uint8List.fromList(faker.randomGenerator.numbers(5, 5)),
@@ -126,14 +64,29 @@ void main() {
         ),
       );
 
-      expect(await repository.logOut(userToken: userToken), true);
+      expect(
+          await repository.deleteUser(
+            userId: userId,
+            userType: userType,
+            userToken: userToken,
+          ),
+          true);
     });
 
-    test('LogOut KO - Http Code is 403', () async {
-      when(httpService.get(Uri.parse(urlLogout))).thenAnswer(
+    test('Delete User - KO', () async {
+      final String userId = faker.randomGenerator.integer(5).toString();
+      final String userType = faker.lorem.words(1).first;
+      final String userToken = faker.lorem.words(1).first;
+
+      final String urlDelete = HttpUserRepository.urlCrud
+          .replaceAll('<userId>', userId)
+          .replaceAll('<userType>', userType)
+          .replaceAll('<userToken>', userToken);
+
+      when(httpService.delete(Uri.parse(urlDelete))).thenAnswer(
         (_) => Future.value(
           Response(
-            body: jsonEncode(faker.lorem.words(1).join('')),
+            body: '',
             statusCode: 403,
             headers: const {'header': 'mock'},
             bodyBytes: Uint8List.fromList(faker.randomGenerator.numbers(5, 5)),
@@ -142,26 +95,158 @@ void main() {
       );
 
       expect(
-        () async => await repository.logOut(userToken: userToken),
-        throwsA(
-          predicate((e) => e is LogOutException),
-        ),
-      );
+          await repository.deleteUser(
+            userId: userId,
+            userType: userType,
+            userToken: userToken,
+          ),
+          false);
     });
 
-    test('LogOut KO - Http Code is 400', () async {
-      when(httpService.get(Uri.parse(urlLogout))).thenAnswer(
+    // Create User
+
+    test('Create User - OK', () async {
+      final User user = userMockGenerator();
+      final String userType = faker.lorem.words(1).first;
+      final String userToken = faker.lorem.words(1).first;
+
+      final String url =
+          HttpUserRepository.urlGetAllUsers.replaceAll('<userType>', userType).replaceAll('<userToken>', userToken);
+
+      when(httpService.post(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(user.toMap()),
+      )).thenAnswer(
         (_) => Future.value(
           Response(
-            body: jsonEncode(faker.lorem.words(1).join('')),
-            statusCode: 400,
+            body: '',
+            statusCode: 201,
             headers: const {'header': 'mock'},
             bodyBytes: Uint8List.fromList(faker.randomGenerator.numbers(5, 5)),
           ),
         ),
       );
 
-      expect(await repository.logOut(userToken: userToken), false);
+      expect(
+          await repository.createUser(
+            user: user.toMap(),
+            userType: userType,
+            userToken: userToken,
+          ),
+          true);
+    });
+
+    test('Create User - KO', () async {
+      final User user = userMockGenerator();
+      final String userType = faker.lorem.words(1).first;
+      final String userToken = faker.lorem.words(1).first;
+
+      final String url =
+          HttpUserRepository.urlGetAllUsers.replaceAll('<userType>', userType).replaceAll('<userToken>', userToken);
+
+      when(httpService.post(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(user.toMap()),
+      )).thenAnswer(
+        (_) => Future.value(
+          Response(
+            body: '',
+            statusCode: 403,
+            headers: const {'header': 'mock'},
+            bodyBytes: Uint8List.fromList(faker.randomGenerator.numbers(5, 5)),
+          ),
+        ),
+      );
+
+      expect(
+          await repository.createUser(
+            user: user.toMap(),
+            userType: userType,
+            userToken: userToken,
+          ),
+          false);
+    });
+
+    // Update User
+
+    test('Update User - OK', () async {
+      final User user = userMockGenerator();
+      final String userId = user.id.toString();
+      final String userType = faker.lorem.words(1).first;
+      final String userToken = faker.lorem.words(1).first;
+
+      final String url = HttpUserRepository.urlCrud
+          .replaceAll('<userId>', userId)
+          .replaceAll('<userType>', userType)
+          .replaceAll('<userToken>', userToken);
+
+      when(httpService.put(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(user.toMap()),
+      )).thenAnswer(
+            (_) => Future.value(
+          Response(
+            body: '',
+            statusCode: 200,
+            headers: const {'header': 'mock'},
+            bodyBytes: Uint8List.fromList(faker.randomGenerator.numbers(5, 5)),
+          ),
+        ),
+      );
+
+      expect(
+          await repository.updateUser(
+            user: user.toMap(),
+            userType: userType,
+            userToken: userToken,
+          ),
+          true);
+    });
+
+    test('Create User - KO', () async {
+      final User user = userMockGenerator();
+      final String userId = user.id.toString();
+      final String userType = faker.lorem.words(1).first;
+      final String userToken = faker.lorem.words(1).first;
+
+      final String url = HttpUserRepository.urlCrud
+          .replaceAll('<userId>', userId)
+          .replaceAll('<userType>', userType)
+          .replaceAll('<userToken>', userToken);
+
+      when(httpService.put(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(user.toMap()),
+      )).thenAnswer(
+            (_) => Future.value(
+          Response(
+            body: '',
+            statusCode: 403,
+            headers: const {'header': 'mock'},
+            bodyBytes: Uint8List.fromList(faker.randomGenerator.numbers(5, 5)),
+          ),
+        ),
+      );
+
+      expect(
+          await repository.updateUser(
+            user: user.toMap(),
+            userType: userType,
+            userToken: userToken,
+          ),
+          false);
     });
   });
 }

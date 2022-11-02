@@ -20,7 +20,7 @@ class HttpUserRepository implements UserRepository {
 
   @override
   Future<List<User>> readAllUsers({
-    required int currentUserId,
+    required String currentUserId,
     required String userToken,
     required String userType,
   }) async {

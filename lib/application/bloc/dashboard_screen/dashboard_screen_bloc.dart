@@ -34,7 +34,7 @@ class DashboardScreenBloc extends Bloc<DashboardScreenEvent, DashboardScreenStat
     emit(const DashboardScreenLoading());
 
     final UserLoginInformation userLoginInformation =
-        UserLoginInformation.fromMap(jsonDecode(_localStorageService.read(LoginScreen.userLoginInformation)));
+        UserLoginInformation.fromMap(jsonDecode(await _localStorageService.read(LoginScreen.userLoginInformation)));
 
     final User? user = await _userService.getUser(
       userId: '1',
