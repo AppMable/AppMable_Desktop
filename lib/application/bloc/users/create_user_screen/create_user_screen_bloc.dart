@@ -35,7 +35,7 @@ class CreateUserScreenBloc extends Bloc<CreateUserScreenEvent, CreateUserScreenS
     final UserLoginInformation userLoginInformation =
         UserLoginInformation.fromMap(jsonDecode(_localStorageService.read(LoginScreen.userLoginInformation)));
 
-    event.user['id_user_reference'] = 1;
+    event.user['id_user_reference'] = userLoginInformation.userId;
 
     DateTime dateOfBirth = DateFormat("dd-MM-yyyy").parse(event.user['date_of_birth']);
 

@@ -37,10 +37,10 @@ class DashboardScreenBloc extends Bloc<DashboardScreenEvent, DashboardScreenStat
         UserLoginInformation.fromMap(jsonDecode(await _localStorageService.read(LoginScreen.userLoginInformation)));
 
     final User? user = await _userService.getUser(
-      userId: '1',
+      userId: userLoginInformation.userId,
       userType: userLoginInformation.userType,
       userToken: userLoginInformation.userToken,
-    ); // TODO: Requires to know userId
+    );
 
     if(user != null) await _localStorageService.write(DashboardScreen.userInformation, user.toJson());
 

@@ -42,7 +42,7 @@ void main() {
       'Success Load',
       setUp: () {
         when(userService.readAllUsers(
-          currentUserId: 1.toString(),
+          currentUserId: userLoginInformation.userId,
           userType: 'user',
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(users));
@@ -58,7 +58,7 @@ void main() {
       verify: (_) {
         verifyInOrder([
           userService.readAllUsers(
-            currentUserId: 1.toString(),
+            currentUserId: userLoginInformation.userId,
             userType: 'user',
             userToken: userLoginInformation.userToken,
           ),
@@ -74,7 +74,7 @@ void main() {
       'Success Delete',
       setUp: () {
         when(userService.readAllUsers(
-          currentUserId: 1.toString(),
+          currentUserId: userLoginInformation.userId,
           userType: 'user',
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(users));
@@ -103,7 +103,7 @@ void main() {
       verify: (_) {
         verifyInOrder([
           userService.readAllUsers(
-            currentUserId: 1.toString(),
+            currentUserId: userLoginInformation.userId,
             userType: 'user',
             userToken: userLoginInformation.userToken,
           ),
@@ -113,7 +113,7 @@ void main() {
             userToken: userLoginInformation.userToken,
           ),
           userService.readAllUsers(
-            currentUserId: 1.toString(),
+            currentUserId: userLoginInformation.userId,
             userType: 'user',
             userToken: userLoginInformation.userToken,
           ),
@@ -125,7 +125,7 @@ void main() {
       'Delete - False',
       setUp: () {
         when(userService.readAllUsers(
-          currentUserId: 1.toString(),
+          currentUserId: userLoginInformation.userId,
           userType: 'user',
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(users));
@@ -153,7 +153,7 @@ void main() {
       verify: (_) {
         verifyInOrder([
           userService.readAllUsers(
-            currentUserId: 1.toString(),
+            currentUserId: userLoginInformation.userId,
             userType: 'user',
             userToken: userLoginInformation.userToken,
           ),
@@ -170,7 +170,7 @@ void main() {
       'Delete - Exception',
       setUp: () {
         when(userService.readAllUsers(
-          currentUserId: 1.toString(),
+          currentUserId: userLoginInformation.userId,
           userType: 'user',
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(users));
@@ -198,7 +198,7 @@ void main() {
       verify: (_) {
         verifyInOrder([
           userService.readAllUsers(
-            currentUserId: 1.toString(),
+            currentUserId: userLoginInformation.userId,
             userType: 'user',
             userToken: userLoginInformation.userToken,
           ),
