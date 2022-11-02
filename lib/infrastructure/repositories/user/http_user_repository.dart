@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:appmable_desktop/domain/model/objects/user.dart';
 import 'package:appmable_desktop/domain/model/value_object/response.dart';
 import 'package:appmable_desktop/domain/repositories/user_repository.dart';
-import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:appmable_desktop/domain/services/http_service.dart';
 
@@ -20,7 +19,7 @@ class HttpUserRepository implements UserRepository {
 
   @override
   Future<List<User>> readAllUsers({
-    required String currentUserId,
+    required int currentUserId,
     required String userToken,
     required String userType,
   }) async {
@@ -45,12 +44,12 @@ class HttpUserRepository implements UserRepository {
 
   @override
   Future<User?> getUser({
-    required String userId,
+    required int userId,
     required String userType,
     required String userToken,
   }) async {
     final String url =
-        urlCrud.replaceAll('<userId>', userId).replaceAll('<userType>', userType).replaceAll('<userToken>', userToken);
+        urlCrud.replaceAll('<userId>', userId.toString()).replaceAll('<userType>', userType).replaceAll('<userToken>', userToken);
 
     final Response response = await _httpService.get(Uri.parse(url));
 
@@ -66,9 +65,7 @@ class HttpUserRepository implements UserRepository {
         surname: userDecoded['surname'],
         email: userDecoded['email'],
         phoneNumber: userDecoded['phone_number'],
-        dateOfBirth: userDecoded['date_of_birth'] != null
-            ? DateUtils.dateOnly(DateTime.parse(userDecoded['date_of_birth']))
-            : null,
+        dateOfBirth: userDecoded['date_of_birth'] != null ? DateTime.parse(userDecoded['date_of_birth']) : null,
         dateCreated: userDecoded['date_created'] != null ? DateTime.parse(userDecoded['date_created']) : null,
         dateLastLogin: userDecoded['date_last_login'] != null ? DateTime.parse(userDecoded['date_last_login']) : null,
         dateLastLogout: userDecoded['date_last_logout'] != null ? DateTime.parse(userDecoded['date_last_logout']) : null,
@@ -82,12 +79,12 @@ class HttpUserRepository implements UserRepository {
 
   @override
   Future<bool> deleteUser({
-    required String userId,
+    required int userId,
     required String userType,
     required String userToken,
   }) async {
     final String urlDelete =
-        urlCrud.replaceAll('<userId>', userId).replaceAll('<userType>', userType).replaceAll('<userToken>', userToken);
+        urlCrud.replaceAll('<userId>', userId.toString()).replaceAll('<userType>', userType).replaceAll('<userToken>', userToken);
 
     final Response response = await _httpService.delete(Uri.parse(urlDelete));
 

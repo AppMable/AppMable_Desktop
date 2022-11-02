@@ -31,7 +31,7 @@ class HttpUserLoginRepository implements UserLoginRepository {
     if (response.statusCode == 200) {
       List<String> userLoginInformation = jsonDecode(response.body)[0].split(':');
       return UserLoginInformation(
-        userId: userLoginInformation[0],
+        userId: int.parse(userLoginInformation[0]),
         userName: userLoginInformation[1],
         userRole: userLoginInformation[2],
         userToken: userLoginInformation[3],

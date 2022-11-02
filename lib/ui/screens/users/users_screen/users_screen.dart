@@ -149,7 +149,7 @@ class UsersScreen extends StatelessWidget {
                                                             onPressed: () {
                                                               _usersScreenBloc.add(
                                                                 UsersScreenDeleteEvent(
-                                                                  userId: user.id.toString(),
+                                                                  userId: user.id,
                                                                   onError: (String errorMsg) {
                                                                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                                                       backgroundColor: AppTheme.error600,

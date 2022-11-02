@@ -68,7 +68,7 @@ void main() {
 
     // UsersScreenDeleteEvent
 
-    final String userIdToDelete = faker.randomGenerator.integer(5).toString();
+    final int userIdToDelete = faker.randomGenerator.integer(5);
 
     blocTest<UsersScreenBloc, UsersScreenState>(
       'Success Delete',

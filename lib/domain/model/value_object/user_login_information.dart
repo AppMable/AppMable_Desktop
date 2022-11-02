@@ -5,7 +5,7 @@ import 'package:appmable_desktop/domain/exceptions/malformed_map_exception.dart'
 
 // TODO: Can be freezed
 class UserLoginInformation extends Equatable {
-  final String userId;
+  final int userId;
   final String userRole;
   final String userName;
   final String userToken;
@@ -27,7 +27,7 @@ class UserLoginInformation extends Equatable {
       };
 
   factory UserLoginInformation.fromMap(Map<String, dynamic> map) {
-    if (map['userId'] is! String ||
+    if (map['userId'] is! int ||
         map['userRole'] is! String ||
         map['userName'] is! String ||
         map['userToken'] is! String) {

@@ -12,7 +12,7 @@ class UsersScreenEventLoad extends UsersScreenEvent {
 }
 
 class UsersScreenDeleteEvent extends UsersScreenEvent {
-  final String userId;
+  final int userId;
   final Function onSuccess;
   final Function(String error) onError;
 

@@ -32,7 +32,7 @@ void main() {
       'Success Get information',
       setUp: () {
         when(userService.getUser(
-          userId: '1',
+          userId: userLoginInformation.userId,
           userType: userLoginInformation.userType,
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(userMockGenerator(id: 1)));
@@ -52,7 +52,7 @@ void main() {
         );
         verifyInOrder([
           userService.getUser(
-            userId: '1',
+            userId: userLoginInformation.userId,
             userType: userLoginInformation.userType,
             userToken: userLoginInformation.userToken,
           ),
@@ -70,7 +70,7 @@ void main() {
       'No user',
       setUp: () {
         when(userService.getUser(
-          userId: '1',
+          userId: userLoginInformation.userId,
           userType: userLoginInformation.userType,
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(null));
@@ -90,7 +90,7 @@ void main() {
         );
         verifyInOrder([
           userService.getUser(
-            userId: '1',
+            userId: userLoginInformation.userId,
             userType: userLoginInformation.userType,
             userToken: userLoginInformation.userToken,
           ),

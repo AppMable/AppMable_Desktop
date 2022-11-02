@@ -167,7 +167,7 @@ class MockUserService extends _i1.Mock implements _i5.UserService {
 
   @override
   _i3.Future<List<_i6.User>> readAllUsers({
-    required String? currentUserId,
+    required int? currentUserId,
     required String? userToken,
     required String? userType,
   }) =>
@@ -185,7 +185,7 @@ class MockUserService extends _i1.Mock implements _i5.UserService {
       ) as _i3.Future<List<_i6.User>>);
   @override
   _i3.Future<_i6.User?> getUser({
-    required String? userId,
+    required int? userId,
     required String? userType,
     required dynamic userToken,
   }) =>
@@ -203,7 +203,7 @@ class MockUserService extends _i1.Mock implements _i5.UserService {
       ) as _i3.Future<_i6.User?>);
   @override
   _i3.Future<bool> deleteUser({
-    required String? userId,
+    required int? userId,
     required String? userType,
     required dynamic userToken,
   }) =>

@@ -11,7 +11,7 @@ class UserService {
   );
 
   Future<List<User>> readAllUsers({
-    required String currentUserId,
+    required int currentUserId,
     required String userToken,
     required String userType,
   }) async {
@@ -23,7 +23,7 @@ class UserService {
   }
 
   Future<User?> getUser({
-    required String userId,
+    required int userId,
     required String userType,
     required userToken,
   }) async {
@@ -35,7 +35,7 @@ class UserService {
   }
 
   Future<bool> deleteUser({
-    required String userId,
+    required int userId,
     required String userType,
     required userToken,
   }) async {

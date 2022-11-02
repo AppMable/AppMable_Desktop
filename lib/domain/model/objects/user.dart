@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:appmable_desktop/domain/exceptions/malformed_map_exception.dart';
-import 'package:flutter/material.dart';
 
 class User extends Equatable {
   final int id;
@@ -114,7 +113,7 @@ class User extends Equatable {
       surname: map['surname'],
       email: map['email'],
       phoneNumber: map['phone_number'],
-      dateOfBirth: map['date_of_birth'] != null && map['date_of_birth'] != 'null' ? DateUtils.dateOnly(DateTime.parse(map['date_of_birth'])) : null,
+      dateOfBirth: map['date_of_birth'] != null && map['date_of_birth'] != 'null' ? DateTime.parse(map['date_of_birth']) : null,
       dateCreated: map['date_created'] != null && map['date_created'] != 'null' ? DateTime.parse(map['date_created']) : null,
       dateLastLogin: map['date_last_login'] != null && map['date_last_login'] != 'null' ? DateTime.parse(map['date_last_login']) : null,
       dateLastLogout: map['date_last_logout'] != null && map['date_last_logout'] != 'null' ? DateTime.parse(map['date_last_logout']) : null,
