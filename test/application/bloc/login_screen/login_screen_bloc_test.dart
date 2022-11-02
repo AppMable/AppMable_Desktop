@@ -14,7 +14,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../../domain/model/value_objects/mock/barcode_search_result_mock.dart';
+import '../../../domain/model/value_objects/mock/user_login_mock.dart';
 import '../../../domain/services/storage/mock/local_storage_service_mock.dart';
 import 'login_screen_bloc_test.mocks.dart';
 

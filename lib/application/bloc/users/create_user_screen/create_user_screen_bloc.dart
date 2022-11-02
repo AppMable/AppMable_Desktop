@@ -21,7 +21,7 @@ class CreateUserScreenBloc extends Bloc<CreateUserScreenEvent, CreateUserScreenS
   final LocalStorageService _localStorageService;
 
   CreateUserScreenBloc(
-      this._usersScreenBloc,
+    this._usersScreenBloc,
     this._userService,
     this._localStorageService,
   ) : super(const CreateUserScreenInitial()) {

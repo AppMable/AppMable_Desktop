@@ -11,8 +11,8 @@ class UserService {
   );
 
   Future<List<User>> readAllUsers({
-    required currentUserId,
-    required userToken,
+    required String currentUserId,
+    required String userToken,
     required String userType,
   }) async {
     return _userRepository.readAllUsers(

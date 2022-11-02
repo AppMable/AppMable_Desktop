@@ -4,7 +4,7 @@ import 'package:appmable_desktop/ui/screens/login_screen/login_screen.dart';
 import 'package:appmable_desktop/ui/screens/dashboard_screen/dashboard_screen.dart';
 import 'package:test/test.dart';
 
-import '../model/value_objects/mock/barcode_search_result_mock.dart';
+import '../model/value_objects/mock/user_login_mock.dart';
 import 'storage/mock/local_storage_service_mock.dart';
 
 void main() {
