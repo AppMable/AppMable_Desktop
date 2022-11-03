@@ -6,6 +6,7 @@ import 'package:appmable_desktop/ui/common/app_layout/responsive.dart';
 import 'package:appmable_desktop/ui/common/app_layout/styles.dart';
 import 'package:appmable_desktop/ui/common/app_layout/widgets/category_box.dart';
 import 'package:appmable_desktop/ui/common/mixin/user_mixin.dart';
+import 'package:appmable_desktop/ui/screens/dashboard_screen/widgets/change_password_button.dart';
 import 'package:appmable_desktop/ui/screens/login_screen/login_screen.dart';
 import 'package:appmable_desktop/ui/screens/users/users_screen/users_screen.dart';
 import 'package:appmable_desktop/ui/theme/app_theme.dart';

@@ -45,8 +45,6 @@ void main() {
         ),
       );
 
-      Future.delayed(const Duration(milliseconds: 2000), (){});
-
       final List<User> usersResult = await repository.readAllUsers(
         currentUserId: userLoginInformation.userId,
         userToken: userLoginInformation.userToken,

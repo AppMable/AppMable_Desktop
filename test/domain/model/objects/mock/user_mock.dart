@@ -81,7 +81,6 @@ User userMockGeneratorFromHttpResponse({
   DateTime? dateCreated,
   DateTime? dateLastLogin,
   DateTime? dateLastLogout,
-  int? idUserRole,
   int? idUserReference,
 }) {
   return User(
@@ -98,7 +97,6 @@ User userMockGeneratorFromHttpResponse({
     dateCreated: dateCreated ?? faker.date.dateTime(),
     dateLastLogin: dateLastLogin ?? faker.date.dateTime(),
     dateLastLogout: dateLastLogout ?? faker.date.dateTime(),
-    idUserRole: idUserRole ?? faker.randomGenerator.integer(9),
     idUserReference: idUserReference ?? faker.randomGenerator.integer(9),
   );
 }

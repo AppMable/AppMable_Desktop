@@ -9,12 +9,14 @@ import 'package:connectivity_plus/connectivity_plus.dart' as _i3;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
-import 'application/bloc/dashboard_screen/dashboard_screen_bloc.dart' as _i21;
-import 'application/bloc/login_screen/login_screen_bloc.dart' as _i22;
-import 'application/bloc/users/create_user_screen/create_user_screen_bloc.dart'
+import 'application/bloc/dashboard_screen/dashboard_screen_bloc.dart' as _i22;
+import 'application/bloc/login_screen/login_screen_bloc.dart' as _i23;
+import 'application/bloc/users/change_password/change_password_bloc.dart'
     as _i20;
+import 'application/bloc/users/create_user_screen/create_user_screen_bloc.dart'
+    as _i21;
 import 'application/bloc/users/update_user_screen/update_user_screen_bloc.dart'
-    as _i23;
+    as _i24;
 import 'application/bloc/users/users_screen/users_screen_bloc.dart' as _i19;
 import 'domain/repositories/user_login_repository.dart' as _i13;
 import 'domain/repositories/user_repository.dart' as _i16;
@@ -33,7 +35,7 @@ import 'infrastructure/repositories/userLogin/http_user_login_repository.dart'
 import 'infrastructure/services/flutter_connectivity_checker_service.dart'
     as _i5;
 import 'infrastructure/services/http_service.dart' as _i7;
-import 'injection.dart' as _i24; // ignore_for_file: unnecessary_lambdas
+import 'injection.dart' as _i25; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -74,20 +76,24 @@ _i1.GetIt $initGetIt(
         get<_i18.UserService>(),
         get<_i8.LocalStorageService>(),
       ));
-  gh.lazySingleton<_i20.CreateUserScreenBloc>(() => _i20.CreateUserScreenBloc(
+  gh.lazySingleton<_i20.ChangePasswordBloc>(() => _i20.ChangePasswordBloc(
+        get<_i18.UserService>(),
+        get<_i8.LocalStorageService>(),
+      ));
+  gh.lazySingleton<_i21.CreateUserScreenBloc>(() => _i21.CreateUserScreenBloc(
         get<_i19.UsersScreenBloc>(),
         get<_i18.UserService>(),
         get<_i8.LocalStorageService>(),
       ));
-  gh.lazySingleton<_i21.DashboardScreenBloc>(() => _i21.DashboardScreenBloc(
+  gh.lazySingleton<_i22.DashboardScreenBloc>(() => _i22.DashboardScreenBloc(
         get<_i8.LocalStorageService>(),
         get<_i18.UserService>(),
       ));
-  gh.lazySingleton<_i22.LoginScreenBloc>(() => _i22.LoginScreenBloc(
+  gh.lazySingleton<_i23.LoginScreenBloc>(() => _i23.LoginScreenBloc(
         get<_i15.UserLoginService>(),
         get<_i8.LocalStorageService>(),
       ));
-  gh.lazySingleton<_i23.UpdateUserScreenBloc>(() => _i23.UpdateUserScreenBloc(
+  gh.lazySingleton<_i24.UpdateUserScreenBloc>(() => _i24.UpdateUserScreenBloc(
         get<_i19.UsersScreenBloc>(),
         get<_i18.UserService>(),
         get<_i8.LocalStorageService>(),
@@ -95,4 +101,4 @@ _i1.GetIt $initGetIt(
   return get;
 }
 
-class _$RegisterModule extends _i24.RegisterModule {}
+class _$RegisterModule extends _i25.RegisterModule {}

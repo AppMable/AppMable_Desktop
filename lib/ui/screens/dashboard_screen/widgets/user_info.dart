@@ -46,7 +46,6 @@ class _UserInfoState extends State<UserInfo> with UserMixin {
   }
 
   Widget _userInfo() {
-
     final User user = getUser();
 
     return Container(
@@ -90,40 +89,46 @@ class _UserInfoState extends State<UserInfo> with UserMixin {
             ],
           ),
           const SizedBox(height: 50),
-          TextButton(
-            style: ButtonStyle(
-              padding: MaterialStateProperty.all<EdgeInsets>(
-                const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-              ),
-              backgroundColor: MaterialStateProperty.all<Color>(AppTheme.primary900),
-              overlayColor: MaterialStateProperty.all<Color>(AppTheme.primary200),
-              shape: MaterialStateProperty.all(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+          Column(
+            children: [
+              const ChangePasswordButton(),
+              const SizedBox(height: 25),
+              ElevatedButton(
+                style: ButtonStyle(
+                  padding: MaterialStateProperty.all<EdgeInsets>(
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+                  ),
+                  backgroundColor: MaterialStateProperty.all<Color>(AppTheme.primary900),
+                  overlayColor: MaterialStateProperty.all<Color>(AppTheme.primary200),
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                ),
+                onPressed: () {
+                  _loginScreenBloc.add(LogOutEvent(
+                    onLogOutSuccess: () {
+                      Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+                    },
+                    onLogOutError: (String error) {
+                      setState(() {
+                        showIncorrectLogOutError = true;
+                        logOutErrorMessage = error;
+                      });
+                    },
+                  ));
+                },
+                child: const Text(
+                  'Cerrar Sessión',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
-            ),
-            onPressed: () {
-              _loginScreenBloc.add(LogOutEvent(
-                onLogOutSuccess: () {
-                  Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
-                },
-                onLogOutError: (String error) {
-                  setState(() {
-                    showIncorrectLogOutError = true;
-                    logOutErrorMessage = error;
-                  });
-                },
-              ));
-            },
-            child: const Text(
-              'Cerrar Sessión',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+            ],
           ),
           showIncorrectLogOutError
               ? Column(
