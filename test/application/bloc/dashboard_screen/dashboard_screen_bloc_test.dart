@@ -33,7 +33,6 @@ void main() {
       setUp: () {
         when(userService.getUser(
           userId: userLoginInformation.userId,
-          userType: userLoginInformation.userType,
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(userMockGenerator(id: 1)));
       },
@@ -53,7 +52,6 @@ void main() {
         verifyInOrder([
           userService.getUser(
             userId: userLoginInformation.userId,
-            userType: userLoginInformation.userType,
             userToken: userLoginInformation.userToken,
           ),
         ]);
@@ -71,7 +69,6 @@ void main() {
       setUp: () {
         when(userService.getUser(
           userId: userLoginInformation.userId,
-          userType: userLoginInformation.userType,
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(null));
       },
@@ -91,7 +88,6 @@ void main() {
         verifyInOrder([
           userService.getUser(
             userId: userLoginInformation.userId,
-            userType: userLoginInformation.userType,
             userToken: userLoginInformation.userToken,
           ),
         ]);

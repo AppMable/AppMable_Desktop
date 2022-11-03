@@ -41,9 +41,8 @@ void main() {
     blocTest<UsersScreenBloc, UsersScreenState>(
       'Success Load',
       setUp: () {
-        when(userService.readAllUsers(
-          currentUserId: userLoginInformation.userId,
-          userType: 'user',
+        when(userService.getUsers(
+          userReferenceId: userLoginInformation.userId,
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(users));
       },
@@ -57,9 +56,8 @@ void main() {
       ],
       verify: (_) {
         verifyInOrder([
-          userService.readAllUsers(
-            currentUserId: userLoginInformation.userId,
-            userType: 'user',
+          userService.getUsers(
+            userReferenceId: userLoginInformation.userId,
             userToken: userLoginInformation.userToken,
           ),
         ]);
@@ -73,9 +71,8 @@ void main() {
     blocTest<UsersScreenBloc, UsersScreenState>(
       'Success Delete',
       setUp: () {
-        when(userService.readAllUsers(
-          currentUserId: userLoginInformation.userId,
-          userType: 'user',
+        when(userService.getUsers(
+          userReferenceId: userLoginInformation.userId,
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(users));
 
@@ -102,9 +99,8 @@ void main() {
       ],
       verify: (_) {
         verifyInOrder([
-          userService.readAllUsers(
-            currentUserId: userLoginInformation.userId,
-            userType: 'user',
+          userService.getUsers(
+            userReferenceId: userLoginInformation.userId,
             userToken: userLoginInformation.userToken,
           ),
           userService.deleteUser(
@@ -112,9 +108,8 @@ void main() {
             userType: 'user',
             userToken: userLoginInformation.userToken,
           ),
-          userService.readAllUsers(
-            currentUserId: userLoginInformation.userId,
-            userType: 'user',
+          userService.getUsers(
+            userReferenceId: userLoginInformation.userId,
             userToken: userLoginInformation.userToken,
           ),
         ]);
@@ -124,9 +119,8 @@ void main() {
     blocTest<UsersScreenBloc, UsersScreenState>(
       'Delete - False',
       setUp: () {
-        when(userService.readAllUsers(
-          currentUserId: userLoginInformation.userId,
-          userType: 'user',
+        when(userService.getUsers(
+          userReferenceId: userLoginInformation.userId,
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(users));
 
@@ -152,9 +146,8 @@ void main() {
       ],
       verify: (_) {
         verifyInOrder([
-          userService.readAllUsers(
-            currentUserId: userLoginInformation.userId,
-            userType: 'user',
+          userService.getUsers(
+            userReferenceId: userLoginInformation.userId,
             userToken: userLoginInformation.userToken,
           ),
           userService.deleteUser(
@@ -169,9 +162,8 @@ void main() {
     blocTest<UsersScreenBloc, UsersScreenState>(
       'Delete - Exception',
       setUp: () {
-        when(userService.readAllUsers(
-          currentUserId: userLoginInformation.userId,
-          userType: 'user',
+        when(userService.getUsers(
+          userReferenceId: userLoginInformation.userId,
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(users));
 
@@ -197,9 +189,8 @@ void main() {
       ],
       verify: (_) {
         verifyInOrder([
-          userService.readAllUsers(
-            currentUserId: userLoginInformation.userId,
-            userType: 'user',
+          userService.getUsers(
+            userReferenceId: userLoginInformation.userId,
             userToken: userLoginInformation.userToken,
           ),
           userService.deleteUser(

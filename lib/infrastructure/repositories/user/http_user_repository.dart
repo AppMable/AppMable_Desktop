@@ -18,14 +18,15 @@ class HttpUserRepository implements UserRepository {
   static const String urlCrud = 'http://127.0.0.1:8000/users/d/?id=<userId>&t=<userType>&c=<userToken>';
 
   @override
-  Future<List<User>> readAllUsers({
-    required int currentUserId,
+  Future<List<User>> getUsers({
+    required int userReferenceId,
     required String userToken,
-    required String userType,
   }) async {
-    final String urlAllUsers = urlGetAllUsers.replaceAll('<userToken>', userToken).replaceAll('<userType>', userType);
 
-    final Response response = await _httpService.get(Uri.parse(urlAllUsers));
+    final String url =
+    urlCrud.replaceAll('<userId>', userReferenceId.toString()).replaceAll('<userType>', 'user').replaceAll('<userToken>', userToken);
+
+    final Response response = await _httpService.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       List<User> users = [];
@@ -33,7 +34,7 @@ class HttpUserRepository implements UserRepository {
       List<dynamic> usersDecoded = jsonDecode(utf8.decode(response.bodyBytes));
 
       for (Map<String, dynamic> user in usersDecoded) {
-        if (user['id_user_reference'] == currentUserId) users.add(User.fromMap(user));
+        users.add(User.fromMap(user));
       }
 
       return users;
@@ -45,11 +46,10 @@ class HttpUserRepository implements UserRepository {
   @override
   Future<User?> getUser({
     required int userId,
-    required String userType,
     required String userToken,
   }) async {
     final String url =
-        urlCrud.replaceAll('<userId>', userId.toString()).replaceAll('<userType>', userType).replaceAll('<userToken>', userToken);
+        urlCrud.replaceAll('<userId>', userId.toString()).replaceAll('<userType>', 'admin').replaceAll('<userToken>', userToken);
 
     final Response response = await _httpService.get(Uri.parse(url));
 

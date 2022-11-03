@@ -21,16 +21,19 @@ void main() {
     final HttpService httpService = MockHttpService();
     final HttpUserRepository repository = HttpUserRepository(httpService);
 
+    final UserLoginInformation userLoginInformation = userLoginInformationMockGenerator();
+
     // Read All Users
 
     test('Read All Users - OK', () async {
-      UserLoginInformation userLoginInformation = userLoginInformationMockGenerator();
+
       List<User> usersExpected = List<User>.generate(faker.randomGenerator.integer(10),
           (int index) => userMockGeneratorFromHttpResponse(idUserReference: userLoginInformation.userId));
 
-      final String url = HttpUserRepository.urlGetAllUsers
-          .replaceAll('<userToken>', userLoginInformation.userToken)
-          .replaceAll('<userType>', userLoginInformation.userType);
+      final String url = HttpUserRepository.urlCrud
+          .replaceAll('<userId>', userLoginInformation.userId.toString())
+          .replaceAll('<userType>', 'user')
+          .replaceAll('<userToken>', userLoginInformation.userToken);
 
       final String bodyResponse = getUsersHttpString(users: usersExpected, areAdminUsers: false);
 
@@ -45,26 +48,24 @@ void main() {
         ),
       );
 
-      final List<User> usersResult = await repository.readAllUsers(
-        currentUserId: userLoginInformation.userId,
+      final List<User> usersResult = await repository.getUsers(
+        userReferenceId: userLoginInformation.userId,
         userToken: userLoginInformation.userToken,
-        userType: userLoginInformation.userType,
       );
 
       expect(usersResult, usersExpected);
     });
 
     test('Read All Users - KO', () async {
-      UserLoginInformation userLoginInformation = userLoginInformationMockGenerator();
-
       List<User> usersExpected = [];
 
-      final String url = HttpUserRepository.urlGetAllUsers
-          .replaceAll('<userToken>', userLoginInformation.userToken)
-          .replaceAll('<userType>', userLoginInformation.userType);
+      final String url = HttpUserRepository.urlCrud
+          .replaceAll('<userId>', userLoginInformation.userId.toString())
+          .replaceAll('<userType>', 'user')
+          .replaceAll('<userToken>', userLoginInformation.userToken);
 
       when(httpService.get(Uri.parse(url))).thenAnswer(
-            (_) => Future.value(
+        (_) => Future.value(
           Response(
             body: '',
             statusCode: 403,
@@ -74,10 +75,9 @@ void main() {
         ),
       );
 
-      final List<User> usersResult = await repository.readAllUsers(
-        currentUserId: userLoginInformation.userId,
+      final List<User> usersResult = await repository.getUsers(
+        userReferenceId: userLoginInformation.userId,
         userToken: userLoginInformation.userToken,
-        userType: userLoginInformation.userType,
       );
 
       expect(usersResult, usersExpected);
@@ -86,15 +86,11 @@ void main() {
     // Get User
 
     test('Get User - OK', () async {
-      UserLoginInformation userLoginInformation = userLoginInformationMockGenerator();
       User userExpected = userAdminMockGeneratorFromHttpResponse();
 
       final String url = HttpUserRepository.urlCrud
-          .replaceAll(
-            '<userId>',
-            userExpected.id.toString(),
-          )
-          .replaceAll('<userType>', userLoginInformation.userType)
+          .replaceAll('<userId>', userLoginInformation.userId.toString())
+          .replaceAll('<userType>', 'admin')
           .replaceAll('<userToken>', userLoginInformation.userToken);
 
       when(httpService.get(Uri.parse(url))).thenAnswer(
@@ -109,23 +105,19 @@ void main() {
       );
 
       final User? resultUser = await repository.getUser(
-          userId: userExpected.id,
-          userToken: userLoginInformation.userToken,
-          userType: userLoginInformation.userType);
+        userId: userExpected.id,
+        userToken: userLoginInformation.userToken,
+      );
 
       expect(resultUser, userExpected);
     });
 
     test('Get User - KO', () async {
-      UserLoginInformation userLoginInformation = userLoginInformationMockGenerator();
       User userExpected = userMockGeneratorFromHttpResponse();
 
       final String url = HttpUserRepository.urlCrud
-          .replaceAll(
-            '<userId>',
-            userExpected.id.toString(),
-          )
-          .replaceAll('<userType>', userLoginInformation.userType)
+          .replaceAll('<userId>', userLoginInformation.userId.toString())
+          .replaceAll('<userType>', 'admin')
           .replaceAll('<userToken>', userLoginInformation.userToken);
 
       when(httpService.get(Uri.parse(url))).thenAnswer(
@@ -139,10 +131,12 @@ void main() {
         ),
       );
 
+      await Future.delayed(const Duration(milliseconds: 500), () {});
+
       final User? resultUser = await repository.getUser(
-          userId: userExpected.id,
-          userToken: userLoginInformation.userToken,
-          userType: userLoginInformation.userType);
+        userId: userExpected.id,
+        userToken: userLoginInformation.userToken,
+      );
 
       expect(resultUser, null);
     });

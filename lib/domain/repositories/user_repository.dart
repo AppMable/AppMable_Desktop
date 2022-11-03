@@ -1,15 +1,13 @@
 import 'package:appmable_desktop/domain/model/objects/user.dart';
 
 abstract class UserRepository {
-  Future<List<User>> readAllUsers({
-    required int currentUserId,
+  Future<List<User>> getUsers({
+    required int userReferenceId,
     required String userToken,
-    required String userType,
   });
 
   Future<User?> getUser({
     required int userId,
-    required String userType,
     required String userToken,
   });
 

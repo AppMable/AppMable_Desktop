@@ -36,9 +36,8 @@ class UsersScreenBloc extends Bloc<UsersScreenEvent, UsersScreenState> {
     final UserLoginInformation userLoginInformation =
         UserLoginInformation.fromMap(jsonDecode(_localStorageService.read(LoginScreen.userLoginInformation)));
 
-    List<User> users = await _userService.readAllUsers(
-      currentUserId: userLoginInformation.userId,
-      userType: 'user',
+    List<User> users = await _userService.getUsers(
+      userReferenceId: userLoginInformation.userId,
       userToken: userLoginInformation.userToken,
     );
 

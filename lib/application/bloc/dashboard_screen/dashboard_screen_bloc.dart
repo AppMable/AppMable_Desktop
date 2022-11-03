@@ -38,7 +38,6 @@ class DashboardScreenBloc extends Bloc<DashboardScreenEvent, DashboardScreenStat
 
     final User? user = await _userService.getUser(
       userId: userLoginInformation.userId,
-      userType: userLoginInformation.userType,
       userToken: userLoginInformation.userToken,
     );
 
