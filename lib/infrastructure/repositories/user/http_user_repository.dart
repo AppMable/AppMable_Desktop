@@ -22,9 +22,10 @@ class HttpUserRepository implements UserRepository {
     required int userReferenceId,
     required String userToken,
   }) async {
-
-    final String url =
-    urlCrud.replaceAll('<userId>', userReferenceId.toString()).replaceAll('<userType>', 'user').replaceAll('<userToken>', userToken);
+    final String url = urlCrud
+        .replaceAll('<userId>', userReferenceId.toString())
+        .replaceAll('<userType>', 'user')
+        .replaceAll('<userToken>', userToken);
 
     final Response response = await _httpService.get(Uri.parse(url));
 
@@ -34,7 +35,7 @@ class HttpUserRepository implements UserRepository {
       List<dynamic> usersDecoded = jsonDecode(utf8.decode(response.bodyBytes));
 
       for (Map<String, dynamic> user in usersDecoded) {
-        users.add(User.fromMap(user));
+        if(user['id'] != userReferenceId) users.add(User.fromMap(user));
       }
 
       return users;
@@ -48,31 +49,38 @@ class HttpUserRepository implements UserRepository {
     required int userId,
     required String userToken,
   }) async {
-    final String url =
-        urlCrud.replaceAll('<userId>', userId.toString()).replaceAll('<userType>', 'admin').replaceAll('<userToken>', userToken);
+    final String url = urlCrud
+        .replaceAll('<userId>', userId.toString())
+        .replaceAll('<userType>', 'admin')
+        .replaceAll('<userToken>', userToken);
 
     final Response response = await _httpService.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
-      Map<String, dynamic> userDecoded = jsonDecode(response.body);
 
-      return User(
-        id: userDecoded['id'],
-        identityNumber: userDecoded['identity_number'],
-        username: userDecoded['username'],
-        password: userDecoded['password'],
-        name: userDecoded['name'],
-        surname: userDecoded['surname'],
-        email: userDecoded['email'],
-        phoneNumber: userDecoded['phone_number'],
-        dateOfBirth: userDecoded['date_of_birth'] != null ? DateTime.parse(userDecoded['date_of_birth']) : null,
-        dateCreated: userDecoded['date_created'] != null ? DateTime.parse(userDecoded['date_created']) : null,
-        dateLastLogin: userDecoded['date_last_login'] != null ? DateTime.parse(userDecoded['date_last_login']) : null,
-        dateLastLogout: userDecoded['date_last_logout'] != null ? DateTime.parse(userDecoded['date_last_logout']) : null,
-        healthCardIdentifier: userDecoded['health_card_identifier'],
-        idUserRole: userDecoded['id_user_role'],
-        idUserReference: userDecoded['id_user_reference'],
-      );
+      List<dynamic> usersDecoded = jsonDecode(response.body);
+
+      for (Map<String, dynamic> user in usersDecoded) {
+        if (user['id'] == userId) {
+          return User(
+            id: user['id'],
+            identityNumber: user['identity_number'],
+            username: user['username'],
+            password: user['password'],
+            name: user['name'],
+            surname: user['surname'],
+            email: user['email'],
+            phoneNumber: user['phone_number'],
+            dateOfBirth: user['date_of_birth'] != null ? DateTime.parse(user['date_of_birth']) : null,
+            dateCreated: user['date_created'] != null ? DateTime.parse(user['date_created']) : null,
+            dateLastLogin: user['date_last_login'] != null ? DateTime.parse(user['date_last_login']) : null,
+            dateLastLogout: user['date_last_logout'] != null ? DateTime.parse(user['date_last_logout']) : null,
+            healthCardIdentifier: user['health_card_identifier'],
+            idUserRole: user['id_user_role'],
+            idUserReference: user['id_user_reference'],
+          );
+        }
+      }
     }
     return null;
   }
@@ -83,8 +91,10 @@ class HttpUserRepository implements UserRepository {
     required String userType,
     required String userToken,
   }) async {
-    final String urlDelete =
-        urlCrud.replaceAll('<userId>', userId.toString()).replaceAll('<userType>', userType).replaceAll('<userToken>', userToken);
+    final String urlDelete = urlCrud
+        .replaceAll('<userId>', userId.toString())
+        .replaceAll('<userType>', userType)
+        .replaceAll('<userToken>', userToken);
 
     final Response response = await _httpService.delete(Uri.parse(urlDelete));
 
@@ -119,7 +129,10 @@ class HttpUserRepository implements UserRepository {
     required String userType,
     required String userToken,
   }) async {
-    final String urlUpdateUser = urlCrud.replaceAll('<userId>', user['id'].toString()).replaceAll('<userType>', userType).replaceAll('<userToken>', userToken);
+    final String urlUpdateUser = urlCrud
+        .replaceAll('<userId>', user['id'].toString())
+        .replaceAll('<userType>', userType)
+        .replaceAll('<userToken>', userToken);
 
     try {
       final Response response = await _httpService.put(
