@@ -48,3 +48,11 @@ class LogOutEvent extends LoginScreenEvent {
     onLogOutError,
   ];
 }
+
+class LoadLogInScreenEvent extends LoginScreenEvent {
+  const LoadLogInScreenEvent();
+}
+
+class LoadRegisterScreenEvent extends LoginScreenEvent {
+  const LoadRegisterScreenEvent();
+}

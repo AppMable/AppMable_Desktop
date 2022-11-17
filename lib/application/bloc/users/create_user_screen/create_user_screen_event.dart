@@ -29,3 +29,22 @@ class CreateUserEvent extends CreateUserScreenEvent {
     onError,
   ];
 }
+
+class CreateAdminUserEvent extends CreateUserScreenEvent {
+  final Map<String, dynamic> user;
+  final Function onSuccess;
+  final Function(String error) onError;
+
+  const CreateAdminUserEvent({
+    required this.user,
+    required this.onSuccess,
+    required this.onError,
+  });
+
+  @override
+  List<Object?> get props => [
+    user,
+    onSuccess,
+    onError,
+  ];
+}

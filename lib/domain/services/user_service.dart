@@ -42,6 +42,14 @@ class UserService {
     );
   }
 
+  Future<bool> createAdminUser({
+    required Map<String, dynamic> user,
+  }) async {
+    return _userRepository.createAdminUser(
+      user: user,
+    );
+  }
+
   Future<bool> createUser({
     required Map<String, dynamic> user,
     required String userType,

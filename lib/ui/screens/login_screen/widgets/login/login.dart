@@ -125,7 +125,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () => widget.loginScreenBloc.add(const LoadRegisterScreenEvent()),
                     child: const Text('REGISTRAR',
                         style: TextStyle(
                           fontSize: 16,

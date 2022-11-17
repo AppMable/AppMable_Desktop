@@ -25,6 +25,9 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
   ) : super(const LoginScreenInitial()) {
     on<LogInEvent>(_handleLogin);
     on<LogOutEvent>(_handleLogOut);
+    on<LoadLogInScreenEvent>(_handleLoadLogInScreen);
+    on<LoadRegisterScreenEvent>(_handleLoadRegisterScreen);
+    add(const LoadLogInScreenEvent());
   }
 
   Future<void> _handleLogin(
@@ -71,5 +74,19 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
     } catch (e) {
       event.onLogOutError('Algo inesperado ocurrió, vuelve a intentar');
     }
+  }
+
+  void _handleLoadLogInScreen(
+    LoadLogInScreenEvent event,
+    Emitter<LoginScreenState> emit,
+  ) {
+    emit(const LoginScreenLoaded());
+  }
+
+  void _handleLoadRegisterScreen(
+    LoadRegisterScreenEvent event,
+    Emitter<LoginScreenState> emit,
+  ) {
+    emit(const RegisterScreenLoaded());
   }
 }

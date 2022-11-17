@@ -16,6 +16,7 @@ class HttpUserRepository implements UserRepository {
 
   static const String urlGetAllUsers = 'http://127.0.0.1:8000/users/?c=<userToken>&t=<userType>';
   static const String urlCrud = 'http://127.0.0.1:8000/users/d/?id=<userId>&t=<userType>&c=<userToken>';
+  static const String urlCreateAdminUser = 'http://127.0.0.1:8000/users/';
 
   @override
   Future<List<User>> getUsers({
@@ -112,6 +113,24 @@ class HttpUserRepository implements UserRepository {
     try {
       final Response response = await _httpService.post(
         Uri.parse(urlCreateUser),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(user),
+      );
+      return response.statusCode == 201;
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<bool> createAdminUser({
+    required Map<String, dynamic> user,
+  }) async {
+    try {
+      final Response response = await _httpService.post(
+        Uri.parse(urlCreateAdminUser),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
