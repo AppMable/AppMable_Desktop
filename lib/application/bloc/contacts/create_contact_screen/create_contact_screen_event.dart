@@ -13,11 +13,13 @@ class CreateContactScreenEventLoad extends CreateContactScreenEvent {
 
 class CreateContactEvent extends CreateContactScreenEvent {
   final Map<String, dynamic> contact;
+  final int userId;
   final Function onSuccess;
   final Function(String error) onError;
 
   const CreateContactEvent({
     required this.contact,
+    required this.userId,
     required this.onSuccess,
     required this.onError,
   });
@@ -25,6 +27,7 @@ class CreateContactEvent extends CreateContactScreenEvent {
   @override
   List<Object?> get props => [
     contact,
+    userId,
     onSuccess,
     onError,
   ];

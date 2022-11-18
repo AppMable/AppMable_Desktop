@@ -39,7 +39,7 @@ class UpdateContactScreenBloc extends Bloc<UpdateContactScreenEvent, UpdateConta
         contact: event.contact,
         userToken: userLoginInformation.userToken,
       )) {
-        _contactsScreenBloc.add(ContactsScreenEventLoad(userId: event.contact['user_id']));
+        _contactsScreenBloc.add(ContactsScreenEventLoad(userId: event.userId));
         event.onSuccess();
       } else {
         event.onError('No se ha modificar el usuario');

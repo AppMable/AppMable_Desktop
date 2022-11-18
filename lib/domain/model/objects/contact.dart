@@ -12,7 +12,7 @@ class Contact extends Equatable {
   final String email;
   final DateTime? dateCreated;
   final DateTime? dateUpdated;
-  final int? idUser;
+  final List? idUser;
 
   const Contact({
     required this.id,
@@ -49,8 +49,8 @@ class Contact extends Equatable {
       'phone_number': surname,
       'address': address,
       'email': email,
-      'date_created': dateCreated,
-      'date_updated': dateUpdated,
+      'date_created': dateCreated != null ? dateCreated.toString() : dateCreated,
+      'date_updated': dateUpdated != null ? dateUpdated.toString() : dateUpdated,
       'id_user': idUser,
     };
 
@@ -66,7 +66,7 @@ class Contact extends Equatable {
         map['email'] is! String ||
         (map['date_created'] is! String?) ||
         (map['date_updated'] is! String?) ||
-        (map['id_user'] is! String?)) throw MalformedButtonMapException(map);
+        (map['id_user'] is! List?)) throw MalformedButtonMapException(map);
 
     return Contact(
       id: map['id'],

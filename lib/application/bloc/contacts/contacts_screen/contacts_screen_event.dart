@@ -7,6 +7,10 @@ abstract class ContactsScreenEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class ContactsScreenEventReset extends ContactsScreenEvent {
+  const ContactsScreenEventReset();
+}
+
 class ContactsScreenEventLoad extends ContactsScreenEvent {
   final int userId;
 

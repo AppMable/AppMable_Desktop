@@ -147,6 +147,7 @@ class _UpdateContactScreenState extends State<UpdateContactScreen> {
                                   onPressed: () {
                                     _updateContactScreenBloc.add(UpdateContactEvent(
                                       contact: _contactMap,
+                                      userId: args.userId,
                                       onError: (String errorMsg) {
                                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                           backgroundColor: AppTheme.error600,
@@ -219,8 +220,10 @@ class _UpdateContactScreenState extends State<UpdateContactScreen> {
 
 class UpdateContactScreenParams {
   final Contact contact;
+  final int userId;
 
   const UpdateContactScreenParams({
     required this.contact,
+    required this.userId,
   });
 }

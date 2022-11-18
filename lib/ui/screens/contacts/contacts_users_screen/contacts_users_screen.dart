@@ -1,3 +1,4 @@
+import 'package:appmable_desktop/application/bloc/contacts/contacts_screen/contacts_screen_bloc.dart';
 import 'package:appmable_desktop/application/bloc/users/users_screen/users_screen_bloc.dart';
 import 'package:appmable_desktop/domain/model/objects/user.dart';
 import 'package:appmable_desktop/ui/common/app_layout/app_layout.dart';
@@ -17,6 +18,7 @@ class ContactsUsersScreen extends StatelessWidget {
   ContactsUsersScreen({Key? key}) : super(key: key);
 
   final UsersScreenBloc _usersScreenBloc = GetIt.instance.get<UsersScreenBloc>();
+  final ContactsScreenBloc _contactsScreenBloc = GetIt.instance.get<ContactsScreenBloc>();
 
   @override
   Widget build(BuildContext context) {
@@ -91,6 +93,9 @@ class ContactsUsersScreen extends StatelessWidget {
                                               .map(
                                                 ((User user) => DataRow(
                                                       onSelectChanged: (_) {
+
+                                                        _contactsScreenBloc.add(const ContactsScreenEventReset());
+
                                                         Navigator.of(context).pushNamed(
                                                           ContactsScreen.routeName,
                                                           arguments: ContactsScreenParams(

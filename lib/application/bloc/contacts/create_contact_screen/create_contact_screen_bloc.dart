@@ -39,15 +39,14 @@ class CreateContactScreenBloc extends Bloc<CreateContactScreenEvent, CreateConta
         contact: event.contact,
         userToken: userLoginInformation.userToken,
       )) {
-        _contactsScreenBloc.add(ContactsScreenEventLoad(userId: event.contact['user_id']));
+        _contactsScreenBloc.add(ContactsScreenEventLoad(userId: event.userId));
         event.onSuccess();
+        emit(const ContactCreated());
       } else {
         event.onError('No se ha podido crear el usuario');
       }
     } catch (_) {
       event.onError('No se ha podido crear el usuario');
     }
-
-    emit(const ContactCreated());
   }
 }

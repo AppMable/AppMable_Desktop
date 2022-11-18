@@ -115,6 +115,7 @@ class ContactsScreen extends StatelessWidget {
                                                           UpdateContactScreen.routeName,
                                                           arguments: UpdateContactScreenParams(
                                                             contact: contact,
+                                                            userId: args.userId,
                                                           ),
                                                         );
                                                       },
@@ -135,7 +136,7 @@ class ContactsScreen extends StatelessWidget {
                                                               _contactsScreenBloc.add(
                                                                 ContactsScreenDeleteEvent(
                                                                   contactId: contact.id,
-                                                                  userId: contact.idUser!,
+                                                                  userId: args.userId,
                                                                   onError: (String errorMsg) {
                                                                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                                                       backgroundColor: AppTheme.error600,

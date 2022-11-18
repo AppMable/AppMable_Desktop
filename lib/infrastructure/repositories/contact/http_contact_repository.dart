@@ -15,15 +15,15 @@ class HttpContactRepository implements ContactRepository {
   );
 
   static const String urlGetAllContacts = 'http://127.0.0.1:8000/users/contact/?c=<userToken>';
-  // static const String urlCrud = 'http://127.0.0.1:8000/users/d/contact/?id=<contactId>&c=<userToken>';
-  static const String urlCrud = 'http://127.0.0.1:8000/users/d/contact/?c=<userToken>';
+  static const String urlCreateContact = 'http://127.0.0.1:8000/users/d/contact/?c=<userToken>';
+  static const String urlCrud = 'http://127.0.0.1:8000/users/d/contact/?id=<contactId>&c=<userToken>';
 
   @override
   Future<List<Contact>> getContacts({
     required int userId,
     required String userToken,
   }) async {
-    final String url = urlCrud.replaceAll('<userToken>', userToken);
+    final String url = urlGetAllContacts.replaceAll('<userToken>', userToken);
 
     final Response response = await _httpService.get(Uri.parse(url));
 
@@ -33,7 +33,7 @@ class HttpContactRepository implements ContactRepository {
       List<dynamic> contactsDecoded = jsonDecode(utf8.decode(response.bodyBytes));
 
       for (Map<String, dynamic> contact in contactsDecoded) {
-        if (contact['user_id'] == userId) contacts.add(Contact.fromMap(contact));
+        if (contact['id_user'].contains(userId)) contacts.add(Contact.fromMap(contact));
       }
 
       return contacts;
@@ -47,7 +47,7 @@ class HttpContactRepository implements ContactRepository {
     required int contactId,
     required String userToken,
   }) async {
-    final String url = urlCrud.replaceAll('<userToken>', userToken);
+    final String url = urlGetAllContacts.replaceAll('<userToken>', userToken);
 
     final Response response = await _httpService.get(Uri.parse(url));
 
@@ -80,11 +80,11 @@ class HttpContactRepository implements ContactRepository {
     required Map<String, dynamic> contact,
     required String userToken,
   }) async {
-    final String urlCreateContact = urlGetAllContacts.replaceAll('<userToken>', userToken);
+    final String urlCreateContactReplaced = urlGetAllContacts.replaceAll('<userToken>', userToken);
 
     try {
       final Response response = await _httpService.post(
-        Uri.parse(urlCreateContact),
+        Uri.parse(urlCreateContactReplaced),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

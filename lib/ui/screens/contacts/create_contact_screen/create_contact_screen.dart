@@ -29,10 +29,23 @@ class _CreateContactScreenState extends State<CreateContactScreen> {
   }) async =>
       setState(() => _contactMap[key] = value.isNotEmpty ? value : null);
 
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final CreateContactScreenParams args = ModalRoute.of(context)!.settings.arguments! as CreateContactScreenParams;
+      _contactMap['id_user'] = [args.userId];
+    });
+
+    super.initState();
+  }
+
   final CreateContactScreenBloc _createContactScreenBloc = GetIt.instance.get<CreateContactScreenBloc>();
 
   @override
   Widget build(BuildContext context) {
+
+    final CreateContactScreenParams args = ModalRoute.of(context)!.settings.arguments! as CreateContactScreenParams;
+
     return Scaffold(
       body: SafeArea(
         child: AppLayout(
@@ -129,6 +142,7 @@ class _CreateContactScreenState extends State<CreateContactScreen> {
                                   onPressed: () {
                                     _createContactScreenBloc.add(CreateContactEvent(
                                       contact: _contactMap,
+                                      userId: args.userId,
                                       onError: (String errorMsg) {
                                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                           backgroundColor: AppTheme.error600,
@@ -159,7 +173,7 @@ class _CreateContactScreenState extends State<CreateContactScreen> {
                                     ));
                                   },
                                   child: const Text(
-                                    'Crear tutelado',
+                                    'Crear contacto',
                                     style: TextStyle(
                                       fontSize: 16,
                                       color: Colors.black,

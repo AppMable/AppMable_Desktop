@@ -22,8 +22,16 @@ class ContactsScreenBloc extends Bloc<ContactsScreenEvent, ContactsScreenState> 
     this._contactService,
     this._localStorageService,
   ) : super(const ContactsScreenInitial()) {
+    on<ContactsScreenEventReset>(_handleReset);
     on<ContactsScreenEventLoad>(_handleLoad);
     on<ContactsScreenDeleteEvent>(_handleDeleteContact);
+  }
+
+  void _handleReset(
+    ContactsScreenEventReset event,
+    Emitter<ContactsScreenState> emit,
+  ) {
+    emit(const ContactsScreenInitial());
   }
 
   Future<void> _handleLoad(
