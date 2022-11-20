@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:appmable_desktop/config.dart';
 import 'package:appmable_desktop/domain/model/objects/alert.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
@@ -30,7 +31,9 @@ class AlertsScreenBloc extends Bloc<AlertsScreenEvent, AlertsScreenState> {
     AlertsScreenEventLoad event,
     Emitter<AlertsScreenState> emit,
   ) async {
+
     emit(const AlertsScreenLoading());
+    await Future.delayed(Duration(milliseconds: Config.defaultDelay), () {});
 
     final UserLoginInformation userLoginInformation =
         UserLoginInformation.fromMap(jsonDecode(_localStorageService.read(LoginScreen.userLoginInformation)));

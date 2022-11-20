@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:appmable_desktop/config.dart';
 import 'package:appmable_desktop/domain/model/objects/contact.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
@@ -39,6 +40,7 @@ class ContactsScreenBloc extends Bloc<ContactsScreenEvent, ContactsScreenState> 
     Emitter<ContactsScreenState> emit,
   ) async {
     emit(const ContactsScreenLoading());
+    await Future.delayed(Duration(milliseconds: Config.defaultDelay), () {});
 
     final UserLoginInformation userLoginInformation =
         UserLoginInformation.fromMap(jsonDecode(_localStorageService.read(LoginScreen.userLoginInformation)));
