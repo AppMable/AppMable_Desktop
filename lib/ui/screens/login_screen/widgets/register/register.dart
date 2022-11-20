@@ -209,7 +209,7 @@ class _RegisterState extends State<Register> {
                                 ),
                               ),
                               onPressed: () {
-                                _createUserScreenBloc.add(CreateUserEvent(
+                                _createUserScreenBloc.add(CreateAdminUserEvent(
                                   user: _userMap,
                                   onError: (String errorMsg) {
                                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

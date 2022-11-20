@@ -41,9 +41,9 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
       );
 
       if (userLoginInformation != null) {
-        emit(const UserLogged());
         _localStorageService.write(LoginScreen.userLoginInformation, userLoginInformation.toJson());
         event.onLogInSuccess();
+        emit(const UserLogged());
       } else {
         event.onLogInError('Algo inesperado ocurrió, vuelve a intentar');
       }

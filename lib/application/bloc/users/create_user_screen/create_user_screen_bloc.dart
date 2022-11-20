@@ -45,8 +45,6 @@ class CreateUserScreenBloc extends Bloc<CreateUserScreenEvent, CreateUserScreenS
     try {
       if (await _userService.createUser(
         user: event.user,
-        userType: 'user',
-        userToken: userLoginInformation.userToken,
       )) {
         _usersScreenBloc.add(const UsersScreenEventLoad());
         event.onSuccess();
@@ -69,6 +67,8 @@ class CreateUserScreenBloc extends Bloc<CreateUserScreenEvent, CreateUserScreenS
     DateTime dateOfBirth = DateFormat("dd-MM-yyyy").parse(event.user['date_of_birth']);
 
     event.user['date_of_birth'] = DateFormat('yyyy-MM-dd').format(dateOfBirth);
+
+    event.user['id_user_role'] = 2;
 
     try {
       if (await _userService.createAdminUser(

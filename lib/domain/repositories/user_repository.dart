@@ -19,8 +19,6 @@ abstract class UserRepository {
 
   Future<bool> createUser({
     required Map<String, dynamic> user,
-    required String userType,
-    required String userToken,
   });
 
   Future<bool> createAdminUser({

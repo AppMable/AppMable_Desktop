@@ -46,8 +46,6 @@ void main() {
       setUp: () {
         when(userService.createUser(
           user: userToCreate,
-          userType: 'user',
-          userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(true));
       },
       build: () => UpdateUserScreenBloc(
@@ -80,8 +78,6 @@ void main() {
       setUp: () {
         when(userService.createUser(
           user: userToCreate,
-          userType: 'user',
-          userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(false));
       },
       build: () => UpdateUserScreenBloc(
@@ -114,8 +110,6 @@ void main() {
       setUp: () {
         when(userService.createUser(
           user: userToCreate,
-          userType: 'user',
-          userToken: userLoginInformation.userToken,
         )).thenThrow((_) => UnimplementedError());
       },
       build: () => UpdateUserScreenBloc(

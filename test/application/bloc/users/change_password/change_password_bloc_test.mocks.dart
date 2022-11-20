@@ -79,20 +79,22 @@ class MockUserService extends _i1.Mock implements _i2.UserService {
         returnValue: _i3.Future<bool>.value(false),
       ) as _i3.Future<bool>);
   @override
-  _i3.Future<bool> createUser({
-    required Map<String, dynamic>? user,
-    required String? userType,
-    required dynamic userToken,
-  }) =>
+  _i3.Future<bool> createAdminUser({required Map<String, dynamic>? user}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #createAdminUser,
+          [],
+          {#user: user},
+        ),
+        returnValue: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
+  @override
+  _i3.Future<bool> createUser({required Map<String, dynamic>? user}) =>
       (super.noSuchMethod(
         Invocation.method(
           #createUser,
           [],
-          {
-            #user: user,
-            #userType: userType,
-            #userToken: userToken,
-          },
+          {#user: user},
         ),
         returnValue: _i3.Future<bool>.value(false),
       ) as _i3.Future<bool>);

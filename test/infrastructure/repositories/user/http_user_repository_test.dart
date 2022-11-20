@@ -26,7 +26,6 @@ void main() {
     // Read All Users
 
     test('Read All Users - OK', () async {
-
       List<User> usersExpected = List<User>.generate(faker.randomGenerator.integer(10),
           (int index) => userMockGeneratorFromHttpResponse(idUserReference: userLoginInformation.userId));
 
@@ -233,8 +232,6 @@ void main() {
       expect(
           await repository.createUser(
             user: user.toMap(),
-            userType: userType,
-            userToken: userToken,
           ),
           true);
     });
@@ -267,8 +264,6 @@ void main() {
       expect(
           await repository.createUser(
             user: user.toMap(),
-            userType: userType,
-            userToken: userToken,
           ),
           false);
     });

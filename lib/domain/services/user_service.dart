@@ -52,13 +52,9 @@ class UserService {
 
   Future<bool> createUser({
     required Map<String, dynamic> user,
-    required String userType,
-    required userToken,
   }) async {
     return _userRepository.createUser(
       user: user,
-      userType: userType,
-      userToken: userToken,
     );
   }
 
