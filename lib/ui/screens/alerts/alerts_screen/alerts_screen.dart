@@ -11,6 +11,7 @@ import 'package:appmable_desktop/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 
 class AlertsScreen extends StatelessWidget {
   static const String routeName = '/alerts-screen';
@@ -27,7 +28,7 @@ class AlertsScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: AppLayout(
-          title: 'Alertos',
+          title: 'Alertas',
           content: Row(
             children: [
               Expanded(
@@ -40,7 +41,7 @@ class AlertsScreen extends StatelessWidget {
                         title: '',
                         suffix: TextButton(
                           child: Text(
-                            'Añadir alerto',
+                            'Añadir alerta',
                             style: TextStyle(
                               color: Styles.defaultRedColor,
                               fontWeight: FontWeight.w600,
@@ -58,7 +59,7 @@ class AlertsScreen extends StatelessWidget {
                           (state.alerts.isEmpty)
                               ? const Padding(
                                   padding: EdgeInsets.all(25.0),
-                                  child: Text('No se han encontrado alertos'),
+                                  child: Text('No se han encontrado alertas'),
                                 )
                               : Row(
                                   children: [
@@ -72,7 +73,7 @@ class AlertsScreen extends StatelessWidget {
                                             DataColumn(
                                               label: Center(
                                                 child: Text(
-                                                  'Nombre y apellidos',
+                                                  'Nombre',
                                                   style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
                                                   textAlign: TextAlign.right,
                                                 ),
@@ -81,7 +82,7 @@ class AlertsScreen extends StatelessWidget {
                                             DataColumn(
                                               label: Center(
                                                 child: Text(
-                                                  'Teléfono de alerto',
+                                                  'Descripción',
                                                   style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
                                                   textAlign: TextAlign.center,
                                                 ),
@@ -90,7 +91,7 @@ class AlertsScreen extends StatelessWidget {
                                             DataColumn(
                                               label: Center(
                                                 child: Text(
-                                                  'Email',
+                                                  'Fecha activación',
                                                   style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
                                                   textAlign: TextAlign.center,
                                                 ),
@@ -99,7 +100,7 @@ class AlertsScreen extends StatelessWidget {
                                             DataColumn(
                                               label: Center(
                                                 child: Text(
-                                                  'Dirección',
+                                                  'Fecha desactivación',
                                                   style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
                                                   textAlign: TextAlign.center,
                                                 ),
@@ -115,27 +116,32 @@ class AlertsScreen extends StatelessWidget {
                                                           UpdateAlertScreen.routeName,
                                                           arguments: UpdateAlertScreenParams(
                                                             alert: alert,
+                                                            userId: args.userId,
                                                           ),
                                                         );
                                                       },
                                                       cells: <DataCell>[
-                                                        DataCell(Text('${alert.name} ${alert.surname}')),
                                                         DataCell(Text(
-                                                          alert.phoneNumber,
+                                                          alert.name,
                                                         )),
                                                         DataCell(Text(
-                                                          alert.email,
+                                                          alert.description ?? 'Sin descripción',
                                                         )),
-                                                        DataCell(Text(
-                                                          alert.address,
-                                                        )),
+                                                        DataCell(Text(alert.dateEnabled == null
+                                                            ? 'No tiene fecha de activación'
+                                                            : DateFormat('dd-MM-yyyy HH:mm')
+                                                            .format(alert.dateEnabled!))),
+                                                        DataCell(Text(alert.dateDisabled == null
+                                                            ? 'No tiene fecha de desactivación'
+                                                            : DateFormat('dd-MM-yyyy HH:mm')
+                                                            .format(alert.dateDisabled!))),
                                                         DataCell(Center(
                                                           child: IconButton(
                                                             onPressed: () {
                                                               _alertsScreenBloc.add(
                                                                 AlertsScreenDeleteEvent(
                                                                   alertId: alert.id,
-                                                                  userId: alert.idUser!,
+                                                                  userId: alert.idUser,
                                                                   onError: (String errorMsg) {
                                                                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                                                       backgroundColor: AppTheme.error600,

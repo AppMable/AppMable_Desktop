@@ -1,56 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:appmable_desktop/ui/theme/app_theme.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart';
 
-typedef StringCallback = void Function(String val);
+typedef DateTimeCallback = void Function(DateTime val);
 
-class TextInput extends StatefulWidget {
+class DateTimePickerInput extends StatefulWidget {
   final String label;
   final String? placeholder;
-  final String? value;
-  final StringCallback callback;
+  final DateTime? value;
+  final DateTimeCallback callback;
   final bool isLabelCaption;
-  final int? maxLimitCharacters;
-  final bool isPasswordField;
   final MainAxisSize mainAxisSize;
   final bool withExpanded;
   final Function()? onTap;
-  final bool readOnly;
-  final TextEditingController? textEditingController;
 
-  const TextInput({
+  const DateTimePickerInput({
     required this.label,
     required this.callback,
     this.value,
     this.placeholder,
     this.isLabelCaption = false,
-    this.maxLimitCharacters,
-    this.isPasswordField = false,
     this.mainAxisSize = MainAxisSize.max,
     this.withExpanded = true,
     this.onTap,
-    this.readOnly = false,
-    this.textEditingController,
     super.key,
   });
 
   @override
-  State<TextInput> createState() => _TextInputState();
+  State<DateTimePickerInput> createState() => _TextInputState();
 }
 
-class _TextInputState extends State<TextInput> {
+class _TextInputState extends State<DateTimePickerInput> {
   final FocusNode _focus = FocusNode();
-  late TextEditingController _textController;
+  final TextEditingController _textController = TextEditingController();
   bool _isFocus = false;
 
   @override
   void initState() {
     super.initState();
-    _textController = widget.textEditingController ?? TextEditingController();
-    if(widget.textEditingController == null){
-      _textController.text = widget.value ?? '';
-    } else {
-      _textController.value = widget.textEditingController!.value;
-    }
+    _textController.text = widget.value != null ? DateFormat('dd-MM-yyyy HH:mm').format(widget.value!) : '';
     _focus.addListener(_onFocusChange);
   }
 
@@ -79,13 +68,10 @@ class _TextInputState extends State<TextInput> {
               widget.value,
               widget.callback,
               widget.isLabelCaption,
-              widget.maxLimitCharacters,
-              widget.isPasswordField,
               widget.mainAxisSize,
               _textController,
               _focus,
               widget.onTap,
-              widget.readOnly,
             ))
           : _Field(
               _isFocus,
@@ -94,13 +80,10 @@ class _TextInputState extends State<TextInput> {
               widget.value,
               widget.callback,
               widget.isLabelCaption,
-              widget.maxLimitCharacters,
-              widget.isPasswordField,
               widget.mainAxisSize,
               _textController,
               _focus,
               widget.onTap,
-              widget.readOnly,
             );
     });
   }
@@ -110,16 +93,13 @@ class _Field extends StatelessWidget {
   final bool isFocus;
   final String label;
   final String? placeholder;
-  final String? value;
-  final StringCallback callback;
+  final DateTime? value;
+  final DateTimeCallback callback;
   final bool isLabelCaption;
-  final int? maxLimitCharacters;
-  final bool isPasswordField;
   final MainAxisSize mainAxisSize;
   final TextEditingController textController;
   final FocusNode focus;
   final Function()? onTap;
-  final bool readOnly;
 
   const _Field(
     this.isFocus,
@@ -128,13 +108,10 @@ class _Field extends StatelessWidget {
     this.value,
     this.callback,
     this.isLabelCaption,
-    this.maxLimitCharacters,
-    this.isPasswordField,
     this.mainAxisSize,
     this.textController,
     this.focus,
     this.onTap,
-    this.readOnly,
   );
 
   @override
@@ -153,17 +130,31 @@ class _Field extends StatelessWidget {
         ),
         const SizedBox(height: 5),
         TextFormField(
-          readOnly: readOnly,
-          onTap: onTap,
-          obscureText: isPasswordField,
-          enableSuggestions: !isPasswordField,
-          autocorrect: !isPasswordField,
-          maxLength: (maxLimitCharacters != null) ? maxLimitCharacters : null,
+          onTap: () {
+
+            DateTime currentTime = value == null ? DateTime.now() : value!;
+
+            DatePicker.showDateTimePicker(
+              context,
+              showTitleActions: true,
+              currentTime: currentTime,
+              minTime: DateTime(currentTime.year - 2, currentTime.month, currentTime.day, currentTime.hour, currentTime.minute),
+              maxTime: DateTime(currentTime.year + 2, currentTime.month, currentTime.day, currentTime.hour, currentTime.minute),
+              onConfirm: (DateTime date) {
+                String dateFormatted = DateFormat('dd-MM-yyyy HH:mm').format(date);
+
+                callback(date);
+                textController.text = dateFormatted;
+              },
+              locale: LocaleType.es,
+            );
+          },
+          readOnly: true,
+          autocorrect: false,
           controller: textController,
           focusNode: focus,
           keyboardType: TextInputType.text,
           style: const TextStyle(color: Colors.black),
-          onChanged: callback,
           decoration: InputDecoration(
             focusedBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: AppTheme.primary600, width: 2),

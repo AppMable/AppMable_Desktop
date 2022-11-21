@@ -13,11 +13,13 @@ class UpdateAlertScreenEventLoad extends UpdateAlertScreenEvent {
 
 class UpdateAlertEvent extends UpdateAlertScreenEvent {
   final Map<String, dynamic> alert;
+  final int userId;
   final Function onSuccess;
   final Function(String error) onError;
 
   const UpdateAlertEvent({
     required this.alert,
+    required this.userId,
     required this.onSuccess,
     required this.onError,
   });
@@ -25,6 +27,7 @@ class UpdateAlertEvent extends UpdateAlertScreenEvent {
   @override
   List<Object?> get props => [
     alert,
+    userId,
     onSuccess,
     onError,
   ];

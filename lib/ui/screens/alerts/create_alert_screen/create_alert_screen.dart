@@ -3,6 +3,7 @@ import 'package:appmable_desktop/ui/common/app_layout/app_layout.dart';
 import 'package:appmable_desktop/ui/common/app_layout/responsive.dart';
 import 'package:appmable_desktop/ui/common/app_layout/styles.dart';
 import 'package:appmable_desktop/ui/common/app_layout/widgets/category_box.dart';
+import 'package:appmable_desktop/ui/common/forms/datetime_picker_input.dart';
 import 'package:appmable_desktop/ui/common/forms/text_input.dart';
 import 'package:appmable_desktop/ui/screens/dashboard_screen/dashboard_screen.dart';
 import 'package:appmable_desktop/ui/theme/app_theme.dart';
@@ -21,7 +22,20 @@ class CreateAlertScreen extends StatefulWidget {
 class _CreateAlertScreenState extends State<CreateAlertScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  final Map<String, dynamic> _alertMap = {};
+  final Map<String, dynamic> _alertMap = {
+    'sound_level': 3,
+    'vibration_level': 3,
+  };
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final CreateAlertScreenParams args = ModalRoute.of(context)!.settings.arguments! as CreateAlertScreenParams;
+      _alertMap['id_user'] = args.userId;
+    });
+
+    super.initState();
+  }
 
   Future<void> _updateAlert({
     required String key,
@@ -29,14 +43,23 @@ class _CreateAlertScreenState extends State<CreateAlertScreen> {
   }) async =>
       setState(() => _alertMap[key] = value.isNotEmpty ? value : null);
 
+  Future<void> _updateDate({
+    required String key,
+    required DateTime value,
+  }) async =>
+      setState(() => _alertMap[key] = value);
+
   final CreateAlertScreenBloc _createAlertScreenBloc = GetIt.instance.get<CreateAlertScreenBloc>();
 
   @override
   Widget build(BuildContext context) {
+
+    final CreateAlertScreenParams args = ModalRoute.of(context)!.settings.arguments! as CreateAlertScreenParams;
+
     return Scaffold(
       body: SafeArea(
         child: AppLayout(
-          title: 'Crear Alerto',
+          title: 'Crear Alerta',
           content: Row(
             children: [
               Expanded(
@@ -64,7 +87,6 @@ class _CreateAlertScreenState extends State<CreateAlertScreen> {
                               Row(
                                 children: [
                                   TextInput(
-                                    placeholder: 'e. g Jon',
                                     label: 'Nombre',
                                     callback: (value) => _updateAlert(
                                       key: 'name',
@@ -73,10 +95,9 @@ class _CreateAlertScreenState extends State<CreateAlertScreen> {
                                   ),
                                   const SizedBox(width: 20),
                                   TextInput(
-                                    placeholder: 'e. g Doe',
-                                    label: 'Apellidos',
+                                    label: 'Descripción',
                                     callback: (value) => _updateAlert(
-                                      key: 'surname',
+                                      key: 'description',
                                       value: value.trim(),
                                     ),
                                   ),
@@ -85,26 +106,118 @@ class _CreateAlertScreenState extends State<CreateAlertScreen> {
                               const SizedBox(height: 50),
                               Row(
                                 children: [
-                                  TextInput(
-                                    label: 'Email',
-                                    callback: (value) => _updateAlert(
-                                      key: 'email',
-                                      value: value.trim(),
+                                  Expanded(
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          'Volumen: ${_alertMap['sound_level'].round().toString()}',
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 16,
+                                            color: AppTheme.neutral800,
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                        SliderTheme(
+                                          data: SliderTheme.of(context).copyWith(
+                                            trackHeight: 2,
+                                            minThumbSeparation: 20,
+                                            thumbColor: AppTheme.primary900,
+                                            thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 12.0),
+                                            overlayColor: AppTheme.primary200,
+                                            inactiveTickMarkColor: Colors.amber,
+                                            inactiveTrackColor: AppTheme.neutral400,
+                                            activeTickMarkColor: Colors.red,
+                                            activeTrackColor: AppTheme.success600,
+                                          ),
+                                          child: Slider(
+                                            value: _alertMap['sound_level'].toDouble(),
+                                            min: 0,
+                                            max: 5,
+                                            label: _alertMap['sound_level'].round().toString(),
+                                            divisions: 5,
+                                            onChanged: (double value) {
+                                              setState(() {
+                                                _alertMap['sound_level'] = value.toInt();
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   const SizedBox(width: 20),
-                                  TextInput(
-                                    label: 'Teléfono',
-                                    callback: (value) => _updateAlert(
-                                      key: 'phone_number',
-                                      value: value.trim(),
+                                  Expanded(
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          'Vibración: ${_alertMap['vibration_level'].round().toString()}',
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 16,
+                                            color: AppTheme.neutral800,
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                        SliderTheme(
+                                          data: SliderTheme.of(context).copyWith(
+                                            trackHeight: 2,
+                                            minThumbSeparation: 20,
+                                            thumbColor: AppTheme.primary900,
+                                            thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 12.0),
+                                            overlayColor: AppTheme.primary200,
+                                            inactiveTickMarkColor: Colors.amber,
+                                            inactiveTrackColor: AppTheme.neutral400,
+                                            activeTickMarkColor: Colors.red,
+                                            activeTrackColor: AppTheme.success600,
+                                          ),
+                                          child: Slider(
+                                            value: _alertMap['vibration_level'].toDouble(),
+                                            min: 0,
+                                            max: 5,
+                                            label: _alertMap['vibration_level'].round().toString(),
+                                            divisions: 5,
+                                            onChanged: (double value) {
+                                              setState(() {
+                                                _alertMap['vibration_level'] = value.toInt();
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ],
                                     ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 50),
+                              Row(
+                                children: [
+                                  DateTimePickerInput(
+                                    value: _alertMap['date_enabled'],
+                                    label: 'Fecha Activación',
+                                    callback: (value) {
+                                      _updateDate(
+                                        key: 'date_enabled',
+                                        value: value,
+                                      );
+                                    },
+                                  ),
+                                  const SizedBox(width: 20),
+                                  DateTimePickerInput(
+                                    value: _alertMap['date_disabled'],
+                                    label: 'Fecha Desactivación',
+                                    callback: (value) {
+                                      _updateDate(
+                                        key: 'date_disabled',
+                                        value: value,
+                                      );
+                                    },
                                   ),
                                   const SizedBox(width: 20),
                                   TextInput(
-                                    label: 'Dirección',
+                                    label: 'Periocidad en Milisegundos',
                                     callback: (value) => _updateAlert(
-                                      key: 'address',
+                                      key: 'time_length',
                                       value: value.trim(),
                                     ),
                                   ),
@@ -129,6 +242,7 @@ class _CreateAlertScreenState extends State<CreateAlertScreen> {
                                   onPressed: () {
                                     _createAlertScreenBloc.add(CreateAlertEvent(
                                       alert: _alertMap,
+                                      userId: args.userId,
                                       onError: (String errorMsg) {
                                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                           backgroundColor: AppTheme.error600,
@@ -142,7 +256,6 @@ class _CreateAlertScreenState extends State<CreateAlertScreen> {
                                         ));
                                       },
                                       onSuccess: () {
-
                                         Navigator.of(context).pop();
 
                                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -159,7 +272,7 @@ class _CreateAlertScreenState extends State<CreateAlertScreen> {
                                     ));
                                   },
                                   child: const Text(
-                                    'Crear tutelado',
+                                    'Crear alerta',
                                     style: TextStyle(
                                       fontSize: 16,
                                       color: Colors.black,
@@ -207,4 +320,3 @@ class CreateAlertScreenParams {
     required this.userId,
   });
 }
-

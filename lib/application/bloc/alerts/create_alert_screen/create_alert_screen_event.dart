@@ -13,11 +13,13 @@ class CreateAlertScreenEventLoad extends CreateAlertScreenEvent {
 
 class CreateAlertEvent extends CreateAlertScreenEvent {
   final Map<String, dynamic> alert;
+  final int userId;
   final Function onSuccess;
   final Function(String error) onError;
 
   const CreateAlertEvent({
     required this.alert,
+    required this.userId,
     required this.onSuccess,
     required this.onError,
   });
@@ -25,6 +27,7 @@ class CreateAlertEvent extends CreateAlertScreenEvent {
   @override
   List<Object?> get props => [
     alert,
+    userId,
     onSuccess,
     onError,
   ];

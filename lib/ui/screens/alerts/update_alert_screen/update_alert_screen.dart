@@ -4,11 +4,13 @@ import 'package:appmable_desktop/ui/common/app_layout/app_layout.dart';
 import 'package:appmable_desktop/ui/common/app_layout/responsive.dart';
 import 'package:appmable_desktop/ui/common/app_layout/styles.dart';
 import 'package:appmable_desktop/ui/common/app_layout/widgets/category_box.dart';
+import 'package:appmable_desktop/ui/common/forms/datetime_picker_input.dart';
 import 'package:appmable_desktop/ui/common/forms/text_input.dart';
 import 'package:appmable_desktop/ui/screens/dashboard_screen/dashboard_screen.dart';
 import 'package:appmable_desktop/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 
 class UpdateAlertScreen extends StatefulWidget {
   static const String routeName = '/update-alert-screen';
@@ -22,7 +24,7 @@ class UpdateAlertScreen extends StatefulWidget {
 class _UpdateAlertScreenState extends State<UpdateAlertScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  late Map<String, dynamic> _alertMap;
+  Map<String, dynamic> _alertMap = {};
 
   Future<void> _updateAlert({
     required String key,
@@ -30,13 +32,18 @@ class _UpdateAlertScreenState extends State<UpdateAlertScreen> {
   }) async =>
       setState(() => _alertMap[key] = value.isNotEmpty ? value : null);
 
+  Future<void> _updateDate({
+    required String key,
+    required DateTime value,
+  }) async =>
+      setState(() => _alertMap[key] = value);
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final UpdateAlertScreenParams args = ModalRoute.of(context)!.settings.arguments! as UpdateAlertScreenParams;
       _alertMap = args.alert.toMap();
     });
-
     super.initState();
   }
 
@@ -45,11 +52,12 @@ class _UpdateAlertScreenState extends State<UpdateAlertScreen> {
   @override
   Widget build(BuildContext context) {
     final UpdateAlertScreenParams args = ModalRoute.of(context)!.settings.arguments! as UpdateAlertScreenParams;
+    if(_alertMap.isEmpty) setState(() => _alertMap = args.alert.toMap());
 
     return Scaffold(
       body: SafeArea(
         child: AppLayout(
-          title: 'Modificar tutelado',
+          title: 'Modificar Alerta',
           content: Row(
             children: [
               Expanded(
@@ -77,9 +85,8 @@ class _UpdateAlertScreenState extends State<UpdateAlertScreen> {
                               Row(
                                 children: [
                                   TextInput(
-                                    placeholder: 'e. g Jon',
+                                    value: _alertMap['name'],
                                     label: 'Nombre',
-                                    value: args.alert.name,
                                     callback: (value) => _updateAlert(
                                       key: 'name',
                                       value: value.trim(),
@@ -87,11 +94,10 @@ class _UpdateAlertScreenState extends State<UpdateAlertScreen> {
                                   ),
                                   const SizedBox(width: 20),
                                   TextInput(
-                                    placeholder: 'e. g Doe',
-                                    label: 'Apellidos',
-                                    value: args.alert.surname,
+                                    value: _alertMap['description'],
+                                    label: 'Descripción',
                                     callback: (value) => _updateAlert(
-                                      key: 'surname',
+                                      key: 'description',
                                       value: value.trim(),
                                     ),
                                   ),
@@ -100,29 +106,119 @@ class _UpdateAlertScreenState extends State<UpdateAlertScreen> {
                               const SizedBox(height: 50),
                               Row(
                                 children: [
-                                  TextInput(
-                                    label: 'Email',
-                                    value: args.alert.email,
-                                    callback: (value) => _updateAlert(
-                                      key: 'email',
-                                      value: value.trim(),
+                                  Expanded(
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          'Volumen: ${_alertMap['sound_level'].round().toString()}',
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 16,
+                                            color: AppTheme.neutral800,
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                        SliderTheme(
+                                          data: SliderTheme.of(context).copyWith(
+                                            trackHeight: 2,
+                                            minThumbSeparation: 20,
+                                            thumbColor: AppTheme.primary900,
+                                            thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 12.0),
+                                            overlayColor: AppTheme.primary200,
+                                            inactiveTickMarkColor: Colors.amber,
+                                            inactiveTrackColor: AppTheme.neutral400,
+                                            activeTickMarkColor: Colors.red,
+                                            activeTrackColor: AppTheme.success600,
+                                          ),
+                                          child: Slider(
+                                            value: _alertMap['sound_level'].toDouble(),
+                                            min: 0,
+                                            max: 5,
+                                            label: _alertMap['sound_level'].round().toString(),
+                                            divisions: 5,
+                                            onChanged: (double value) {
+                                              setState(() {
+                                                _alertMap['sound_level'] = value.toInt();
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   const SizedBox(width: 20),
-                                  TextInput(
-                                    label: 'Teléfono',
-                                    value: args.alert.phoneNumber,
-                                    callback: (value) => _updateAlert(
-                                      key: 'phone_number',
-                                      value: value.trim(),
+                                  Expanded(
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          'Vibración: ${_alertMap['vibration_level'].round().toString()}',
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 16,
+                                            color: AppTheme.neutral800,
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                        SliderTheme(
+                                          data: SliderTheme.of(context).copyWith(
+                                            trackHeight: 2,
+                                            minThumbSeparation: 20,
+                                            thumbColor: AppTheme.primary900,
+                                            thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 12.0),
+                                            overlayColor: AppTheme.primary200,
+                                            inactiveTickMarkColor: Colors.amber,
+                                            inactiveTrackColor: AppTheme.neutral400,
+                                            activeTickMarkColor: Colors.red,
+                                            activeTrackColor: AppTheme.success600,
+                                          ),
+                                          child: Slider(
+                                            value: _alertMap['vibration_level'].toDouble(),
+                                            min: 0,
+                                            max: 5,
+                                            label: _alertMap['vibration_level'].round().toString(),
+                                            divisions: 5,
+                                            onChanged: (double value) {
+                                              setState(() {
+                                                _alertMap['vibration_level'] = value.toInt();
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ],
                                     ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 50),
+                              Row(
+                                children: [
+                                  DateTimePickerInput(
+                                    value: _alertMap['date_enabled'] is DateTime ? _alertMap['date_enabled'] : DateFormat("yyyy-MM-dd HH:mm").parse(_alertMap['date_enabled']),
+                                    label: 'Fecha Activación',
+                                    callback: (DateTime value) {
+                                      _updateDate(
+                                        key: 'date_enabled',
+                                        value: value,
+                                      );
+                                    },
+                                  ),
+                                  const SizedBox(width: 20),
+                                  DateTimePickerInput(
+                                    value: _alertMap['date_disabled'],
+                                    label: 'Fecha Desactivación',
+                                    callback: (DateTime value) {
+                                      _updateDate(
+                                        key: 'date_disabled',
+                                        value: value,
+                                      );
+                                    },
                                   ),
                                   const SizedBox(width: 20),
                                   TextInput(
-                                    label: 'Dirección',
-                                    value: args.alert.address,
+                                    value: _alertMap['time_length'].toString(),
+                                    label: 'Periocidad en Milisegundos',
                                     callback: (value) => _updateAlert(
-                                      key: 'address',
+                                      key: 'time_length',
                                       value: value.trim(),
                                     ),
                                   ),
@@ -147,6 +243,7 @@ class _UpdateAlertScreenState extends State<UpdateAlertScreen> {
                                   onPressed: () {
                                     _updateAlertScreenBloc.add(UpdateAlertEvent(
                                       alert: _alertMap,
+                                      userId: args.userId,
                                       onError: (String errorMsg) {
                                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                           backgroundColor: AppTheme.error600,
@@ -165,7 +262,7 @@ class _UpdateAlertScreenState extends State<UpdateAlertScreen> {
                                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                           backgroundColor: Color(0xff5cb85c),
                                           content: Text(
-                                            'Se han guardado los cambios correctamente',
+                                            'Se ha creado correctamente',
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white,
@@ -189,7 +286,7 @@ class _UpdateAlertScreenState extends State<UpdateAlertScreen> {
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -219,8 +316,10 @@ class _UpdateAlertScreenState extends State<UpdateAlertScreen> {
 
 class UpdateAlertScreenParams {
   final Alert alert;
+  final int userId;
 
   const UpdateAlertScreenParams({
     required this.alert,
+    required this.userId,
   });
 }

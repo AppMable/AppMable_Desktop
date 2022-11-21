@@ -14,16 +14,16 @@ class HttpAlertRepository implements AlertRepository {
     this._httpService,
   );
 
-  static const String urlGetAllAlerts = 'http://127.0.0.1:8000/users/alert/?c=<userToken>';
-  // static const String urlCrud = 'http://127.0.0.1:8000/users/d/alert/?id=<alertId>&c=<userToken>';
-  static const String urlCrud = 'http://127.0.0.1:8000/users/d/alert/?c=<userToken>';
+  static const String urlAlert = 'http://127.0.0.1:8000/users/alerts/?c=<userToken>';
+  static const String urlDeleteUpdateAlert = 'http://127.0.0.1:8000/users/alerts/?id=<alertId>&c=<userToken>';
 
+  /*
   @override
   Future<List<Alert>> getAlerts({
     required int userId,
     required String userToken,
   }) async {
-    final String url = urlCrud.replaceAll('<userToken>', userToken);
+    final String url = urlAlert.replaceAll('<userToken>', userToken);
 
     final Response response = await _httpService.get(Uri.parse(url));
 
@@ -41,13 +41,31 @@ class HttpAlertRepository implements AlertRepository {
 
     return [];
   }
+  */
+
+  @override
+  Future<List<Alert>> getAlerts({
+    required int userId,
+    required String userToken,
+  }) async {
+    final String url = urlDeleteUpdateAlert.replaceAll('<alertId>', '9').replaceAll('<userToken>', userToken);
+
+    final Response response = await _httpService.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> alertsDecoded = jsonDecode(response.body);
+
+      return [Alert.fromMap(alertsDecoded)];
+    }
+    return [];
+  }
 
   @override
   Future<Alert?> getAlert({
     required int alertId,
     required String userToken,
   }) async {
-    final String url = urlCrud.replaceAll('<userToken>', userToken);
+    final String url = urlDeleteUpdateAlert.replaceAll('<alertId>', alertId.toString()).replaceAll('<userToken>', userToken);
 
     final Response response = await _httpService.get(Uri.parse(url));
 
@@ -66,9 +84,7 @@ class HttpAlertRepository implements AlertRepository {
     required int alertId,
     required String userToken,
   }) async {
-    final String urlDelete = urlCrud
-        .replaceAll('<alertId>', alertId.toString())
-        .replaceAll('<userToken>', userToken);
+    final String urlDelete = urlDeleteUpdateAlert.replaceAll('<alertId>', alertId.toString()).replaceAll('<userToken>', userToken);
 
     final Response response = await _httpService.delete(Uri.parse(urlDelete));
 
@@ -80,7 +96,7 @@ class HttpAlertRepository implements AlertRepository {
     required Map<String, dynamic> alert,
     required String userToken,
   }) async {
-    final String urlCreateAlert = urlGetAllAlerts.replaceAll('<userToken>', userToken);
+    final String urlCreateAlert = urlAlert.replaceAll('<userToken>', userToken);
 
     try {
       final Response response = await _httpService.post(
@@ -102,7 +118,7 @@ class HttpAlertRepository implements AlertRepository {
     required String userToken,
   }) async {
     final String urlUpdateAlert =
-        urlCrud.replaceAll('<alertId>', alert['id'].toString()).replaceAll('<userToken>', userToken);
+    urlDeleteUpdateAlert.replaceAll('<alertId>', alert['id'].toString()).replaceAll('<userToken>', userToken);
 
     try {
       final Response response = await _httpService.put(
