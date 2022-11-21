@@ -7,6 +7,10 @@ abstract class AlertsScreenEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class AlertsScreenEventReset extends AlertsScreenEvent {
+  const AlertsScreenEventReset();
+}
+
 class AlertsScreenEventLoad extends AlertsScreenEvent {
   final int userId;
 

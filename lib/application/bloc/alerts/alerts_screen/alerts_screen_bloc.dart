@@ -25,13 +25,20 @@ class AlertsScreenBloc extends Bloc<AlertsScreenEvent, AlertsScreenState> {
   ) : super(const AlertsScreenInitial()) {
     on<AlertsScreenEventLoad>(_handleLoad);
     on<AlertsScreenDeleteEvent>(_handleDeleteAlert);
+    on<AlertsScreenEventReset>(_handleReset);
+  }
+
+  void _handleReset(
+    AlertsScreenEventReset event,
+    Emitter<AlertsScreenState> emit,
+  ) {
+    emit(const AlertsScreenInitial());
   }
 
   Future<void> _handleLoad(
     AlertsScreenEventLoad event,
     Emitter<AlertsScreenState> emit,
   ) async {
-
     emit(const AlertsScreenLoading());
     await Future.delayed(Duration(milliseconds: Config.defaultDelay), () {});
 

@@ -4,6 +4,10 @@ import 'package:equatable/equatable.dart';
 import 'package:appmable_desktop/domain/exceptions/malformed_map_exception.dart';
 
 class Alert extends Equatable {
+  static int minLevel = 0;
+  static int maxLevel = 5;
+  static int defaultLevel = 3;
+
   final int id;
   final String name;
   final String? description;
@@ -77,6 +81,14 @@ class Alert extends Equatable {
         (map['date_disabled'] is! String?) ||
         (map['date_created'] is! String?) ||
         (map['date_updated'] is! String?)) throw MalformedButtonMapException(map);
+
+    if (map['sound_level'] < minLevel || map['sound_level'] > maxLevel) {
+      map['sound_level'] = defaultLevel;
+    }
+
+    if (map['vibration_level'] < minLevel || map['vibration_level'] > maxLevel) {
+      map['vibration_level'] = defaultLevel;
+    }
 
     return Alert(
       id: map['id'],

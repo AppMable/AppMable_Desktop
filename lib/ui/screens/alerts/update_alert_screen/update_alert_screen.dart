@@ -132,10 +132,10 @@ class _UpdateAlertScreenState extends State<UpdateAlertScreen> {
                                           ),
                                           child: Slider(
                                             value: _alertMap['sound_level'].toDouble(),
-                                            min: 0,
-                                            max: 5,
+                                            min: Alert.minLevel.toDouble(),
+                                            max: Alert.maxLevel.toDouble(),
                                             label: _alertMap['sound_level'].round().toString(),
-                                            divisions: 5,
+                                            divisions: Alert.maxLevel,
                                             onChanged: (double value) {
                                               setState(() {
                                                 _alertMap['sound_level'] = value.toInt();
@@ -173,10 +173,10 @@ class _UpdateAlertScreenState extends State<UpdateAlertScreen> {
                                           ),
                                           child: Slider(
                                             value: _alertMap['vibration_level'].toDouble(),
-                                            min: 0,
-                                            max: 5,
+                                            min: Alert.minLevel.toDouble(),
+                                            max: Alert.maxLevel.toDouble(),
                                             label: _alertMap['vibration_level'].round().toString(),
-                                            divisions: 5,
+                                            divisions: Alert.maxLevel,
                                             onChanged: (double value) {
                                               setState(() {
                                                 _alertMap['vibration_level'] = value.toInt();
@@ -193,7 +193,7 @@ class _UpdateAlertScreenState extends State<UpdateAlertScreen> {
                               Row(
                                 children: [
                                   DateTimePickerInput(
-                                    value: _alertMap['date_enabled'] is DateTime ? _alertMap['date_enabled'] : DateFormat("yyyy-MM-dd HH:mm").parse(_alertMap['date_enabled']),
+                                    value: _alertMap['date_enabled'] is DateTime ? _alertMap['date_enabled'] : (_alertMap['date_enabled'] != null ? DateFormat("yyyy-MM-dd HH:mm").parse(_alertMap['date_enabled']) : _alertMap['date_enabled']),
                                     label: 'Fecha Activación',
                                     callback: (DateTime value) {
                                       _updateDate(
@@ -204,7 +204,7 @@ class _UpdateAlertScreenState extends State<UpdateAlertScreen> {
                                   ),
                                   const SizedBox(width: 20),
                                   DateTimePickerInput(
-                                    value: _alertMap['date_disabled'],
+                                    value: _alertMap['date_disabled'] is DateTime ? _alertMap['date_disabled'] : (_alertMap['date_disabled'] != null ? DateFormat("yyyy-MM-dd HH:mm").parse(_alertMap['date_disabled']) : _alertMap['date_disabled']),
                                     label: 'Fecha Desactivación',
                                     callback: (DateTime value) {
                                       _updateDate(

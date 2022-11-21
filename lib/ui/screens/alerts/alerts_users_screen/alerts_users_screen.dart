@@ -1,3 +1,4 @@
+import 'package:appmable_desktop/application/bloc/alerts/alerts_screen/alerts_screen_bloc.dart';
 import 'package:appmable_desktop/application/bloc/users/users_screen/users_screen_bloc.dart';
 import 'package:appmable_desktop/domain/model/objects/user.dart';
 import 'package:appmable_desktop/ui/common/app_layout/app_layout.dart';
@@ -18,6 +19,7 @@ class AlertsUsersScreen extends StatelessWidget {
   AlertsUsersScreen({Key? key}) : super(key: key);
 
   final UsersScreenBloc _usersScreenBloc = GetIt.instance.get<UsersScreenBloc>();
+  final AlertsScreenBloc _alertsScreenBloc = GetIt.instance.get<AlertsScreenBloc>();
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +94,9 @@ class AlertsUsersScreen extends StatelessWidget {
                                               .map(
                                                 ((User user) => DataRow(
                                                       onSelectChanged: (_) {
+
+                                                        _alertsScreenBloc.add(const AlertsScreenEventReset());
+
                                                         Navigator.of(context).pushNamed(
                                                           AlertsScreen.routeName,
                                                           arguments: AlertsScreenParams(

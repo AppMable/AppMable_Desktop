@@ -1,4 +1,5 @@
 import 'package:appmable_desktop/application/bloc/alerts/create_alert_screen/create_alert_screen_bloc.dart';
+import 'package:appmable_desktop/domain/model/objects/alert.dart';
 import 'package:appmable_desktop/ui/common/app_layout/app_layout.dart';
 import 'package:appmable_desktop/ui/common/app_layout/responsive.dart';
 import 'package:appmable_desktop/ui/common/app_layout/styles.dart';
@@ -23,8 +24,8 @@ class _CreateAlertScreenState extends State<CreateAlertScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final Map<String, dynamic> _alertMap = {
-    'sound_level': 3,
-    'vibration_level': 3,
+    'sound_level': Alert.defaultLevel,
+    'vibration_level': Alert.defaultLevel,
   };
 
   @override
@@ -132,10 +133,10 @@ class _CreateAlertScreenState extends State<CreateAlertScreen> {
                                           ),
                                           child: Slider(
                                             value: _alertMap['sound_level'].toDouble(),
-                                            min: 0,
-                                            max: 5,
+                                            min: Alert.minLevel.toDouble(),
+                                            max: Alert.maxLevel.toDouble(),
                                             label: _alertMap['sound_level'].round().toString(),
-                                            divisions: 5,
+                                            divisions: Alert.maxLevel,
                                             onChanged: (double value) {
                                               setState(() {
                                                 _alertMap['sound_level'] = value.toInt();
@@ -173,10 +174,10 @@ class _CreateAlertScreenState extends State<CreateAlertScreen> {
                                           ),
                                           child: Slider(
                                             value: _alertMap['vibration_level'].toDouble(),
-                                            min: 0,
-                                            max: 5,
+                                            min: Alert.minLevel.toDouble(),
+                                            max: Alert.maxLevel.toDouble(),
                                             label: _alertMap['vibration_level'].round().toString(),
-                                            divisions: 5,
+                                            divisions: Alert.maxLevel,
                                             onChanged: (double value) {
                                               setState(() {
                                                 _alertMap['vibration_level'] = value.toInt();
