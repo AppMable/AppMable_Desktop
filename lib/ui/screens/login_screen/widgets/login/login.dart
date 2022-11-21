@@ -52,8 +52,6 @@ class _LoginState extends State<Login> {
                   isPasswordField: true,
                 ),
                 const SizedBox(height: 50),
-                const BtnRestorePassword(),
-                const SizedBox(height: 20),
                 BtnLogIn(
                   passwordController: _passwordController,
                   usernameController: _usernameController,

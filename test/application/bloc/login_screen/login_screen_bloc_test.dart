@@ -58,6 +58,7 @@ void main() {
         onLogInError: onLogInError,
       )),
       expect: () => [
+        const LoginScreenLoaded(),
         const UserLogged(),
       ],
       verify: (_) {
@@ -92,7 +93,9 @@ void main() {
         onLogInSuccess: onLogInSuccess,
         onLogInError: onLogInError,
       )),
-      expect: () => [],
+      expect: () => [
+        const LoginScreenLoaded(),
+      ],
       verify: (_) {
         assert(
           localStorageService.read(LoginScreen.userLoginInformation) == null,
@@ -125,7 +128,9 @@ void main() {
         onLogInSuccess: onLogInSuccess,
         onLogInError: onLogInError,
       )),
-      expect: () => [],
+      expect: () => [
+        const LoginScreenLoaded(),
+      ],
       verify: (_) {
         assert(
           localStorageService.read(LoginScreen.userLoginInformation) == null,
@@ -158,7 +163,7 @@ void main() {
         onLogOutError: onLogOutError,
       )),
       expect: () => [
-        const UserLoggedOut(),
+        const LoginScreenLoaded(),
       ],
       verify: (_) {
         assert(
@@ -191,7 +196,9 @@ void main() {
         onLogOutSuccess: onLogOutSuccess,
         onLogOutError: onLogOutError,
       )),
-      expect: () => [],
+      expect: () => [
+        const LoginScreenLoaded(),
+      ],
       verify: (_) {
         assert(
           localStorageService.read(LoginScreen.userLoginInformation) is String,
@@ -223,7 +230,9 @@ void main() {
         onLogOutSuccess: onLogOutSuccess,
         onLogOutError: onLogOutError,
       )),
-      expect: () => [],
+      expect: () => [
+        const LoginScreenLoaded(),
+      ],
       verify: (_) {
         assert(
         localStorageService.read(LoginScreen.userLoginInformation) is String,

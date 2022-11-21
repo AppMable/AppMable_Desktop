@@ -206,11 +206,9 @@ void main() {
 
     test('Create User - OK', () async {
       final User user = userMockGenerator();
-      final String userType = faker.lorem.words(1).first;
-      final String userToken = faker.lorem.words(1).first;
 
       final String url =
-          HttpUserRepository.urlGetAllUsers.replaceAll('<userType>', userType).replaceAll('<userToken>', userToken);
+          HttpUserRepository.urlCreateUser.replaceAll('<userType>', 'user');
 
       when(httpService.post(
         Uri.parse(url),
@@ -238,11 +236,9 @@ void main() {
 
     test('Create User - KO', () async {
       final User user = userMockGenerator();
-      final String userType = faker.lorem.words(1).first;
-      final String userToken = faker.lorem.words(1).first;
 
       final String url =
-          HttpUserRepository.urlGetAllUsers.replaceAll('<userType>', userType).replaceAll('<userToken>', userToken);
+          HttpUserRepository.urlCreateUser.replaceAll('<userType>', 'user');
 
       when(httpService.post(
         Uri.parse(url),
@@ -307,7 +303,7 @@ void main() {
           true);
     });
 
-    test('Create User - KO', () async {
+    test('Update User - KO', () async {
       final User user = userMockGenerator();
       final String userId = user.id.toString();
       final String userType = faker.lorem.words(1).first;

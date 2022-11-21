@@ -1,4 +1,5 @@
 import 'package:appmable_desktop/application/bloc/dashboard_screen/dashboard_screen_bloc.dart';
+import 'package:appmable_desktop/config.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
 import 'package:appmable_desktop/domain/services/user_service.dart';
@@ -36,6 +37,7 @@ void main() {
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(userMockGenerator(id: 1)));
       },
+      wait: Duration(milliseconds: Config.defaultDelay),
       build: () => DashboardScreenBloc(
         localStorageService,
         userService,
@@ -72,6 +74,7 @@ void main() {
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(null));
       },
+      wait: Duration(milliseconds: Config.defaultDelay),
       build: () => DashboardScreenBloc(
         localStorageService,
         userService,

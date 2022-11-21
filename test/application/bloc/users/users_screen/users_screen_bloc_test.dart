@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:appmable_desktop/application/bloc/users/users_screen/users_screen_bloc.dart';
+import 'package:appmable_desktop/config.dart';
 import 'package:appmable_desktop/domain/model/objects/user.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
@@ -46,6 +47,7 @@ void main() {
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(users));
       },
+      wait: Duration(milliseconds: Config.defaultDelay),
       build: () => UsersScreenBloc(
         userService,
         localStorageService,
@@ -86,6 +88,7 @@ void main() {
         userService,
         localStorageService,
       ),
+      wait: Duration(milliseconds: Config.defaultDelay),
       act: (UsersScreenBloc bloc) => bloc.add(UsersScreenDeleteEvent(
         userId: userIdToDelete,
         onSuccess: onDeleteSuccess,
@@ -94,15 +97,9 @@ void main() {
       expect: () => [
         const UsersScreenLoading(),
         UsersScreenLoaded(users: users),
-        const UsersScreenLoading(),
-        UsersScreenLoaded(users: users),
       ],
       verify: (_) {
         verifyInOrder([
-          userService.getUsers(
-            userReferenceId: userLoginInformation.userId,
-            userToken: userLoginInformation.userToken,
-          ),
           userService.deleteUser(
             userId: userIdToDelete,
             userType: 'user',
@@ -134,6 +131,7 @@ void main() {
         userService,
         localStorageService,
       ),
+      wait: Duration(milliseconds: Config.defaultDelay),
       act: (UsersScreenBloc bloc) => bloc.add(UsersScreenDeleteEvent(
         userId: userIdToDelete,
         onSuccess: onDeleteSuccess,
@@ -142,7 +140,6 @@ void main() {
       expect: () => [
         const UsersScreenLoading(),
         UsersScreenLoaded(users: users),
-        const UsersScreenLoading(),
       ],
       verify: (_) {
         verifyInOrder([
@@ -177,6 +174,7 @@ void main() {
         userService,
         localStorageService,
       ),
+      wait: Duration(milliseconds: Config.defaultDelay),
       act: (UsersScreenBloc bloc) => bloc.add(UsersScreenDeleteEvent(
         userId: userIdToDelete,
         onSuccess: onDeleteSuccess,
@@ -185,7 +183,6 @@ void main() {
       expect: () => [
         const UsersScreenLoading(),
         UsersScreenLoaded(users: users),
-        const UsersScreenLoading(),
       ],
       verify: (_) {
         verifyInOrder([
