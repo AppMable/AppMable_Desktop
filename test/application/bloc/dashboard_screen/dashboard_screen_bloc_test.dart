@@ -37,7 +37,7 @@ void main() {
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(userMockGenerator(id: 1)));
       },
-      wait: Duration(milliseconds: Config.defaultDelay),
+      wait: Duration(milliseconds: Config.defaultDelay * 2),
       build: () => DashboardScreenBloc(
         localStorageService,
         userService,
@@ -74,7 +74,7 @@ void main() {
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(null));
       },
-      wait: Duration(milliseconds: Config.defaultDelay),
+      wait: Duration(milliseconds: Config.defaultDelay * 2),
       build: () => DashboardScreenBloc(
         localStorageService,
         userService,

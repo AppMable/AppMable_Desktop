@@ -1,10 +1,10 @@
 import 'dart:developer';
 
-import 'package:appmable_desktop/application/bloc/contacts/contacts_screen/contacts_screen_bloc.dart';
+import 'package:appmable_desktop/application/bloc/alerts/alerts_screen/alerts_screen_bloc.dart';
 import 'package:appmable_desktop/config.dart';
-import 'package:appmable_desktop/domain/model/objects/contact.dart';
+import 'package:appmable_desktop/domain/model/objects/alert.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
-import 'package:appmable_desktop/domain/services/contact_service.dart';
+import 'package:appmable_desktop/domain/services/alert_service.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
 import 'package:appmable_desktop/ui/screens/login_screen/login_screen.dart';
 
@@ -14,16 +14,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../../../domain/model/objects/mock/contact_mock.dart';
+import '../../../../domain/model/objects/mock/alert_mock.dart';
 import '../../../../domain/model/value_objects/mock/user_login_mock.dart';
 import '../../../../domain/services/storage/mock/local_storage_service_mock.dart';
-import 'contacts_screen_bloc_test.mocks.dart';
+import 'alerts_screen_bloc_test.mocks.dart';
 
 @GenerateMocks([
-  ContactService,
+  AlertService,
 ])
 void main() {
-  final ContactService contactService = MockContactService();
+  final AlertService alertService = MockAlertService();
   final LocalStorageService localStorageService = LocalStorageServiceMock();
 
   final Faker faker = Faker();
@@ -33,24 +33,24 @@ void main() {
 
   final int userId = faker.randomGenerator.integer(20);
 
-  List<Contact> contacts =
-      List<Contact>.generate(faker.randomGenerator.integer(10), (int index) => contactMockGenerator(idUser: [userId]));
+  List<Alert> alerts =
+      List<Alert>.generate(faker.randomGenerator.integer(10), (int index) => alertMockGenerator(idUser: userId));
 
   onDeleteSuccess() => log('Success');
   onDeleteError(String error) => log(error);
 
-  group('Contacts Screen BLoC', () {
-    // ContactScreenEventLoad
-    blocTest<ContactsScreenBloc, ContactsScreenState>(
+  group('Alerts Screen BLoC', () {
+    // AlertScreenEventLoad
+    blocTest<AlertsScreenBloc, AlertsScreenState>(
       'Success Load',
       setUp: () {
-        when(contactService.getContacts(
+        when(alertService.getAlerts(
           userId: userId,
           userToken: userLoginInformation.userToken,
-        )).thenAnswer((_) => Future.value(contacts));
+        )).thenAnswer((_) => Future.value(alerts));
       },
-      build: () => ContactsScreenBloc(
-        contactService,
+      build: () => AlertsScreenBloc(
+        alertService,
         localStorageService,
       ),
       expect: () => [],
@@ -59,29 +59,29 @@ void main() {
       },
     );
 
-    blocTest<ContactsScreenBloc, ContactsScreenState>(
+    blocTest<AlertsScreenBloc, AlertsScreenState>(
       'Success Load - Sending Event',
       setUp: () {
-        when(contactService.getContacts(
+        when(alertService.getAlerts(
           userId: userId,
           userToken: userLoginInformation.userToken,
-        )).thenAnswer((_) => Future.value(contacts));
+        )).thenAnswer((_) => Future.value(alerts));
       },
       wait: Duration(milliseconds: Config.defaultDelay * 2),
-      build: () => ContactsScreenBloc(
-        contactService,
+      build: () => AlertsScreenBloc(
+        alertService,
         localStorageService,
       ),
-      act: (ContactsScreenBloc bloc) => bloc.add(ContactsScreenEventLoad(
+      act: (AlertsScreenBloc bloc) => bloc.add(AlertsScreenEventLoad(
         userId: userId,
       )),
       expect: () => [
-        const ContactsScreenLoading(),
-        ContactsScreenLoaded(contacts: contacts),
+        const AlertsScreenLoading(),
+        AlertsScreenLoaded(alerts: alerts),
       ],
       verify: (_) {
         verifyInOrder([
-          contactService.getContacts(
+          alertService.getAlerts(
             userId: userId,
             userToken: userLoginInformation.userToken,
           ),
@@ -89,45 +89,45 @@ void main() {
       },
     );
 
-    // ContactsScreenLoadedDeleteEvent
+    // AlertsScreenLoadedDeleteEvent
 
-    final int contactIdToDelete = faker.randomGenerator.integer(5);
+    final int alertIdToDelete = faker.randomGenerator.integer(5);
 
-    blocTest<ContactsScreenBloc, ContactsScreenState>(
+    blocTest<AlertsScreenBloc, AlertsScreenState>(
       'Success Delete',
       setUp: () {
-        when(contactService.getContacts(
+        when(alertService.getAlerts(
           userId: userId,
           userToken: userLoginInformation.userToken,
-        )).thenAnswer((_) => Future.value(contacts));
+        )).thenAnswer((_) => Future.value(alerts));
 
-        when(contactService.deleteContact(
-          contactId: contactIdToDelete,
+        when(alertService.deleteAlert(
+          alertId: alertIdToDelete,
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(true));
       },
       wait: Duration(milliseconds: Config.defaultDelay * 2),
-      build: () => ContactsScreenBloc(
-        contactService,
+      build: () => AlertsScreenBloc(
+        alertService,
         localStorageService,
       ),
-      act: (ContactsScreenBloc bloc) => bloc.add(ContactsScreenDeleteEvent(
-        contactId: contactIdToDelete,
+      act: (AlertsScreenBloc bloc) => bloc.add(AlertsScreenDeleteEvent(
+        alertId: alertIdToDelete,
         userId: userId,
         onSuccess: onDeleteSuccess,
         onError: onDeleteError,
       )),
       expect: () => [
-        const ContactsScreenLoading(),
-        ContactsScreenLoaded(contacts: contacts),
+        const AlertsScreenLoading(),
+        AlertsScreenLoaded(alerts: alerts),
       ],
       verify: (_) {
         verifyInOrder([
-          contactService.deleteContact(
-            contactId: contactIdToDelete,
+          alertService.deleteAlert(
+            alertId: alertIdToDelete,
             userToken: userLoginInformation.userToken,
           ),
-          contactService.getContacts(
+          alertService.getAlerts(
             userId: userId,
             userToken: userLoginInformation.userToken,
           ),
@@ -135,72 +135,72 @@ void main() {
       },
     );
 
-    blocTest<ContactsScreenBloc, ContactsScreenState>(
+    blocTest<AlertsScreenBloc, AlertsScreenState>(
       'Delete - False',
       setUp: () {
-        when(contactService.getContacts(
+        when(alertService.getAlerts(
           userId: userId,
           userToken: userLoginInformation.userToken,
-        )).thenAnswer((_) => Future.value(contacts));
+        )).thenAnswer((_) => Future.value(alerts));
 
-        when(contactService.deleteContact(
-          contactId: contactIdToDelete,
+        when(alertService.deleteAlert(
+          alertId: alertIdToDelete,
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(false));
       },
-      build: () => ContactsScreenBloc(
-        contactService,
+      build: () => AlertsScreenBloc(
+        alertService,
         localStorageService,
       ),
-      act: (ContactsScreenBloc bloc) => bloc.add(ContactsScreenDeleteEvent(
-        contactId: contactIdToDelete,
+      act: (AlertsScreenBloc bloc) => bloc.add(AlertsScreenDeleteEvent(
+        alertId: alertIdToDelete,
         userId: userId,
         onSuccess: onDeleteSuccess,
         onError: onDeleteError,
       )),
       expect: () => [
-        const ContactsScreenLoading(),
+        const AlertsScreenLoading(),
       ],
       verify: (_) {
         verifyInOrder([
-          contactService.deleteContact(
-            contactId: contactIdToDelete,
+          alertService.deleteAlert(
+            alertId: alertIdToDelete,
             userToken: userLoginInformation.userToken,
           ),
         ]);
       },
     );
 
-    blocTest<ContactsScreenBloc, ContactsScreenState>(
+    blocTest<AlertsScreenBloc, AlertsScreenState>(
       'Delete - Exception',
       setUp: () {
-        when(contactService.getContacts(
+        when(alertService.getAlerts(
           userId: userId,
           userToken: userLoginInformation.userToken,
-        )).thenAnswer((_) => Future.value(contacts));
+        )).thenAnswer((_) => Future.value(alerts));
 
-        when(contactService.deleteContact(
-          contactId: contactIdToDelete,
+        when(alertService.deleteAlert(
+          alertId: alertIdToDelete,
           userToken: userLoginInformation.userToken,
         )).thenThrow((_) => UnimplementedError());
       },
-      build: () => ContactsScreenBloc(
-        contactService,
+      build: () => AlertsScreenBloc(
+        alertService,
         localStorageService,
       ),
-      act: (ContactsScreenBloc bloc) => bloc.add(ContactsScreenDeleteEvent(
+      act: (AlertsScreenBloc bloc) => bloc.add(AlertsScreenDeleteEvent(
         userId: userId,
-        contactId: contactIdToDelete,
+        alertId: alertIdToDelete,
         onSuccess: onDeleteSuccess,
         onError: onDeleteError,
       )),
       expect: () => [
-        const ContactsScreenLoading(),
+        const AlertsScreenLoading(),
       ],
       verify: (_) {
         verifyInOrder([
-          contactService.deleteContact(
-            contactId: contactIdToDelete,
+          alertService.deleteAlert(
+            alertId: alertIdToDelete,
             userToken: userLoginInformation.userToken,
           ),
         ]);

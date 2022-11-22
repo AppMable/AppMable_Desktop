@@ -47,7 +47,7 @@ void main() {
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(users));
       },
-      wait: Duration(milliseconds: Config.defaultDelay),
+      wait: Duration(milliseconds: Config.defaultDelay * 2),
       build: () => UsersScreenBloc(
         userService,
         localStorageService,
@@ -88,7 +88,7 @@ void main() {
         userService,
         localStorageService,
       ),
-      wait: Duration(milliseconds: Config.defaultDelay),
+      wait: Duration(milliseconds: Config.defaultDelay * 2),
       act: (UsersScreenBloc bloc) => bloc.add(UsersScreenDeleteEvent(
         userId: userIdToDelete,
         onSuccess: onDeleteSuccess,
@@ -131,7 +131,7 @@ void main() {
         userService,
         localStorageService,
       ),
-      wait: Duration(milliseconds: Config.defaultDelay),
+      wait: Duration(milliseconds: Config.defaultDelay * 2),
       act: (UsersScreenBloc bloc) => bloc.add(UsersScreenDeleteEvent(
         userId: userIdToDelete,
         onSuccess: onDeleteSuccess,
@@ -174,7 +174,7 @@ void main() {
         userService,
         localStorageService,
       ),
-      wait: Duration(milliseconds: Config.defaultDelay),
+      wait: Duration(milliseconds: Config.defaultDelay * 2),
       act: (UsersScreenBloc bloc) => bloc.add(UsersScreenDeleteEvent(
         userId: userIdToDelete,
         onSuccess: onDeleteSuccess,

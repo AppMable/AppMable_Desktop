@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:appmable_desktop/application/bloc/users/update_user_screen/update_user_screen_bloc.dart';
+import 'package:appmable_desktop/application/bloc/users/create_user_screen/create_user_screen_bloc.dart';
 import 'package:appmable_desktop/application/bloc/users/users_screen/users_screen_bloc.dart';
 import 'package:appmable_desktop/domain/model/objects/user.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
@@ -41,97 +41,88 @@ void main() {
 
     // Create
 
-    blocTest<UpdateUserScreenBloc, UpdateUserScreenState>(
+    blocTest<CreateUserScreenBloc, CreateUserScreenState>(
       'Success Create',
       setUp: () {
         when(userService.createUser(
           user: userToCreate,
         )).thenAnswer((_) => Future.value(true));
       },
-      build: () => UpdateUserScreenBloc(
+      build: () => CreateUserScreenBloc(
         usersScreenBloc,
         userService,
         localStorageService,
       ),
-      act: (UpdateUserScreenBloc bloc) => bloc.add(UpdateUserEvent(
-        userId: user.id.toString(),
+      act: (CreateUserScreenBloc bloc) => bloc.add(CreateUserEvent(
         user: userToCreate,
         onError: onCreateError,
         onSuccess: onCreateSuccess,
       )),
       expect: () => [
-        const UserUpdated(),
+        const UserCreated(),
       ],
       verify: (_) {
         verifyInOrder([
-          userService.updateUser(
+          userService.createUser(
             user: userToCreate,
-            userType: 'user',
-            userToken: userLoginInformation.userToken,
           ),
         ]);
       },
     );
 
-    blocTest<UpdateUserScreenBloc, UpdateUserScreenState>(
+    blocTest<CreateUserScreenBloc, CreateUserScreenState>(
       'User Create - false',
       setUp: () {
         when(userService.createUser(
           user: userToCreate,
         )).thenAnswer((_) => Future.value(false));
       },
-      build: () => UpdateUserScreenBloc(
+      build: () => CreateUserScreenBloc(
         usersScreenBloc,
         userService,
         localStorageService,
       ),
-      act: (UpdateUserScreenBloc bloc) => bloc.add(UpdateUserEvent(
-        userId: user.id.toString(),
+      act: (CreateUserScreenBloc bloc) => bloc.add(CreateUserEvent(
         user: userToCreate,
         onError: onCreateError,
         onSuccess: onCreateSuccess,
       )),
       expect: () => [
-        const UserUpdated(),
+        const UserCreated(),
       ],
       verify: (_) {
         verifyInOrder([
-          userService.updateUser(
+          userService.createUser(
             user: userToCreate,
-            userType: 'user',
-            userToken: userLoginInformation.userToken,
           ),
         ]);
       },
     );
 
-    blocTest<UpdateUserScreenBloc, UpdateUserScreenState>(
+    blocTest<CreateUserScreenBloc, CreateUserScreenState>(
       'User Create - Exception',
       setUp: () {
         when(userService.createUser(
           user: userToCreate,
         )).thenThrow((_) => UnimplementedError());
       },
-      build: () => UpdateUserScreenBloc(
+      build: () => CreateUserScreenBloc(
         usersScreenBloc,
         userService,
         localStorageService,
       ),
-      act: (UpdateUserScreenBloc bloc) => bloc.add(UpdateUserEvent(
-        userId: user.id.toString(),
+      act: (CreateUserScreenBloc bloc) => bloc.add(CreateUserEvent(
         user: userToCreate,
         onError: onCreateError,
         onSuccess: onCreateSuccess,
       )),
       expect: () => [
-        const UserUpdated(),
+        const UserCreated(),
       ],
       verify: (_) {
         verifyInOrder([
-          userService.updateUser(
+          userService.createUser(
             user: userToCreate,
-            userType: 'user',
-            userToken: userLoginInformation.userToken,
           ),
         ]);
       },

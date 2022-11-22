@@ -37,7 +37,7 @@ class HttpUserRepository implements UserRepository {
       List<dynamic> usersDecoded = jsonDecode(utf8.decode(response.bodyBytes));
 
       for (Map<String, dynamic> user in usersDecoded) {
-        if(user['id'] != userReferenceId) users.add(User.fromMap(user));
+        if(user['id_user_reference'] == userReferenceId) users.add(User.fromMap(user));
       }
 
       return users;

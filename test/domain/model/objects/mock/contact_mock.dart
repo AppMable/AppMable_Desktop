@@ -37,7 +37,7 @@ String getContactHttpString(Contact contact) {
     "address": "${contact.address}",
     "date_created": "${contact.dateCreated?.toString()}",
     "date_updated": "${contact.dateUpdated?.toString()}",
-    "id_user": ${contact.idUser},
+    "id_user": ${contact.idUser}
   }
  ''';
 }

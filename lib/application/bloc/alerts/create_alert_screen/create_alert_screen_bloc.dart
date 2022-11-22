@@ -51,13 +51,12 @@ class CreateAlertScreenBloc extends Bloc<CreateAlertScreenEvent, CreateAlertScre
       )) {
         _alertsScreenBloc.add(AlertsScreenEventLoad(userId: event.userId));
         event.onSuccess();
+        emit(const AlertCreated());
       } else {
         event.onError('No se ha podido crear la alerta');
       }
     } catch (_) {
       event.onError('No se ha podido crear la alerta');
     }
-
-    emit(const AlertCreated());
   }
 }

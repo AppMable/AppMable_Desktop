@@ -5,10 +5,10 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i3;
 
-import 'package:appmable_desktop/application/bloc/users/users_screen/users_screen_bloc.dart'
+import 'package:appmable_desktop/application/bloc/contacts/contacts_screen/contacts_screen_bloc.dart'
     as _i2;
-import 'package:appmable_desktop/domain/model/objects/user.dart' as _i6;
-import 'package:appmable_desktop/domain/services/user_service.dart' as _i5;
+import 'package:appmable_desktop/domain/model/objects/contact.dart' as _i6;
+import 'package:appmable_desktop/domain/services/contact_service.dart' as _i5;
 import 'package:flutter_bloc/flutter_bloc.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -23,9 +23,9 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeUsersScreenState_0 extends _i1.SmartFake
-    implements _i2.UsersScreenState {
-  _FakeUsersScreenState_0(
+class _FakeContactsScreenState_0 extends _i1.SmartFake
+    implements _i2.ContactsScreenState {
+  _FakeContactsScreenState_0(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -34,34 +34,35 @@ class _FakeUsersScreenState_0 extends _i1.SmartFake
         );
 }
 
-/// A class which mocks [UsersScreenBloc].
+/// A class which mocks [ContactsScreenBloc].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockUsersScreenBloc extends _i1.Mock implements _i2.UsersScreenBloc {
-  MockUsersScreenBloc() {
+class MockContactsScreenBloc extends _i1.Mock
+    implements _i2.ContactsScreenBloc {
+  MockContactsScreenBloc() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.UsersScreenState get state => (super.noSuchMethod(
+  _i2.ContactsScreenState get state => (super.noSuchMethod(
         Invocation.getter(#state),
-        returnValue: _FakeUsersScreenState_0(
+        returnValue: _FakeContactsScreenState_0(
           this,
           Invocation.getter(#state),
         ),
-      ) as _i2.UsersScreenState);
+      ) as _i2.ContactsScreenState);
   @override
-  _i3.Stream<_i2.UsersScreenState> get stream => (super.noSuchMethod(
+  _i3.Stream<_i2.ContactsScreenState> get stream => (super.noSuchMethod(
         Invocation.getter(#stream),
-        returnValue: _i3.Stream<_i2.UsersScreenState>.empty(),
-      ) as _i3.Stream<_i2.UsersScreenState>);
+        returnValue: _i3.Stream<_i2.ContactsScreenState>.empty(),
+      ) as _i3.Stream<_i2.ContactsScreenState>);
   @override
   bool get isClosed => (super.noSuchMethod(
         Invocation.getter(#isClosed),
         returnValue: false,
       ) as bool);
   @override
-  void add(_i2.UsersScreenEvent? event) => super.noSuchMethod(
+  void add(_i2.ContactsScreenEvent? event) => super.noSuchMethod(
         Invocation.method(
           #add,
           [event],
@@ -69,7 +70,7 @@ class MockUsersScreenBloc extends _i1.Mock implements _i2.UsersScreenBloc {
         returnValueForMissingStub: null,
       );
   @override
-  void onEvent(_i2.UsersScreenEvent? event) => super.noSuchMethod(
+  void onEvent(_i2.ContactsScreenEvent? event) => super.noSuchMethod(
         Invocation.method(
           #onEvent,
           [event],
@@ -77,7 +78,7 @@ class MockUsersScreenBloc extends _i1.Mock implements _i2.UsersScreenBloc {
         returnValueForMissingStub: null,
       );
   @override
-  void emit(_i2.UsersScreenState? state) => super.noSuchMethod(
+  void emit(_i2.ContactsScreenState? state) => super.noSuchMethod(
         Invocation.method(
           #emit,
           [state],
@@ -85,8 +86,8 @@ class MockUsersScreenBloc extends _i1.Mock implements _i2.UsersScreenBloc {
         returnValueForMissingStub: null,
       );
   @override
-  void on<E extends _i2.UsersScreenEvent>(
-    _i4.EventHandler<E, _i2.UsersScreenState>? handler, {
+  void on<E extends _i2.ContactsScreenEvent>(
+    _i4.EventHandler<E, _i2.ContactsScreenState>? handler, {
     _i4.EventTransformer<E>? transformer,
   }) =>
       super.noSuchMethod(
@@ -99,7 +100,7 @@ class MockUsersScreenBloc extends _i1.Mock implements _i2.UsersScreenBloc {
       );
   @override
   void onTransition(
-          _i4.Transition<_i2.UsersScreenEvent, _i2.UsersScreenState>?
+          _i4.Transition<_i2.ContactsScreenEvent, _i2.ContactsScreenState>?
               transition) =>
       super.noSuchMethod(
         Invocation.method(
@@ -118,7 +119,8 @@ class MockUsersScreenBloc extends _i1.Mock implements _i2.UsersScreenBloc {
         returnValueForMissingStub: _i3.Future<void>.value(),
       ) as _i3.Future<void>);
   @override
-  void onChange(_i4.Change<_i2.UsersScreenState>? change) => super.noSuchMethod(
+  void onChange(_i4.Change<_i2.ContactsScreenState>? change) =>
+      super.noSuchMethod(
         Invocation.method(
           #onChange,
           [change],
@@ -157,97 +159,89 @@ class MockUsersScreenBloc extends _i1.Mock implements _i2.UsersScreenBloc {
       );
 }
 
-/// A class which mocks [UserService].
+/// A class which mocks [ContactService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockUserService extends _i1.Mock implements _i5.UserService {
-  MockUserService() {
+class MockContactService extends _i1.Mock implements _i5.ContactService {
+  MockContactService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Future<List<_i6.User>> getUsers({
-    required int? userReferenceId,
+  _i3.Future<List<_i6.Contact>> getContacts({
+    required int? userId,
     required String? userToken,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
-          #getUsers,
-          [],
-          {
-            #userReferenceId: userReferenceId,
-            #userToken: userToken,
-          },
-        ),
-        returnValue: _i3.Future<List<_i6.User>>.value(<_i6.User>[]),
-      ) as _i3.Future<List<_i6.User>>);
-  @override
-  _i3.Future<_i6.User?> getUser({
-    required int? userId,
-    required dynamic userToken,
-  }) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #getUser,
+          #getContacts,
           [],
           {
             #userId: userId,
             #userToken: userToken,
           },
         ),
-        returnValue: _i3.Future<_i6.User?>.value(),
-      ) as _i3.Future<_i6.User?>);
+        returnValue: _i3.Future<List<_i6.Contact>>.value(<_i6.Contact>[]),
+      ) as _i3.Future<List<_i6.Contact>>);
   @override
-  _i3.Future<bool> deleteUser({
-    required int? userId,
-    required String? userType,
+  _i3.Future<_i6.Contact?> getContact({
+    required int? contactId,
     required dynamic userToken,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
-          #deleteUser,
+          #getContact,
           [],
           {
-            #userId: userId,
-            #userType: userType,
+            #contactId: contactId,
+            #userToken: userToken,
+          },
+        ),
+        returnValue: _i3.Future<_i6.Contact?>.value(),
+      ) as _i3.Future<_i6.Contact?>);
+  @override
+  _i3.Future<bool> deleteContact({
+    required int? contactId,
+    required dynamic userToken,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #deleteContact,
+          [],
+          {
+            #contactId: contactId,
             #userToken: userToken,
           },
         ),
         returnValue: _i3.Future<bool>.value(false),
       ) as _i3.Future<bool>);
   @override
-  _i3.Future<bool> createAdminUser({required Map<String, dynamic>? user}) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #createAdminUser,
-          [],
-          {#user: user},
-        ),
-        returnValue: _i3.Future<bool>.value(false),
-      ) as _i3.Future<bool>);
-  @override
-  _i3.Future<bool> createUser({required Map<String, dynamic>? user}) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #createUser,
-          [],
-          {#user: user},
-        ),
-        returnValue: _i3.Future<bool>.value(false),
-      ) as _i3.Future<bool>);
-  @override
-  _i3.Future<bool> updateUser({
-    required Map<String, dynamic>? user,
-    required String? userType,
+  _i3.Future<bool> createContact({
+    required Map<String, dynamic>? contact,
     required dynamic userToken,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
-          #updateUser,
+          #createContact,
           [],
           {
-            #user: user,
-            #userType: userType,
+            #contact: contact,
+            #userToken: userToken,
+          },
+        ),
+        returnValue: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
+  @override
+  _i3.Future<bool> updateContact({
+    required Map<String, dynamic>? contact,
+    required dynamic userToken,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateContact,
+          [],
+          {
+            #contact: contact,
             #userToken: userToken,
           },
         ),
