@@ -1,43 +1,44 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:appmable_desktop/domain/model/objects/contact.dart';
+import 'package:appmable_desktop/domain/model/objects/alert.dart';
 import 'package:appmable_desktop/domain/model/objects/user.dart';
 import 'package:appmable_desktop/domain/model/value_object/response.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
-import 'package:appmable_desktop/infrastructure/repositories/contact/http_contact_repository.dart';
+import 'package:appmable_desktop/infrastructure/repositories/alert/http_alert_repository.dart';
 import 'package:faker/faker.dart';
 import 'package:mockito/annotations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:appmable_desktop/domain/services/http_service.dart';
 import 'package:mockito/mockito.dart';
-import '../../../domain/model/objects/mock/contact_mock.dart';
+import '../../../domain/model/objects/mock/alert_mock.dart';
 import '../../../domain/model/value_objects/mock/user_login_mock.dart';
-import 'http_contact_repository_test.mocks.dart';
+
+import 'http_alert_repository_test.mocks.dart';
 
 @GenerateMocks([HttpService])
 void main() {
-  group('Tests over Contact Repository', () {
+  group('Tests over Alert Repository', () {
     final Faker faker = Faker();
     final HttpService httpService = MockHttpService();
-    final HttpContactRepository repository = HttpContactRepository(httpService);
+    final HttpAlertRepository repository = HttpAlertRepository(httpService);
 
     final UserLoginInformation userLoginInformation = userLoginInformationMockGenerator();
 
-    // Read All Contacts
+    // Read All Alerts
 
-    test('Read All Contacts - OK', () async {
-      List<Contact> contactsExpected = List<Contact>.generate(
+    test('Read All Alerts - OK', () async {
+      List<Alert> alertsExpected = List<Alert>.generate(
           faker.randomGenerator.integer(10),
-          (int index) => contactMockGenerator(
+          (int index) => alertMockGenerator(
                 id: index,
-                idUser: [userLoginInformation.userId],
+                idUser: userLoginInformation.userId,
               ));
 
       final String url =
-          HttpContactRepository.urlGetAllContacts.replaceAll('<userToken>', userLoginInformation.userToken);
+          HttpAlertRepository.urlListAndCreateAlert.replaceAll('<userToken>', userLoginInformation.userToken);
 
-      final String bodyResponse = getContactsHttpString(contacts: contactsExpected);
+      final String bodyResponse = getAlertsHttpString(alerts: alertsExpected);
 
       when(httpService.get(Uri.parse(url))).thenAnswer(
         (_) => Future.value(
@@ -50,19 +51,19 @@ void main() {
         ),
       );
 
-      final List<Contact> contactResult = await repository.getContacts(
+      final List<Alert> alertResult = await repository.getAlerts(
         userId: userLoginInformation.userId,
         userToken: userLoginInformation.userToken,
       );
 
-      expect(contactResult, contactsExpected);
+      expect(alertResult, alertsExpected);
     });
 
-    test('Read All Contacts - KO', () async {
-      List<User> contactsExpected = [];
+    test('Read All Alerts - KO', () async {
+      List<User> alertsExpected = [];
 
       final String url =
-          HttpContactRepository.urlGetAllContacts.replaceAll('<userToken>', userLoginInformation.userToken);
+          HttpAlertRepository.urlListAndCreateAlert.replaceAll('<userToken>', userLoginInformation.userToken);
 
       when(httpService.get(Uri.parse(url))).thenAnswer(
         (_) => Future.value(
@@ -75,35 +76,29 @@ void main() {
         ),
       );
 
-      final List<Contact> contactResult = await repository.getContacts(
+      final List<Alert> alertResult = await repository.getAlerts(
         userId: userLoginInformation.userId,
         userToken: userLoginInformation.userToken,
       );
 
-      expect(contactResult, contactsExpected);
+      expect(alertResult, alertsExpected);
     });
 
-    // Get Contact
+    // Get Alert
 
-    test('Get Contact - OK', () async {
+    test('Get Alert - OK', () async {
 
-      List<Contact> contactsExpected = List<Contact>.generate(
-          faker.randomGenerator.integer(10, min: 1),
-              (int index) => contactMockGenerator(
-            id: index,
-            idUser: [userLoginInformation.userId],
-          ));
+      final int alertId = faker.randomGenerator.integer(10, min: 1);
+      Alert alertExpected = alertMockGenerator(id: alertId);
 
-      Contact contactExpected = contactMockGenerator(id: contactsExpected.last.id + 1);
-      contactsExpected.add(contactExpected);
-
-      final String url =
-          HttpContactRepository.urlGetAllContacts.replaceAll('<userToken>', userLoginInformation.userToken);
+      final String url = HttpAlertRepository.urlDeleteUpdateAlert
+          .replaceAll('<alertId>', alertId.toString())
+          .replaceAll('<userToken>', userLoginInformation.userToken);
 
       when(httpService.get(Uri.parse(url))).thenAnswer(
         (_) => Future.value(
           Response(
-            body: getContactsHttpString(contacts: contactsExpected),
+            body: getAlertHttpString(alertExpected),
             statusCode: 200,
             headers: const {'header': 'mock'},
             bodyBytes: Uint8List.fromList(faker.randomGenerator.numbers(5, 5)),
@@ -111,33 +106,33 @@ void main() {
         ),
       );
 
-      final Contact? resultContact = await repository.getContact(
-        contactId: contactExpected.id,
+      final Alert? resultAlert = await repository.getAlert(
+        alertId: alertId,
         userToken: userLoginInformation.userToken,
       );
 
-      expect(resultContact, contactExpected);
+      expect(resultAlert, alertExpected);
     });
 
-    test('Get Contact - KO', () async {
-
-      List<Contact> contactsExpected = List<Contact>.generate(
+    test('Get Alert - KO', () async {
+      List<Alert> alertsExpected = List<Alert>.generate(
           faker.randomGenerator.integer(10, min: 1),
-              (int index) => contactMockGenerator(
-            id: index,
-            idUser: [userLoginInformation.userId],
-          ));
+          (int index) => alertMockGenerator(
+                id: index,
+                idUser: userLoginInformation.userId,
+              ));
 
-      Contact contactExpected = contactMockGenerator(id: contactsExpected.last.id + 1);
-      contactsExpected.add(contactExpected);
+      Alert alertExpected = alertMockGenerator(id: alertsExpected.last.id + 1);
+      alertsExpected.add(alertExpected);
 
-      final String url =
-          HttpContactRepository.urlGetAllContacts.replaceAll('<userToken>', userLoginInformation.userToken);
+      final String url = HttpAlertRepository.urlDeleteUpdateAlert
+          .replaceAll('<alertId>', alertExpected.id.toString())
+          .replaceAll('<userToken>', userLoginInformation.userToken);
 
       when(httpService.get(Uri.parse(url))).thenAnswer(
         (_) => Future.value(
           Response(
-            body: getContactsHttpString(contacts: contactsExpected),
+            body: getAlertsHttpString(alerts: alertsExpected),
             statusCode: 403,
             headers: const {'header': 'mock'},
             bodyBytes: Uint8List.fromList(faker.randomGenerator.numbers(5, 5)),
@@ -147,22 +142,22 @@ void main() {
 
       await Future.delayed(const Duration(milliseconds: 500), () {});
 
-      final Contact? resultContact = await repository.getContact(
-        contactId: contactExpected.id,
+      final Alert? resultAlert = await repository.getAlert(
+        alertId: alertExpected.id,
         userToken: userLoginInformation.userToken,
       );
 
-      expect(resultContact, null);
+      expect(resultAlert, null);
     });
 
-    // Delete Contact
+    // Delete Alert
 
     test('Delete User - OK', () async {
-      final int contactId = faker.randomGenerator.integer(5);
+      final int alertId = faker.randomGenerator.integer(5);
       final String userToken = faker.lorem.words(1).first;
 
-      final String urlDelete = HttpContactRepository.urlCrud
-          .replaceAll('<contactId>', contactId.toString())
+      final String urlDelete = HttpAlertRepository.urlDeleteUpdateAlert
+          .replaceAll('<alertId>', alertId.toString())
           .replaceAll('<userToken>', userToken);
 
       when(httpService.delete(Uri.parse(urlDelete))).thenAnswer(
@@ -177,19 +172,19 @@ void main() {
       );
 
       expect(
-          await repository.deleteContact(
-            contactId: contactId,
+          await repository.deleteAlert(
+            alertId: alertId,
             userToken: userToken,
           ),
           true);
     });
 
     test('Delete User - KO', () async {
-      final int contactId = faker.randomGenerator.integer(5);
+      final int alertId = faker.randomGenerator.integer(5);
       final String userToken = faker.lorem.words(1).first;
 
-      final String urlDelete = HttpContactRepository.urlCrud
-          .replaceAll('<contactId>', contactId.toString())
+      final String urlDelete = HttpAlertRepository.urlDeleteUpdateAlert
+          .replaceAll('<alertId>', alertId.toString())
           .replaceAll('<userToken>', userToken);
 
       when(httpService.delete(Uri.parse(urlDelete))).thenAnswer(
@@ -204,27 +199,27 @@ void main() {
       );
 
       expect(
-          await repository.deleteContact(
-            contactId: contactId,
+          await repository.deleteAlert(
+            alertId: alertId,
             userToken: userToken,
           ),
           false);
     });
 
-    // Create Contact
+    // Create Alert
 
-    test('Create Contact - OK', () async {
-      final Contact contact = contactMockGenerator();
+    test('Create Alert - OK', () async {
+      final Alert alert = alertMockGenerator();
       final String userToken = faker.lorem.words(1).first;
 
-      final String url = HttpContactRepository.urlGetAllContacts.replaceAll('<userToken>', userToken);
+      final String url = HttpAlertRepository.urlListAndCreateAlert.replaceAll('<userToken>', userToken);
 
       when(httpService.post(
         Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(contact.toMap()),
+        body: jsonEncode(alert.toMap()),
       )).thenAnswer(
         (_) => Future.value(
           Response(
@@ -237,25 +232,25 @@ void main() {
       );
 
       expect(
-          await repository.createContact(
-            contact: contact.toMap(),
+          await repository.createAlert(
+            alert: alert.toMap(),
             userToken: userToken,
           ),
           true);
     });
 
-    test('Create Contact - KO', () async {
-      final Contact contact = contactMockGenerator();
+    test('Create Alert - KO', () async {
+      final Alert alert = alertMockGenerator();
       final String userToken = faker.lorem.words(1).first;
 
-      final String url = HttpContactRepository.urlGetAllContacts.replaceAll('<userToken>', userToken);
+      final String url = HttpAlertRepository.urlListAndCreateAlert.replaceAll('<userToken>', userToken);
 
       when(httpService.post(
         Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(contact.toMap()),
+        body: jsonEncode(alert.toMap()),
       )).thenAnswer(
         (_) => Future.value(
           Response(
@@ -268,21 +263,21 @@ void main() {
       );
 
       expect(
-          await repository.createContact(
-            contact: contact.toMap(),
+          await repository.createAlert(
+            alert: alert.toMap(),
             userToken: userToken,
           ),
           false);
     });
 
-    // Update Contact
+    // Update Alert
 
-    test('Update Contact - OK', () async {
-      final Contact contact = contactMockGenerator();
+    test('Update Alert - OK', () async {
+      final Alert alert = alertMockGenerator();
       final String userToken = faker.lorem.words(1).first;
 
-      final String url = HttpContactRepository.urlCrud
-          .replaceAll('<contactId>', contact.id.toString())
+      final String url = HttpAlertRepository.urlDeleteUpdateAlert
+          .replaceAll('<alertId>', alert.id.toString())
           .replaceAll('<userToken>', userToken);
 
       when(httpService.put(
@@ -290,7 +285,7 @@ void main() {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(contact.toMap()),
+        body: jsonEncode(alert.toMap()),
       )).thenAnswer(
         (_) => Future.value(
           Response(
@@ -303,19 +298,19 @@ void main() {
       );
 
       expect(
-          await repository.updateContact(
-            contact: contact.toMap(),
+          await repository.updateAlert(
+            alert: alert.toMap(),
             userToken: userToken,
           ),
           true);
     });
 
-    test('Update Contact - KO', () async {
-      final Contact contact = contactMockGenerator();
+    test('Update Alert - KO', () async {
+      final Alert alert = alertMockGenerator();
       final String userToken = faker.lorem.words(1).first;
 
-      final String url = HttpContactRepository.urlCrud
-          .replaceAll('<contactId>', contact.id.toString())
+      final String url = HttpAlertRepository.urlDeleteUpdateAlert
+          .replaceAll('<alertId>', alert.id.toString())
           .replaceAll('<userToken>', userToken);
 
       when(httpService.put(
@@ -323,7 +318,7 @@ void main() {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(contact.toMap()),
+        body: jsonEncode(alert.toMap()),
       )).thenAnswer(
         (_) => Future.value(
           Response(
@@ -336,8 +331,8 @@ void main() {
       );
 
       expect(
-          await repository.updateContact(
-            contact: contact.toMap(),
+          await repository.updateAlert(
+            alert: alert.toMap(),
             userToken: userToken,
           ),
           false);

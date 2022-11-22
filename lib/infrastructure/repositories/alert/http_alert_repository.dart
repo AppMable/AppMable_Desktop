@@ -46,7 +46,7 @@ class HttpAlertRepository implements AlertRepository {
     required int alertId,
     required String userToken,
   }) async {
-    final String url = urlDeleteUpdateAlert.replaceAll('<alertId>', '9').replaceAll('<userToken>', userToken);
+    final String url = urlDeleteUpdateAlert.replaceAll('<alertId>', alertId.toString()).replaceAll('<userToken>', userToken);
 
     final Response response = await _httpService.get(Uri.parse(url));
 

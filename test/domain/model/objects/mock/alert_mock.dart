@@ -35,14 +35,14 @@ String getAlertHttpString(Alert alert) {
     "id": ${alert.id},
     "name": "${alert.name}",
     "description": "${alert.description}",
-    "sound_level": "${alert.soundLevel}",
-    "vibration_level": "${alert.vibrationLevel}",
-    "time_length": "${alert.timeLength}",
+    "sound_level": ${alert.soundLevel},
+    "vibration_level": ${alert.vibrationLevel},
+    "time_length": ${alert.timeLength},
     "date_enabled": "${alert.dateEnabled?.toString()}",
     "date_disabled": "${alert.dateDisabled?.toString()}",
     "date_created": "${alert.dateCreated?.toString()}",
     "date_updated": "${alert.dateUpdated?.toString()}",
-    "id_user": ${alert.idUser},
+    "id_user": ${alert.idUser}
   }
  ''';
 }
