@@ -15,17 +15,21 @@ class HttpUserRepository implements UserRepository {
   );
 
   static const String urlGetAllUsers = 'http://127.0.0.1:8000/users/?c=<userToken>&t=<userType>';
+  static const String urlCreateUser = 'http://127.0.0.1:8000/users/?c=register&t=<userType>';
   static const String urlCrud = 'http://127.0.0.1:8000/users/d/?id=<userId>&t=<userType>&c=<userToken>';
+  static const String urlCreateAdminUser = 'http://127.0.0.1:8000/users/';
 
   @override
-  Future<List<User>> readAllUsers({
-    required int currentUserId,
+  Future<List<User>> getUsers({
+    required int userReferenceId,
     required String userToken,
-    required String userType,
   }) async {
-    final String urlAllUsers = urlGetAllUsers.replaceAll('<userToken>', userToken).replaceAll('<userType>', userType);
+    final String url = urlCrud
+        .replaceAll('<userId>', userReferenceId.toString())
+        .replaceAll('<userType>', 'user')
+        .replaceAll('<userToken>', userToken);
 
-    final Response response = await _httpService.get(Uri.parse(urlAllUsers));
+    final Response response = await _httpService.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       List<User> users = [];
@@ -33,7 +37,7 @@ class HttpUserRepository implements UserRepository {
       List<dynamic> usersDecoded = jsonDecode(utf8.decode(response.bodyBytes));
 
       for (Map<String, dynamic> user in usersDecoded) {
-        if (user['id_user_reference'] == currentUserId) users.add(User.fromMap(user));
+        if(user['id_user_reference'] == userReferenceId) users.add(User.fromMap(user));
       }
 
       return users;
@@ -45,34 +49,40 @@ class HttpUserRepository implements UserRepository {
   @override
   Future<User?> getUser({
     required int userId,
-    required String userType,
     required String userToken,
   }) async {
-    final String url =
-        urlCrud.replaceAll('<userId>', userId.toString()).replaceAll('<userType>', userType).replaceAll('<userToken>', userToken);
+    final String url = urlCrud
+        .replaceAll('<userId>', userId.toString())
+        .replaceAll('<userType>', 'admin')
+        .replaceAll('<userToken>', userToken);
 
     final Response response = await _httpService.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
-      Map<String, dynamic> userDecoded = jsonDecode(response.body);
 
-      return User(
-        id: userDecoded['id'],
-        identityNumber: userDecoded['identity_number'],
-        username: userDecoded['username'],
-        password: userDecoded['password'],
-        name: userDecoded['name'],
-        surname: userDecoded['surname'],
-        email: userDecoded['email'],
-        phoneNumber: userDecoded['phone_number'],
-        dateOfBirth: userDecoded['date_of_birth'] != null ? DateTime.parse(userDecoded['date_of_birth']) : null,
-        dateCreated: userDecoded['date_created'] != null ? DateTime.parse(userDecoded['date_created']) : null,
-        dateLastLogin: userDecoded['date_last_login'] != null ? DateTime.parse(userDecoded['date_last_login']) : null,
-        dateLastLogout: userDecoded['date_last_logout'] != null ? DateTime.parse(userDecoded['date_last_logout']) : null,
-        healthCardIdentifier: userDecoded['health_card_identifier'],
-        idUserRole: userDecoded['id_user_role'],
-        idUserReference: userDecoded['id_user_reference'],
-      );
+      List<dynamic> usersDecoded = jsonDecode(response.body);
+
+      for (Map<String, dynamic> user in usersDecoded) {
+        if (user['id'] == userId) {
+          return User(
+            id: user['id'],
+            identityNumber: user['identity_number'],
+            username: user['username'],
+            password: user['password'],
+            name: user['name'],
+            surname: user['surname'],
+            email: user['email'],
+            phoneNumber: user['phone_number'],
+            dateOfBirth: user['date_of_birth'] != null ? DateTime.parse(user['date_of_birth']) : null,
+            dateCreated: user['date_created'] != null ? DateTime.parse(user['date_created']) : null,
+            dateLastLogin: user['date_last_login'] != null ? DateTime.parse(user['date_last_login']) : null,
+            dateLastLogout: user['date_last_logout'] != null ? DateTime.parse(user['date_last_logout']) : null,
+            healthCardIdentifier: user['health_card_identifier'],
+            idUserRole: user['id_user_role'],
+            idUserReference: user['id_user_reference'],
+          );
+        }
+      }
     }
     return null;
   }
@@ -83,8 +93,10 @@ class HttpUserRepository implements UserRepository {
     required String userType,
     required String userToken,
   }) async {
-    final String urlDelete =
-        urlCrud.replaceAll('<userId>', userId.toString()).replaceAll('<userType>', userType).replaceAll('<userToken>', userToken);
+    final String urlDelete = urlCrud
+        .replaceAll('<userId>', userId.toString())
+        .replaceAll('<userType>', userType)
+        .replaceAll('<userToken>', userToken);
 
     final Response response = await _httpService.delete(Uri.parse(urlDelete));
 
@@ -94,14 +106,33 @@ class HttpUserRepository implements UserRepository {
   @override
   Future<bool> createUser({
     required Map<String, dynamic> user,
-    required String userType,
-    required String userToken,
   }) async {
-    final String urlCreateUser = urlGetAllUsers.replaceAll('<userToken>', userToken).replaceAll('<userType>', userType);
+    final String urlCreateUserReplaced = urlCreateUser.replaceAll('<userType>', 'user');
 
     try {
       final Response response = await _httpService.post(
-        Uri.parse(urlCreateUser),
+        Uri.parse(urlCreateUserReplaced),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(user),
+      );
+      return response.statusCode == 201;
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<bool> createAdminUser({
+    required Map<String, dynamic> user,
+  }) async {
+
+    final String urlCreateUserReplaced = urlCreateUser.replaceAll('<userType>', 'admin');
+
+    try {
+      final Response response = await _httpService.post(
+        Uri.parse(urlCreateUserReplaced),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -119,7 +150,10 @@ class HttpUserRepository implements UserRepository {
     required String userType,
     required String userToken,
   }) async {
-    final String urlUpdateUser = urlCrud.replaceAll('<userId>', user['id'].toString()).replaceAll('<userType>', userType).replaceAll('<userToken>', userToken);
+    final String urlUpdateUser = urlCrud
+        .replaceAll('<userId>', user['id'].toString())
+        .replaceAll('<userType>', userType)
+        .replaceAll('<userToken>', userToken);
 
     try {
       final Response response = await _httpService.put(

@@ -178,6 +178,7 @@ class AppTheme {
   static const Color complementary25 = Color(0xFFFFE5EF);
 
   static const Color error600 = Color.fromRGBO(211, 30, 30, 1);
+  static const Color success600 = Color(0xff5cb85c);
 
   static const Color neutral900 = Color(0xff131415);
   static const Color neutral800 = Color(0xff3a3d40);

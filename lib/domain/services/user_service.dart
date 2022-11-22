@@ -10,26 +10,22 @@ class UserService {
     this._userRepository,
   );
 
-  Future<List<User>> readAllUsers({
-    required int currentUserId,
+  Future<List<User>> getUsers({
+    required int userReferenceId,
     required String userToken,
-    required String userType,
   }) async {
-    return _userRepository.readAllUsers(
-      currentUserId: currentUserId,
+    return _userRepository.getUsers(
+      userReferenceId: userReferenceId,
       userToken: userToken,
-      userType: userType,
     );
   }
 
   Future<User?> getUser({
     required int userId,
-    required String userType,
     required userToken,
   }) async {
     return _userRepository.getUser(
       userId: userId,
-      userType: userType,
       userToken: userToken,
     );
   }
@@ -46,15 +42,19 @@ class UserService {
     );
   }
 
+  Future<bool> createAdminUser({
+    required Map<String, dynamic> user,
+  }) async {
+    return _userRepository.createAdminUser(
+      user: user,
+    );
+  }
+
   Future<bool> createUser({
     required Map<String, dynamic> user,
-    required String userType,
-    required userToken,
   }) async {
     return _userRepository.createUser(
       user: user,
-      userType: userType,
-      userToken: userToken,
     );
   }
 

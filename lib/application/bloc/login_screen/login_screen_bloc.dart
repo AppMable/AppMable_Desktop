@@ -25,6 +25,9 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
   ) : super(const LoginScreenInitial()) {
     on<LogInEvent>(_handleLogin);
     on<LogOutEvent>(_handleLogOut);
+    on<LoadLogInScreenEvent>(_handleLoadLogInScreen);
+    on<LoadRegisterScreenEvent>(_handleLoadRegisterScreen);
+    add(const LoadLogInScreenEvent());
   }
 
   Future<void> _handleLogin(
@@ -38,9 +41,9 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
       );
 
       if (userLoginInformation != null) {
-        emit(const UserLogged());
         _localStorageService.write(LoginScreen.userLoginInformation, userLoginInformation.toJson());
         event.onLogInSuccess();
+        emit(const UserLogged());
       } else {
         event.onLogInError('Algo inesperado ocurrió, vuelve a intentar');
       }
@@ -60,9 +63,9 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
 
     try {
       if (await _userLoginService.logOut(userToken: userLoginInformation.userToken)) {
-        emit(const UserLoggedOut());
         _localStorageService.remove(LoginScreen.userLoginInformation);
         event.onLogOutSuccess();
+        emit(const LoginScreenLoaded());
       } else {
         event.onLogOutError('Algo inesperado ocurrió, vuelve a intentar');
       }
@@ -71,5 +74,19 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
     } catch (e) {
       event.onLogOutError('Algo inesperado ocurrió, vuelve a intentar');
     }
+  }
+
+  void _handleLoadLogInScreen(
+    LoadLogInScreenEvent event,
+    Emitter<LoginScreenState> emit,
+  ) {
+    emit(const LoginScreenLoaded());
+  }
+
+  void _handleLoadRegisterScreen(
+    LoadRegisterScreenEvent event,
+    Emitter<LoginScreenState> emit,
+  ) {
+    emit(const RegisterScreenLoaded());
   }
 }

@@ -26,6 +26,7 @@ class CreateUserScreenBloc extends Bloc<CreateUserScreenEvent, CreateUserScreenS
     this._localStorageService,
   ) : super(const CreateUserScreenInitial()) {
     on<CreateUserEvent>(_handleCreateUser);
+    on<CreateAdminUserEvent>(_handleCreateAdminUser);
   }
 
   Future<void> _handleCreateUser(
@@ -44,8 +45,6 @@ class CreateUserScreenBloc extends Bloc<CreateUserScreenEvent, CreateUserScreenS
     try {
       if (await _userService.createUser(
         user: event.user,
-        userType: 'user',
-        userToken: userLoginInformation.userToken,
       )) {
         _usersScreenBloc.add(const UsersScreenEventLoad());
         event.onSuccess();
@@ -57,5 +56,33 @@ class CreateUserScreenBloc extends Bloc<CreateUserScreenEvent, CreateUserScreenS
     }
 
     emit(const UserCreated());
+  }
+
+  Future<void> _handleCreateAdminUser(
+    CreateAdminUserEvent event,
+    Emitter<CreateUserScreenState> emit,
+  ) async {
+    event.user['id_user_reference'] = null;
+
+    DateTime dateOfBirth = DateFormat("dd-MM-yyyy").parse(event.user['date_of_birth']);
+
+    event.user['date_of_birth'] = DateFormat('yyyy-MM-dd').format(dateOfBirth);
+
+    event.user['id_user_role'] = 2;
+
+    try {
+      if (await _userService.createAdminUser(
+        user: event.user,
+      )) {
+        _usersScreenBloc.add(const UsersScreenEventLoad());
+        event.onSuccess();
+      } else {
+        event.onError('No se ha podido registrarse');
+      }
+    } catch (_) {
+      event.onError('No se ha podido registrarse');
+    }
+
+    emit(const UserAdminCreated());
   }
 }

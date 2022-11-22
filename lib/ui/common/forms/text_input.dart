@@ -13,6 +13,9 @@ class TextInput extends StatefulWidget {
   final bool isPasswordField;
   final MainAxisSize mainAxisSize;
   final bool withExpanded;
+  final Function()? onTap;
+  final bool readOnly;
+  final TextEditingController? textEditingController;
 
   const TextInput({
     required this.label,
@@ -24,6 +27,9 @@ class TextInput extends StatefulWidget {
     this.isPasswordField = false,
     this.mainAxisSize = MainAxisSize.max,
     this.withExpanded = true,
+    this.onTap,
+    this.readOnly = false,
+    this.textEditingController,
     super.key,
   });
 
@@ -33,13 +39,18 @@ class TextInput extends StatefulWidget {
 
 class _TextInputState extends State<TextInput> {
   final FocusNode _focus = FocusNode();
-  final TextEditingController _textController = TextEditingController();
+  late TextEditingController _textController;
   bool _isFocus = false;
 
   @override
   void initState() {
     super.initState();
-    _textController.text = widget.value ?? '';
+    _textController = widget.textEditingController ?? TextEditingController();
+    if(widget.textEditingController == null){
+      _textController.text = widget.value ?? '';
+    } else {
+      _textController.value = widget.textEditingController!.value;
+    }
     _focus.addListener(_onFocusChange);
   }
 
@@ -73,6 +84,8 @@ class _TextInputState extends State<TextInput> {
               widget.mainAxisSize,
               _textController,
               _focus,
+              widget.onTap,
+              widget.readOnly,
             ))
           : _Field(
               _isFocus,
@@ -86,6 +99,8 @@ class _TextInputState extends State<TextInput> {
               widget.mainAxisSize,
               _textController,
               _focus,
+              widget.onTap,
+              widget.readOnly,
             );
     });
   }
@@ -103,6 +118,8 @@ class _Field extends StatelessWidget {
   final MainAxisSize mainAxisSize;
   final TextEditingController textController;
   final FocusNode focus;
+  final Function()? onTap;
+  final bool readOnly;
 
   const _Field(
     this.isFocus,
@@ -116,6 +133,8 @@ class _Field extends StatelessWidget {
     this.mainAxisSize,
     this.textController,
     this.focus,
+    this.onTap,
+    this.readOnly,
   );
 
   @override
@@ -134,6 +153,8 @@ class _Field extends StatelessWidget {
         ),
         const SizedBox(height: 5),
         TextFormField(
+          readOnly: readOnly,
+          onTap: onTap,
           obscureText: isPasswordField,
           enableSuggestions: !isPasswordField,
           autocorrect: !isPasswordField,

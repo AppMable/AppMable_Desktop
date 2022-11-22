@@ -6,6 +6,8 @@ import 'package:appmable_desktop/ui/common/app_layout/responsive.dart';
 import 'package:appmable_desktop/ui/common/app_layout/styles.dart';
 import 'package:appmable_desktop/ui/common/app_layout/widgets/category_box.dart';
 import 'package:appmable_desktop/ui/common/mixin/user_mixin.dart';
+import 'package:appmable_desktop/ui/screens/alerts/alerts_users_screen/alerts_users_screen.dart';
+import 'package:appmable_desktop/ui/screens/contacts/contacts_users_screen/contacts_users_screen.dart';
 import 'package:appmable_desktop/ui/screens/dashboard_screen/widgets/change_password_button.dart';
 import 'package:appmable_desktop/ui/screens/login_screen/login_screen.dart';
 import 'package:appmable_desktop/ui/screens/users/users_screen/users_screen.dart';
@@ -56,12 +58,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ),
                           ),
                           const SizedBox(width: 10),
-                          const Expanded(
+                          Expanded(
                             flex: 2,
-                            child: DashboardButton(
-                              title: 'Medicinas',
-                              icon: Icons.medical_information_outlined,
-                              backgroundColor: AppTheme.secondary900,
+                            child: InkWell(
+                              onTap: () => Navigator.of(context).pushReplacementNamed(ContactsUsersScreen.routeName),
+                              child: const DashboardButton(
+                                title: 'Contactos',
+                                icon: Icons.people,
+                                backgroundColor: AppTheme.secondary900,
+                              ),
                             ),
                           ),
                         ],
@@ -70,17 +75,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     const SizedBox(height: 20),
                     Expanded(
                       child: Row(
-                        children: const [
+                        children: [
                           Expanded(
                             flex: 2,
-                            child: DashboardButton(
-                              title: 'Alarmas',
-                              icon: Icons.add_alert_outlined,
-                              backgroundColor: AppTheme.complementary900,
+                            child: InkWell(
+                              onTap: () => Navigator.of(context).pushReplacementNamed(AlertsUsersScreen.routeName),
+                              child: const DashboardButton(
+                                title: 'Alarmas',
+                                icon: Icons.add_alert_outlined,
+                                backgroundColor: AppTheme.complementary900,
+                              ),
                             ),
                           ),
-                          SizedBox(width: 10),
-                          Expanded(
+                          const SizedBox(width: 10),
+                          const Expanded(
                             flex: 2,
                             child: DashboardButton(
                               title: 'Eventos',

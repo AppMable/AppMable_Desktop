@@ -1,5 +1,13 @@
 import 'package:appmable_desktop/ui/common/app_layout/responsive.dart';
 import 'package:appmable_desktop/ui/common/app_layout/widgets/navigation_button.dart';
+import 'package:appmable_desktop/ui/screens/alerts/alerts_screen/alerts_screen.dart';
+import 'package:appmable_desktop/ui/screens/alerts/alerts_users_screen/alerts_users_screen.dart';
+import 'package:appmable_desktop/ui/screens/alerts/create_alert_screen/create_alert_screen.dart';
+import 'package:appmable_desktop/ui/screens/alerts/update_alert_screen/update_alert_screen.dart';
+import 'package:appmable_desktop/ui/screens/contacts/contacts_screen/contacts_screen.dart';
+import 'package:appmable_desktop/ui/screens/contacts/contacts_users_screen/contacts_users_screen.dart';
+import 'package:appmable_desktop/ui/screens/contacts/create_contact_screen/create_contact_screen.dart';
+import 'package:appmable_desktop/ui/screens/contacts/update_contact_screen/update_contact_screen.dart';
 import 'package:appmable_desktop/ui/screens/dashboard_screen/dashboard_screen.dart';
 import 'package:appmable_desktop/ui/screens/users/create_user_screen/create_user_screen.dart';
 import 'package:appmable_desktop/ui/screens/users/update_user_screen/update_user_screen.dart';
@@ -46,11 +54,19 @@ class _NavigationPanelState extends State<NavigationPanel> {
                         ModalRoute.of(context)!.settings.name == UpdateUserScreen.routeName,
                   ),
                   NavigationButton(
-                    onPressed: () {},
-                    icon: Icons.medical_information_outlined,
+                    onPressed: () => Navigator.of(context).pushReplacementNamed(ContactsUsersScreen.routeName),
+                    isActive: ModalRoute.of(context)!.settings.name == ContactsUsersScreen.routeName ||
+                        ModalRoute.of(context)!.settings.name == ContactsScreen.routeName ||
+                        ModalRoute.of(context)!.settings.name == CreateContactScreen.routeName ||
+                    ModalRoute.of(context)!.settings.name == UpdateContactScreen.routeName,
+                    icon: Icons.people,
                   ),
                   NavigationButton(
-                    onPressed: () {},
+                    onPressed: () => Navigator.of(context).pushReplacementNamed(AlertsUsersScreen.routeName),
+                    isActive: ModalRoute.of(context)!.settings.name == AlertsUsersScreen.routeName ||
+                        ModalRoute.of(context)!.settings.name == AlertsScreen.routeName ||
+                        ModalRoute.of(context)!.settings.name == CreateAlertScreen.routeName ||
+                        ModalRoute.of(context)!.settings.name == UpdateAlertScreen.routeName,
                     icon: Icons.add_alert_outlined,
                   ),
                   NavigationButton(

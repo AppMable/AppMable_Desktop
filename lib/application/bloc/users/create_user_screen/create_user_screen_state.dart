@@ -15,3 +15,7 @@ class CreateUserScreenInitial extends CreateUserScreenState {
 class UserCreated extends CreateUserScreenInitial {
   const UserCreated();
 }
+
+class UserAdminCreated extends CreateUserScreenInitial {
+  const UserAdminCreated();
+}

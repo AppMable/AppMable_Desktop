@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:appmable_desktop/config.dart';
 import 'package:appmable_desktop/domain/model/objects/user.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
@@ -32,13 +33,13 @@ class UsersScreenBloc extends Bloc<UsersScreenEvent, UsersScreenState> {
     Emitter<UsersScreenState> emit,
   ) async {
     emit(const UsersScreenLoading());
+    await Future.delayed(Duration(milliseconds: Config.defaultDelay), () {});
 
     final UserLoginInformation userLoginInformation =
         UserLoginInformation.fromMap(jsonDecode(_localStorageService.read(LoginScreen.userLoginInformation)));
 
-    List<User> users = await _userService.readAllUsers(
-      currentUserId: userLoginInformation.userId,
-      userType: 'user',
+    List<User> users = await _userService.getUsers(
+      userReferenceId: userLoginInformation.userId,
       userToken: userLoginInformation.userToken,
     );
 

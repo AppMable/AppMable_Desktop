@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:appmable_desktop/application/bloc/users/users_screen/users_screen_bloc.dart';
+import 'package:appmable_desktop/config.dart';
 import 'package:appmable_desktop/domain/model/objects/user.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
@@ -41,12 +42,12 @@ void main() {
     blocTest<UsersScreenBloc, UsersScreenState>(
       'Success Load',
       setUp: () {
-        when(userService.readAllUsers(
-          currentUserId: userLoginInformation.userId,
-          userType: 'user',
+        when(userService.getUsers(
+          userReferenceId: userLoginInformation.userId,
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(users));
       },
+      wait: Duration(milliseconds: Config.defaultDelay * 2),
       build: () => UsersScreenBloc(
         userService,
         localStorageService,
@@ -57,9 +58,8 @@ void main() {
       ],
       verify: (_) {
         verifyInOrder([
-          userService.readAllUsers(
-            currentUserId: userLoginInformation.userId,
-            userType: 'user',
+          userService.getUsers(
+            userReferenceId: userLoginInformation.userId,
             userToken: userLoginInformation.userToken,
           ),
         ]);
@@ -73,9 +73,8 @@ void main() {
     blocTest<UsersScreenBloc, UsersScreenState>(
       'Success Delete',
       setUp: () {
-        when(userService.readAllUsers(
-          currentUserId: userLoginInformation.userId,
-          userType: 'user',
+        when(userService.getUsers(
+          userReferenceId: userLoginInformation.userId,
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(users));
 
@@ -89,6 +88,7 @@ void main() {
         userService,
         localStorageService,
       ),
+      wait: Duration(milliseconds: Config.defaultDelay * 2),
       act: (UsersScreenBloc bloc) => bloc.add(UsersScreenDeleteEvent(
         userId: userIdToDelete,
         onSuccess: onDeleteSuccess,
@@ -97,24 +97,16 @@ void main() {
       expect: () => [
         const UsersScreenLoading(),
         UsersScreenLoaded(users: users),
-        const UsersScreenLoading(),
-        UsersScreenLoaded(users: users),
       ],
       verify: (_) {
         verifyInOrder([
-          userService.readAllUsers(
-            currentUserId: userLoginInformation.userId,
-            userType: 'user',
-            userToken: userLoginInformation.userToken,
-          ),
           userService.deleteUser(
             userId: userIdToDelete,
             userType: 'user',
             userToken: userLoginInformation.userToken,
           ),
-          userService.readAllUsers(
-            currentUserId: userLoginInformation.userId,
-            userType: 'user',
+          userService.getUsers(
+            userReferenceId: userLoginInformation.userId,
             userToken: userLoginInformation.userToken,
           ),
         ]);
@@ -124,9 +116,8 @@ void main() {
     blocTest<UsersScreenBloc, UsersScreenState>(
       'Delete - False',
       setUp: () {
-        when(userService.readAllUsers(
-          currentUserId: userLoginInformation.userId,
-          userType: 'user',
+        when(userService.getUsers(
+          userReferenceId: userLoginInformation.userId,
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(users));
 
@@ -140,6 +131,7 @@ void main() {
         userService,
         localStorageService,
       ),
+      wait: Duration(milliseconds: Config.defaultDelay * 2),
       act: (UsersScreenBloc bloc) => bloc.add(UsersScreenDeleteEvent(
         userId: userIdToDelete,
         onSuccess: onDeleteSuccess,
@@ -148,13 +140,11 @@ void main() {
       expect: () => [
         const UsersScreenLoading(),
         UsersScreenLoaded(users: users),
-        const UsersScreenLoading(),
       ],
       verify: (_) {
         verifyInOrder([
-          userService.readAllUsers(
-            currentUserId: userLoginInformation.userId,
-            userType: 'user',
+          userService.getUsers(
+            userReferenceId: userLoginInformation.userId,
             userToken: userLoginInformation.userToken,
           ),
           userService.deleteUser(
@@ -169,9 +159,8 @@ void main() {
     blocTest<UsersScreenBloc, UsersScreenState>(
       'Delete - Exception',
       setUp: () {
-        when(userService.readAllUsers(
-          currentUserId: userLoginInformation.userId,
-          userType: 'user',
+        when(userService.getUsers(
+          userReferenceId: userLoginInformation.userId,
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(users));
 
@@ -185,6 +174,7 @@ void main() {
         userService,
         localStorageService,
       ),
+      wait: Duration(milliseconds: Config.defaultDelay * 2),
       act: (UsersScreenBloc bloc) => bloc.add(UsersScreenDeleteEvent(
         userId: userIdToDelete,
         onSuccess: onDeleteSuccess,
@@ -193,13 +183,11 @@ void main() {
       expect: () => [
         const UsersScreenLoading(),
         UsersScreenLoaded(users: users),
-        const UsersScreenLoading(),
       ],
       verify: (_) {
         verifyInOrder([
-          userService.readAllUsers(
-            currentUserId: userLoginInformation.userId,
-            userType: 'user',
+          userService.getUsers(
+            userReferenceId: userLoginInformation.userId,
             userToken: userLoginInformation.userToken,
           ),
           userService.deleteUser(

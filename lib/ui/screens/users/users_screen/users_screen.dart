@@ -11,6 +11,7 @@ import 'package:appmable_desktop/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 
 class UsersScreen extends StatelessWidget {
   static const String routeName = '/users-screen';
@@ -141,9 +142,10 @@ class UsersScreen extends StatelessWidget {
                                                         DataCell(Text(
                                                           user.email,
                                                         )),
-                                                        DataCell(Text(
-                                                          user.phoneNumber,
-                                                        )),
+                                                        DataCell(Text(user.dateLastLogin == null
+                                                            ? 'No se ha connectado aún'
+                                                            : DateFormat('dd-MM-yyyy HH:mm')
+                                                                .format(user.dateLastLogin!))),
                                                         DataCell(Center(
                                                           child: IconButton(
                                                             onPressed: () {

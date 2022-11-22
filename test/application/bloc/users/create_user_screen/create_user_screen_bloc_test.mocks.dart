@@ -166,19 +166,17 @@ class MockUserService extends _i1.Mock implements _i5.UserService {
   }
 
   @override
-  _i3.Future<List<_i6.User>> readAllUsers({
-    required int? currentUserId,
+  _i3.Future<List<_i6.User>> getUsers({
+    required int? userReferenceId,
     required String? userToken,
-    required String? userType,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
-          #readAllUsers,
+          #getUsers,
           [],
           {
-            #currentUserId: currentUserId,
+            #userReferenceId: userReferenceId,
             #userToken: userToken,
-            #userType: userType,
           },
         ),
         returnValue: _i3.Future<List<_i6.User>>.value(<_i6.User>[]),
@@ -186,7 +184,6 @@ class MockUserService extends _i1.Mock implements _i5.UserService {
   @override
   _i3.Future<_i6.User?> getUser({
     required int? userId,
-    required String? userType,
     required dynamic userToken,
   }) =>
       (super.noSuchMethod(
@@ -195,7 +192,6 @@ class MockUserService extends _i1.Mock implements _i5.UserService {
           [],
           {
             #userId: userId,
-            #userType: userType,
             #userToken: userToken,
           },
         ),
@@ -220,20 +216,22 @@ class MockUserService extends _i1.Mock implements _i5.UserService {
         returnValue: _i3.Future<bool>.value(false),
       ) as _i3.Future<bool>);
   @override
-  _i3.Future<bool> createUser({
-    required Map<String, dynamic>? user,
-    required String? userType,
-    required dynamic userToken,
-  }) =>
+  _i3.Future<bool> createAdminUser({required Map<String, dynamic>? user}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #createAdminUser,
+          [],
+          {#user: user},
+        ),
+        returnValue: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
+  @override
+  _i3.Future<bool> createUser({required Map<String, dynamic>? user}) =>
       (super.noSuchMethod(
         Invocation.method(
           #createUser,
           [],
-          {
-            #user: user,
-            #userType: userType,
-            #userToken: userToken,
-          },
+          {#user: user},
         ),
         returnValue: _i3.Future<bool>.value(false),
       ) as _i3.Future<bool>);
