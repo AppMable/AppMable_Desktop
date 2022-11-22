@@ -35,14 +35,13 @@ class CreateAlertScreenBloc extends Bloc<CreateAlertScreenEvent, CreateAlertScre
     final UserLoginInformation userLoginInformation =
         UserLoginInformation.fromMap(jsonDecode(_localStorageService.read(LoginScreen.userLoginInformation)));
 
-    if (event.alert['date_enabled'] != null) {
+    if (event.alert['date_enabled'] != null && event.alert['date_enabled'] is DateTime) {
       event.alert['date_enabled'] = DateFormat('yyyy-MM-dd HH:mm').format(event.alert['date_enabled']);
     }
 
-    if (event.alert['date_disabled'] != null) {
+    if (event.alert['date_disabled'] != null && event.alert['date_disabled'] is DateTime) {
       event.alert['date_disabled'] = DateFormat('yyyy-MM-dd HH:mm').format(event.alert['date_disabled']);
     }
-
 
     try {
       if (await _alertService.createAlert(
