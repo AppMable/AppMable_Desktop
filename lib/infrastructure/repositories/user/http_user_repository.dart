@@ -14,10 +14,10 @@ class HttpUserRepository implements UserRepository {
     this._httpService,
   );
 
-  static const String urlGetAllUsers = 'http://127.0.0.1:8000/users/?c=<userToken>&t=<userType>';
-  static const String urlCreateUser = 'http://127.0.0.1:8000/users/?c=register&t=<userType>';
-  static const String urlCrud = 'http://127.0.0.1:8000/users/d/?id=<userId>&t=<userType>&c=<userToken>';
-  static const String urlCreateAdminUser = 'http://127.0.0.1:8000/users/';
+  static const String urlGetAllUsers = '${const String.fromEnvironment("server")}users/?c=<userToken>&t=<userType>';
+  static const String urlCreateUser = '${const String.fromEnvironment("server")}users/?c=register&t=<userType>';
+  static const String urlCrud = '${const String.fromEnvironment("server")}users/d/?id=<userId>&t=<userType>&c=<userToken>';
+  static const String urlCreateAdminUser = '${const String.fromEnvironment("server")}users/';
 
   @override
   Future<List<User>> getUsers({

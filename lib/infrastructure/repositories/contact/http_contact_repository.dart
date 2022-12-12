@@ -14,9 +14,9 @@ class HttpContactRepository implements ContactRepository {
     this._httpService,
   );
 
-  static const String urlGetAllContacts = 'http://127.0.0.1:8000/users/contact/?c=<userToken>';
-  static const String urlCreateContact = 'http://127.0.0.1:8000/users/d/contact/?c=<userToken>';
-  static const String urlCrud = 'http://127.0.0.1:8000/users/d/contact/?id=<contactId>&c=<userToken>';
+  static const String urlGetAllContacts = '${const String.fromEnvironment("server")}users/contact/?c=<userToken>';
+  static const String urlCreateContact = '${const String.fromEnvironment("server")}users/d/contact/?c=<userToken>';
+  static const String urlCrud = '${const String.fromEnvironment("server")}users/d/contact/?id=<contactId>&c=<userToken>';
 
   @override
   Future<List<Contact>> getContacts({

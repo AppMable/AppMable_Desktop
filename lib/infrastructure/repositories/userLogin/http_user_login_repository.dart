@@ -16,8 +16,8 @@ class HttpUserLoginRepository implements UserLoginRepository {
     this._httpService,
   );
 
-  static const String urlUserLogin = 'http://127.0.0.1:8000/users/login/?u=<username>&p=<password>';
-  static const String urlUserLogOut = 'http://127.0.0.1:8000/users/logout/?c=<userToken>';
+  static const String urlUserLogin = '${const String.fromEnvironment("server")}users/login/?u=<username>&p=<password>';
+  static const String urlUserLogOut = '${const String.fromEnvironment("server")}users/logout/?c=<userToken>';
 
   @override
   Future<UserLoginInformation?> logIn({

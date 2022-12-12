@@ -14,8 +14,8 @@ class HttpAlertRepository implements AlertRepository {
     this._httpService,
   );
 
-  static const String urlListAndCreateAlert = 'http://127.0.0.1:8000/users/alerts/?c=<userToken>';
-  static const String urlDeleteUpdateAlert = 'http://127.0.0.1:8000/users/d/alerts/?id=<alertId>&c=<userToken>';
+  static const String urlListAndCreateAlert = '${const String.fromEnvironment("server")}users/alerts/?c=<userToken>';
+  static const String urlDeleteUpdateAlert = '${const String.fromEnvironment("server")}users/d/alerts/?id=<alertId>&c=<userToken>';
 
   @override
   Future<List<Alert>> getAlerts({
