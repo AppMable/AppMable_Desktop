@@ -13,29 +13,29 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-part 'dashboard_screen_event.dart';
-part 'dashboard_screen_state.dart';
+part 'dashboard_screen_super_admin_event.dart';
+part 'dashboard_screen_super_admin_state.dart';
 
 @lazySingleton
-class DashboardScreenBloc extends Bloc<DashboardScreenEvent, DashboardScreenState> {
+class DashboardScreenSuperAdminBloc extends Bloc<DashboardScreenSuperAdminEvent, DashboardScreenSuperAdminState> {
   final LocalStorageService _localStorageService;
   final UserService _userService;
   final UserInfoBloc _userInfoBloc;
 
-  DashboardScreenBloc(
+  DashboardScreenSuperAdminBloc(
     this._localStorageService,
     this._userService,
     this._userInfoBloc,
-  ) : super(const DashboardScreenInitial()) {
-    on<DashboardScreenEventLoad>(_handleLoad);
-    on<DashboardScreenEventReset>(_handleReset);
+  ) : super(const DashboardScreenSuperAdminInitial()) {
+    on<DashboardScreenSuperAdminEventLoad>(_handleLoad);
+    on<DashboardScreenSuperAdminEventReset>(_handleReset);
   }
 
   Future<void> _handleLoad(
-    DashboardScreenEventLoad event,
-    Emitter<DashboardScreenState> emit,
+    DashboardScreenSuperAdminEventLoad event,
+    Emitter<DashboardScreenSuperAdminState> emit,
   ) async {
-    emit(const DashboardScreenLoading());
+    emit(const DashboardScreenSuperAdminLoading());
     await Future.delayed(Duration(milliseconds: Config.defaultDelay), () {});
 
     final UserLoginInformation userLoginInformation =
@@ -51,13 +51,13 @@ class DashboardScreenBloc extends Bloc<DashboardScreenEvent, DashboardScreenStat
       _userInfoBloc.add(UserInfoEventLoad(user: user));
     }
 
-    emit(const DashboardScreenLoaded());
+    emit(const DashboardScreenSuperAdminLoaded());
   }
 
   void _handleReset(
-    DashboardScreenEventReset event,
-    Emitter<DashboardScreenState> emit,
+    DashboardScreenSuperAdminEventReset event,
+    Emitter<DashboardScreenSuperAdminState> emit,
   ) {
-    emit(const DashboardScreenInitial());
+    emit(const DashboardScreenSuperAdminInitial());
   }
 }

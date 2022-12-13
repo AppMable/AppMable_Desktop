@@ -1,9 +1,12 @@
 import 'dart:developer';
 
+import 'package:appmable_desktop/application/bloc/dashboard_screen/dashboard_screen_bloc.dart';
+import 'package:appmable_desktop/application/bloc/dashboard_screen_super_admin/dashboard_screen_super_admin_bloc.dart';
 import 'package:appmable_desktop/application/bloc/login_screen/login_screen_bloc.dart';
 import 'package:appmable_desktop/domain/exceptions/login_exception.dart';
 import 'package:appmable_desktop/domain/exceptions/logout_exception.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
+import 'package:appmable_desktop/domain/services/start_up_router_service.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
 import 'package:appmable_desktop/domain/services/user_login_service.dart';
 import 'package:appmable_desktop/ui/screens/login_screen/login_screen.dart';
@@ -20,15 +23,21 @@ import 'login_screen_bloc_test.mocks.dart';
 
 @GenerateMocks([
   UserLoginService,
+  StartUpRouterService,
+  DashboardScreenBloc,
+  DashboardScreenSuperAdminBloc,
 ])
 void main() {
   final UserLoginService userLoginService = MockUserLoginService();
+  final StartUpRouterService startUpRouterService = MockStartUpRouterService();
+  final DashboardScreenBloc dashboardScreenBloc = MockDashboardScreenBloc();
+  final DashboardScreenSuperAdminBloc dashboardScreenSuperAdminBloc = MockDashboardScreenSuperAdminBloc();
 
   final Faker faker = Faker();
 
   final String username = faker.lorem.words(1).first;
   final String password = faker.lorem.words(1).first;
-  onLogInSuccess() => log('success');
+  onLogInSuccess(String routeName) => log('success');
   onLogInError(String error) => log(error);
 
   final UserLoginInformation userLoginInformation = userLoginInformationMockGenerator();
@@ -50,6 +59,9 @@ void main() {
       build: () => LoginScreenBloc(
         userLoginService,
         localStorageService,
+        startUpRouterService,
+        dashboardScreenBloc,
+        dashboardScreenSuperAdminBloc,
       ),
       act: (LoginScreenBloc bloc) => bloc.add(LogInEvent(
         username: username,
@@ -86,6 +98,9 @@ void main() {
       build: () => LoginScreenBloc(
         userLoginService,
         localStorageService,
+        startUpRouterService,
+        dashboardScreenBloc,
+        dashboardScreenSuperAdminBloc,
       ),
       act: (LoginScreenBloc bloc) => bloc.add(LogInEvent(
         username: username,
@@ -121,6 +136,9 @@ void main() {
       build: () => LoginScreenBloc(
         userLoginService,
         localStorageService,
+        startUpRouterService,
+        dashboardScreenBloc,
+        dashboardScreenSuperAdminBloc,
       ),
       act: (LoginScreenBloc bloc) => bloc.add(LogInEvent(
         username: username,
@@ -157,6 +175,9 @@ void main() {
       build: () => LoginScreenBloc(
         userLoginService,
         localStorageService,
+        startUpRouterService,
+        dashboardScreenBloc,
+        dashboardScreenSuperAdminBloc,
       ),
       act: (LoginScreenBloc bloc) => bloc.add(LogOutEvent(
         onLogOutSuccess: onLogOutSuccess,
@@ -191,6 +212,9 @@ void main() {
       build: () => LoginScreenBloc(
         userLoginService,
         localStorageService,
+        startUpRouterService,
+        dashboardScreenBloc,
+        dashboardScreenSuperAdminBloc,
       ),
       act: (LoginScreenBloc bloc) => bloc.add(LogOutEvent(
         onLogOutSuccess: onLogOutSuccess,
@@ -225,6 +249,9 @@ void main() {
       build: () => LoginScreenBloc(
         userLoginService,
         localStorageService,
+        startUpRouterService,
+        dashboardScreenBloc,
+        dashboardScreenSuperAdminBloc,
       ),
       act: (LoginScreenBloc bloc) => bloc.add(LogOutEvent(
         onLogOutSuccess: onLogOutSuccess,
@@ -235,8 +262,8 @@ void main() {
       ],
       verify: (_) {
         assert(
-        localStorageService.read(LoginScreen.userLoginInformation) is String,
-        'LoginScreen.userLogged value in local storage should be a String',
+          localStorageService.read(LoginScreen.userLoginInformation) is String,
+          'LoginScreen.userLogged value in local storage should be a String',
         );
         verifyInOrder([
           userLoginService.logOut(userToken: userToken),

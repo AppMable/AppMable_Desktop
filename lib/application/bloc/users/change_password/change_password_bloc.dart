@@ -4,7 +4,7 @@ import 'package:appmable_desktop/domain/model/objects/user.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
 import 'package:appmable_desktop/domain/services/user_service.dart';
-import 'package:appmable_desktop/ui/screens/dashboard_screen/dashboard_screen.dart';
+import 'package:appmable_desktop/ui/common/widgets/user_info/user_info.dart';
 import 'package:appmable_desktop/ui/screens/login_screen/login_screen.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
@@ -44,7 +44,7 @@ class ChangePasswordBloc extends Bloc<ChangePasswordEvent, ChangePasswordState> 
     final UserLoginInformation userLoginInformation =
         UserLoginInformation.fromMap(jsonDecode(_localStorageService.read(LoginScreen.userLoginInformation)));
 
-    final User user = User.fromMap(jsonDecode(_localStorageService.read(DashboardScreen.userInformation)));
+    final User user = User.fromMap(jsonDecode(_localStorageService.read(UserInfo.userInformation)));
 
     Map<String, dynamic> userMap = user.toMap();
 

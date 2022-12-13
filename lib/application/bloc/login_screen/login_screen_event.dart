@@ -14,7 +14,7 @@ class LoadLogInScreen extends LoginScreenEvent {
 class LogInEvent extends LoginScreenEvent {
   final String username;
   final String password;
-  final Function onLogInSuccess;
+  final Function(String routeName) onLogInSuccess;
   final Function(String error) onLogInError;
 
   const LogInEvent({

@@ -2,7 +2,9 @@ import 'package:appmable_desktop/domain/services/start_up_service.dart';
 import 'package:appmable_desktop/ui/screens/alerts/alerts_users_screen/alerts_users_screen.dart';
 import 'package:appmable_desktop/ui/screens/contacts/contacts_users_screen/contacts_users_screen.dart';
 import 'package:appmable_desktop/ui/screens/dashboard_screen/dashboard_screen.dart';
+import 'package:appmable_desktop/ui/screens/dashboard_screen_super_admin/dashboard_screen_super_admin.dart';
 import 'package:appmable_desktop/ui/screens/login_screen/login_screen.dart';
+import 'package:appmable_desktop/ui/screens/not_permissions_screen/not_permissions_screen.dart';
 import 'package:appmable_desktop/ui/screens/splash_screen/splash_screen.dart';
 import 'package:appmable_desktop/ui/screens/splash_screen/widgets/splash_holder.dart';
 import 'package:appmable_desktop/ui/screens/users/create_user_screen/create_user_screen.dart';
@@ -25,8 +27,10 @@ Map<String, WidgetBuilder> _routeGenerator() {
         return GetIt.I.get<StartUpService>().execute();
       },
     ),
+    NotPermissionsScreen.routeName: (_) => const NotPermissionsScreen(),
     LoginScreen.routeName: (_) => LoginScreen(),
     DashboardScreen.routeName: (_) => const DashboardScreen(),
+    DashboardScreenSuperAdmin.routeName: (_) => const DashboardScreenSuperAdmin(),
     // Users section
     UsersScreen.routeName: (_) => UsersScreen(),
     CreateUserScreen.routeName: (_) => const CreateUserScreen(),

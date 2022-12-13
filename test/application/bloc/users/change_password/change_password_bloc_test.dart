@@ -5,7 +5,7 @@ import 'package:appmable_desktop/domain/model/objects/user.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
 import 'package:appmable_desktop/domain/services/user_service.dart';
-import 'package:appmable_desktop/ui/screens/dashboard_screen/dashboard_screen.dart';
+import 'package:appmable_desktop/ui/common/widgets/user_info/user_info.dart';
 import 'package:appmable_desktop/ui/screens/login_screen/login_screen.dart';
 
 import 'package:bloc_test/bloc_test.dart';
@@ -30,7 +30,7 @@ void main() {
   localStorageService.write(LoginScreen.userLoginInformation, userLoginInformation.toJson());
 
   final User user = userMockGenerator();
-  localStorageService.write(DashboardScreen.userInformation, user.toJson());
+  localStorageService.write(UserInfo.userInformation, user.toJson());
 
   final Map<String, dynamic> userToUpdate = user.toMap();
   userToUpdate.remove('health_card_identifier');

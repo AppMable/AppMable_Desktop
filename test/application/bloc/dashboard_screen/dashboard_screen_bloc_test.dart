@@ -1,9 +1,10 @@
 import 'package:appmable_desktop/application/bloc/dashboard_screen/dashboard_screen_bloc.dart';
+import 'package:appmable_desktop/application/bloc/user_info/user_info_bloc.dart';
 import 'package:appmable_desktop/config.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
 import 'package:appmable_desktop/domain/services/user_service.dart';
-import 'package:appmable_desktop/ui/screens/dashboard_screen/dashboard_screen.dart';
+import 'package:appmable_desktop/ui/common/widgets/user_info/user_info.dart';
 import 'package:appmable_desktop/ui/screens/login_screen/login_screen.dart';
 
 import 'package:bloc_test/bloc_test.dart';
@@ -18,9 +19,11 @@ import 'dashboard_screen_bloc_test.mocks.dart';
 
 @GenerateMocks([
   UserService,
+  UserInfoBloc,
 ])
 void main() {
   final UserService userService = MockUserService();
+  final UserInfoBloc userInfoBloc = MockUserInfoBloc();
 
   final UserLoginInformation userLoginInformation = userLoginInformationMockGenerator();
 
@@ -41,6 +44,7 @@ void main() {
       build: () => DashboardScreenBloc(
         localStorageService,
         userService,
+        userInfoBloc,
       ),
       expect: () => [
         const DashboardScreenLoading(),
@@ -48,8 +52,8 @@ void main() {
       ],
       verify: (_) {
         assert(
-          localStorageService.read(DashboardScreen.userInformation) is String,
-          'DashboardScreen.userInformation value in local storage should be a String',
+          localStorageService.read(UserInfo.userInformation) is String,
+          'UserInfo.userInformation value in local storage should be a String',
         );
         verifyInOrder([
           userService.getUser(
@@ -78,6 +82,7 @@ void main() {
       build: () => DashboardScreenBloc(
         localStorageService,
         userService,
+        userInfoBloc,
       ),
       expect: () => [
         const DashboardScreenLoading(),
@@ -85,8 +90,8 @@ void main() {
       ],
       verify: (_) {
         assert(
-        localStorageService.read(DashboardScreen.userInformation) == null,
-        'DashboardScreen.userInformation value in local storage should be null',
+          localStorageService.read(UserInfo.userInformation) == null,
+          'UserInfo.userInformation value in local storage should be null',
         );
         verifyInOrder([
           userService.getUser(

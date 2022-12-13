@@ -4,7 +4,7 @@ import 'package:appmable_desktop/ui/common/app_layout/app_layout.dart';
 import 'package:appmable_desktop/ui/common/app_layout/responsive.dart';
 import 'package:appmable_desktop/ui/common/app_layout/styles.dart';
 import 'package:appmable_desktop/ui/common/app_layout/widgets/category_box.dart';
-import 'package:appmable_desktop/ui/screens/dashboard_screen/dashboard_screen.dart';
+import 'package:appmable_desktop/ui/common/widgets/user_info/user_info.dart';
 import 'package:appmable_desktop/ui/screens/users/create_user_screen/create_user_screen.dart';
 import 'package:appmable_desktop/ui/screens/users/update_user_screen/update_user_screen.dart';
 import 'package:appmable_desktop/ui/theme/app_theme.dart';

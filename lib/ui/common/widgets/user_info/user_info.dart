@@ -1,6 +1,18 @@
-part of '../dashboard_screen.dart';
+import 'package:appmable_desktop/application/bloc/login_screen/login_screen_bloc.dart';
+import 'package:appmable_desktop/domain/model/objects/user.dart';
+import 'package:appmable_desktop/ui/common/app_layout/styles.dart';
+import 'package:appmable_desktop/ui/common/app_layout/widgets/category_box.dart';
+import 'package:appmable_desktop/ui/common/mixin/user_mixin.dart';
+import 'package:appmable_desktop/ui/common/widgets/change_password_button/change_password_button.dart';
+import 'package:appmable_desktop/ui/screens/login_screen/login_screen.dart';
+import 'package:appmable_desktop/ui/theme/app_theme.dart';
+import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 class UserInfo extends StatefulWidget {
+
+  static const userInformation = 'userInformation';
+
   const UserInfo({
     Key? key,
   }) : super(key: key);
@@ -13,35 +25,18 @@ class _UserInfoState extends State<UserInfo> with UserMixin {
   bool showIncorrectLogOutError = false;
   String logOutErrorMessage = '';
 
-  final DashboardScreenBloc _dashboardScreenBloc = GetIt.instance.get<DashboardScreenBloc>();
   final LoginScreenBloc _loginScreenBloc = GetIt.instance.get<LoginScreenBloc>();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DashboardScreenBloc, DashboardScreenState>(
-      bloc: _dashboardScreenBloc,
-      builder: (context, state) {
-        if (state is DashboardScreenLoaded) {
-          return CategoryBox(
-            suffix: Container(),
-            title: "Información del usuario",
-            children: [
-              Expanded(
-                child: _userInfo(),
-              ),
-            ],
-          );
-        }
-
-        return Column(
-          children: const [
-            SizedBox(height: 100),
-            CircularProgressIndicator(
-              color: AppTheme.primary600,
-            )
-          ],
-        );
-      },
+    return CategoryBox(
+      suffix: Container(),
+      title: "Información del usuario",
+      children: [
+        Expanded(
+          child: _userInfo(),
+        ),
+      ],
     );
   }
 

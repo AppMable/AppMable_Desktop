@@ -4,6 +4,10 @@ import 'package:equatable/equatable.dart';
 import 'package:appmable_desktop/domain/exceptions/malformed_map_exception.dart';
 
 class User extends Equatable {
+
+  static const idAdminRole = 1;
+  static const idTutorRole = 2;
+
   final int id;
   final String identityNumber;
   final String? healthCardIdentifier;
@@ -37,6 +41,10 @@ class User extends Equatable {
     this.idUserRole,
     this.idUserReference,
   });
+
+  bool get isSuperAdmin => idUserRole == idAdminRole;
+  bool get isTutor => idUserRole == idTutorRole;
+  bool get isWarded => idUserRole == null;
 
   @override
   List<Object?> get props => [

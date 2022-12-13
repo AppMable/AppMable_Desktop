@@ -10,3 +10,10 @@ class DashboardScreenEventLoad extends DashboardScreenEvent {
   @override
   List<Object?> get props => [];
 }
+
+class DashboardScreenEventReset extends DashboardScreenEvent {
+  const DashboardScreenEventReset();
+
+  @override
+  List<Object?> get props => [];
+}

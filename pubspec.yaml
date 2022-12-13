@@ -21,6 +21,7 @@ dependencies:
   injectable: 1.5.3
   intl: ^0.17.0
   http: ^0.13.5
+  fast_rsa: ^3.5.1
 
 dev_dependencies:
   flutter_test:

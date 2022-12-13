@@ -5,6 +5,11 @@ import 'package:appmable_desktop/domain/exceptions/malformed_map_exception.dart'
 
 // TODO: Can be freezed
 class UserLoginInformation extends Equatable {
+
+  static const adminRole = 'Administrador';
+  static const tutorRole = 'Tutor';
+  static const wardedRole = 'Tutelado';
+
   final int userId;
   final String userRole;
   final String userName;
@@ -16,6 +21,10 @@ class UserLoginInformation extends Equatable {
     required this.userName,
     required this.userToken,
   });
+
+  bool get isSuperAdmin => userRole == adminRole;
+  bool get isTutor => userRole == tutorRole;
+  bool get isWarded => userRole == wardedRole;
 
   Map<String, dynamic> toMap() => {
         'userId': userId,

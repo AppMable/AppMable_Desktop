@@ -7,6 +7,7 @@ import 'package:appmable_desktop/domain/model/value_object/user_login_informatio
 import 'package:appmable_desktop/domain/repositories/user_login_repository.dart';
 import 'package:injectable/injectable.dart';
 import 'package:appmable_desktop/domain/services/http_service.dart';
+import 'package:fast_rsa/fast_rsa.dart';
 
 @Injectable(as: UserLoginRepository)
 class HttpUserLoginRepository implements UserLoginRepository {
@@ -24,12 +25,27 @@ class HttpUserLoginRepository implements UserLoginRepository {
     required String username,
     required String password,
   }) async {
-    final String urlLogin = urlUserLogin.replaceAll('<username>', username).replaceAll('<password>', password);
+
+    // var passwordEncrypted = await RSA.encryptPKCS1v15(password, 'publicKey'); TODO: pending
+
+    var passwordEncrypted = password;
+
+    final String urlLogin = urlUserLogin.replaceAll('<username>', username).replaceAll('<password>', passwordEncrypted);
 
     final Response response = await _httpService.get(Uri.parse(urlLogin));
 
     if (response.statusCode == 200) {
       List<String> userLoginInformation = jsonDecode(response.body)[0].split(':');
+
+      if(userLoginInformation.length == 3){
+        return UserLoginInformation(
+          userId: int.parse(userLoginInformation[0]),
+          userName: userLoginInformation[1],
+          userRole: UserLoginInformation.wardedRole,
+          userToken: userLoginInformation[2],
+        );
+      }
+
       return UserLoginInformation(
         userId: int.parse(userLoginInformation[0]),
         userName: userLoginInformation[1],

@@ -3,12 +3,19 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i3;
+import 'dart:async' as _i5;
 
-import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart'
-    as _i4;
-import 'package:appmable_desktop/domain/services/user_login_service.dart'
+import 'package:appmable_desktop/application/bloc/dashboard_screen/dashboard_screen_bloc.dart'
     as _i2;
+import 'package:appmable_desktop/application/bloc/dashboard_screen_super_admin/dashboard_screen_super_admin_bloc.dart'
+    as _i3;
+import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart'
+    as _i6;
+import 'package:appmable_desktop/domain/services/start_up_router_service.dart'
+    as _i7;
+import 'package:appmable_desktop/domain/services/user_login_service.dart'
+    as _i4;
+import 'package:flutter_bloc/flutter_bloc.dart' as _i8;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -22,16 +29,38 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
+class _FakeDashboardScreenState_0 extends _i1.SmartFake
+    implements _i2.DashboardScreenState {
+  _FakeDashboardScreenState_0(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeDashboardScreenSuperAdminState_1 extends _i1.SmartFake
+    implements _i3.DashboardScreenSuperAdminState {
+  _FakeDashboardScreenSuperAdminState_1(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
 /// A class which mocks [UserLoginService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockUserLoginService extends _i1.Mock implements _i2.UserLoginService {
+class MockUserLoginService extends _i1.Mock implements _i4.UserLoginService {
   MockUserLoginService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Future<_i4.UserLoginInformation?> logIn({
+  _i5.Future<_i6.UserLoginInformation?> logIn({
     required String? username,
     required String? password,
   }) =>
@@ -44,15 +73,286 @@ class MockUserLoginService extends _i1.Mock implements _i2.UserLoginService {
             #password: password,
           },
         ),
-        returnValue: _i3.Future<_i4.UserLoginInformation?>.value(),
-      ) as _i3.Future<_i4.UserLoginInformation?>);
+        returnValue: _i5.Future<_i6.UserLoginInformation?>.value(),
+      ) as _i5.Future<_i6.UserLoginInformation?>);
   @override
-  _i3.Future<bool> logOut({required String? userToken}) => (super.noSuchMethod(
+  _i5.Future<bool> logOut({required String? userToken}) => (super.noSuchMethod(
         Invocation.method(
           #logOut,
           [],
           {#userToken: userToken},
         ),
-        returnValue: _i3.Future<bool>.value(false),
-      ) as _i3.Future<bool>);
+        returnValue: _i5.Future<bool>.value(false),
+      ) as _i5.Future<bool>);
+}
+
+/// A class which mocks [StartUpRouterService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockStartUpRouterService extends _i1.Mock
+    implements _i7.StartUpRouterService {
+  MockStartUpRouterService() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.Future<String> execute() => (super.noSuchMethod(
+        Invocation.method(
+          #execute,
+          [],
+        ),
+        returnValue: _i5.Future<String>.value(''),
+      ) as _i5.Future<String>);
+}
+
+/// A class which mocks [DashboardScreenBloc].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockDashboardScreenBloc extends _i1.Mock
+    implements _i2.DashboardScreenBloc {
+  MockDashboardScreenBloc() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i2.DashboardScreenState get state => (super.noSuchMethod(
+        Invocation.getter(#state),
+        returnValue: _FakeDashboardScreenState_0(
+          this,
+          Invocation.getter(#state),
+        ),
+      ) as _i2.DashboardScreenState);
+  @override
+  _i5.Stream<_i2.DashboardScreenState> get stream => (super.noSuchMethod(
+        Invocation.getter(#stream),
+        returnValue: _i5.Stream<_i2.DashboardScreenState>.empty(),
+      ) as _i5.Stream<_i2.DashboardScreenState>);
+  @override
+  bool get isClosed => (super.noSuchMethod(
+        Invocation.getter(#isClosed),
+        returnValue: false,
+      ) as bool);
+  @override
+  void add(_i2.DashboardScreenEvent? event) => super.noSuchMethod(
+        Invocation.method(
+          #add,
+          [event],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void onEvent(_i2.DashboardScreenEvent? event) => super.noSuchMethod(
+        Invocation.method(
+          #onEvent,
+          [event],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void emit(_i2.DashboardScreenState? state) => super.noSuchMethod(
+        Invocation.method(
+          #emit,
+          [state],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void on<E extends _i2.DashboardScreenEvent>(
+    _i8.EventHandler<E, _i2.DashboardScreenState>? handler, {
+    _i8.EventTransformer<E>? transformer,
+  }) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #on,
+          [handler],
+          {#transformer: transformer},
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void onTransition(
+          _i8.Transition<_i2.DashboardScreenEvent, _i2.DashboardScreenState>?
+              transition) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #onTransition,
+          [transition],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  _i5.Future<void> close() => (super.noSuchMethod(
+        Invocation.method(
+          #close,
+          [],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+  @override
+  void onChange(_i8.Change<_i2.DashboardScreenState>? change) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #onChange,
+          [change],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void addError(
+    Object? error, [
+    StackTrace? stackTrace,
+  ]) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #addError,
+          [
+            error,
+            stackTrace,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void onError(
+    Object? error,
+    StackTrace? stackTrace,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #onError,
+          [
+            error,
+            stackTrace,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+}
+
+/// A class which mocks [DashboardScreenSuperAdminBloc].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockDashboardScreenSuperAdminBloc extends _i1.Mock
+    implements _i3.DashboardScreenSuperAdminBloc {
+  MockDashboardScreenSuperAdminBloc() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.DashboardScreenSuperAdminState get state => (super.noSuchMethod(
+        Invocation.getter(#state),
+        returnValue: _FakeDashboardScreenSuperAdminState_1(
+          this,
+          Invocation.getter(#state),
+        ),
+      ) as _i3.DashboardScreenSuperAdminState);
+  @override
+  _i5.Stream<_i3.DashboardScreenSuperAdminState> get stream =>
+      (super.noSuchMethod(
+        Invocation.getter(#stream),
+        returnValue: _i5.Stream<_i3.DashboardScreenSuperAdminState>.empty(),
+      ) as _i5.Stream<_i3.DashboardScreenSuperAdminState>);
+  @override
+  bool get isClosed => (super.noSuchMethod(
+        Invocation.getter(#isClosed),
+        returnValue: false,
+      ) as bool);
+  @override
+  void add(_i3.DashboardScreenSuperAdminEvent? event) => super.noSuchMethod(
+        Invocation.method(
+          #add,
+          [event],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void onEvent(_i3.DashboardScreenSuperAdminEvent? event) => super.noSuchMethod(
+        Invocation.method(
+          #onEvent,
+          [event],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void emit(_i3.DashboardScreenSuperAdminState? state) => super.noSuchMethod(
+        Invocation.method(
+          #emit,
+          [state],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void on<E extends _i3.DashboardScreenSuperAdminEvent>(
+    _i8.EventHandler<E, _i3.DashboardScreenSuperAdminState>? handler, {
+    _i8.EventTransformer<E>? transformer,
+  }) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #on,
+          [handler],
+          {#transformer: transformer},
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void onTransition(
+          _i8.Transition<_i3.DashboardScreenSuperAdminEvent,
+                  _i3.DashboardScreenSuperAdminState>?
+              transition) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #onTransition,
+          [transition],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  _i5.Future<void> close() => (super.noSuchMethod(
+        Invocation.method(
+          #close,
+          [],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+  @override
+  void onChange(_i8.Change<_i3.DashboardScreenSuperAdminState>? change) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #onChange,
+          [change],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void addError(
+    Object? error, [
+    StackTrace? stackTrace,
+  ]) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #addError,
+          [
+            error,
+            stackTrace,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void onError(
+    Object? error,
+    StackTrace? stackTrace,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #onError,
+          [
+            error,
+            stackTrace,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
 }

@@ -1,7 +1,10 @@
 import 'dart:convert';
 
+import 'package:appmable_desktop/application/bloc/dashboard_screen/dashboard_screen_bloc.dart';
+import 'package:appmable_desktop/application/bloc/dashboard_screen_super_admin/dashboard_screen_super_admin_bloc.dart';
 import 'package:appmable_desktop/domain/exceptions/logout_exception.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
+import 'package:appmable_desktop/domain/services/start_up_router_service.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
 import 'package:appmable_desktop/domain/services/user_login_service.dart';
 import 'package:appmable_desktop/domain/exceptions/login_exception.dart';
@@ -18,10 +21,16 @@ part 'login_screen_state.dart';
 class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
   final UserLoginService _userLoginService;
   final LocalStorageService _localStorageService;
+  final StartUpRouterService _startUpRouterService;
+  final DashboardScreenBloc _dashboardScreenBloc;
+  final DashboardScreenSuperAdminBloc _dashboardScreenSuperAdminBloc;
 
   LoginScreenBloc(
     this._userLoginService,
     this._localStorageService,
+    this._startUpRouterService,
+    this._dashboardScreenBloc,
+    this._dashboardScreenSuperAdminBloc,
   ) : super(const LoginScreenInitial()) {
     on<LogInEvent>(_handleLogin);
     on<LogOutEvent>(_handleLogOut);
@@ -41,8 +50,10 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
       );
 
       if (userLoginInformation != null) {
-        _localStorageService.write(LoginScreen.userLoginInformation, userLoginInformation.toJson());
-        event.onLogInSuccess();
+        await _localStorageService.write(LoginScreen.userLoginInformation, userLoginInformation.toJson());
+        final String routeName = await _startUpRouterService.execute();
+
+        event.onLogInSuccess(routeName);
         emit(const UserLogged());
       } else {
         event.onLogInError('Algo inesperado ocurrió, vuelve a intentar');
@@ -64,6 +75,8 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
     try {
       if (await _userLoginService.logOut(userToken: userLoginInformation.userToken)) {
         _localStorageService.remove(LoginScreen.userLoginInformation);
+        _dashboardScreenBloc.add(const DashboardScreenEventReset());
+        _dashboardScreenSuperAdminBloc.add(const DashboardScreenSuperAdminEventReset());
         event.onLogOutSuccess();
         emit(const LoginScreenLoaded());
       } else {

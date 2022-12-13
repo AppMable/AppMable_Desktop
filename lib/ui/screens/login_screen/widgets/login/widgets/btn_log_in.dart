@@ -46,8 +46,8 @@ class BtnLogIn extends StatelessWidget {
           loginScreenBloc.add(LogInEvent(
             username: usernameController.value.text,
             password: passwordController.value.text,
-            onLogInSuccess: () {
-              Navigator.of(context).pushReplacementNamed(DashboardScreen.routeName);
+            onLogInSuccess: (String routeName) {
+              Navigator.of(context).pushReplacementNamed(routeName);
             },
             onLogInError: (String error) {
               onLoginError(error);
