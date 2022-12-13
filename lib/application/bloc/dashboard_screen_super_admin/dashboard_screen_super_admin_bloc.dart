@@ -51,7 +51,9 @@ class DashboardScreenSuperAdminBloc extends Bloc<DashboardScreenSuperAdminEvent,
       _userInfoBloc.add(UserInfoEventLoad(user: user));
     }
 
-    emit(const DashboardScreenSuperAdminLoaded());
+    final List<User> users = await _userService.getAllUsers(userToken: userLoginInformation.userToken);
+
+    emit(DashboardScreenSuperAdminLoaded(users: users));
   }
 
   void _handleReset(

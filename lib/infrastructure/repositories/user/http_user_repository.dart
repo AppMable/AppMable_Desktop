@@ -19,6 +19,33 @@ class HttpUserRepository implements UserRepository {
   static const String urlCrud = '${const String.fromEnvironment("server")}users/d/?id=<userId>&t=<userType>&c=<userToken>';
   static const String urlCreateAdminUser = '${const String.fromEnvironment("server")}users/';
 
+
+  @override
+  Future<List<User>> getAllUsers({
+    required String userToken,
+  }) async {
+    final String url = urlCrud
+        .replaceAll('<userId>', '1')
+        .replaceAll('<userType>', 'admin')
+        .replaceAll('<userToken>', userToken);
+
+    final Response response = await _httpService.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      List<User> users = [];
+
+      List<dynamic> usersDecoded = jsonDecode(utf8.decode(response.bodyBytes));
+
+      for (Map<String, dynamic> user in usersDecoded) {
+        users.add(User.fromMap(user));
+      }
+
+      return users;
+    }
+
+    return [];
+  }
+
   @override
   Future<List<User>> getUsers({
     required int userReferenceId,

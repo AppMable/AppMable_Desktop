@@ -17,9 +17,14 @@ class DashboardScreenSuperAdminLoading extends DashboardScreenSuperAdminInitial 
 }
 
 class DashboardScreenSuperAdminLoaded extends DashboardScreenSuperAdminState {
+  final List<User> users;
 
-  const DashboardScreenSuperAdminLoaded();
+  const DashboardScreenSuperAdminLoaded({
+    required this.users,
+  });
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [
+        users,
+      ];
 }

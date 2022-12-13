@@ -10,6 +10,14 @@ class UserService {
     this._userRepository,
   );
 
+  Future<List<User>> getAllUsers({
+    required String userToken,
+  }) async {
+    return _userRepository.getAllUsers(
+      userToken: userToken,
+    );
+  }
+
   Future<List<User>> getUsers({
     required int userReferenceId,
     required String userToken,
