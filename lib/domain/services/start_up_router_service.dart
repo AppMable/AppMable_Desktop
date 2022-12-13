@@ -25,7 +25,7 @@ class StartUpRouterService {
 
     String route;
 
-    if (userLoginInformation == null) {
+    if (userLoginInformation == null || true) {
       route = LoginScreen.routeName;
     } else if (userLoginInformation.isSuperAdmin) {
       route = DashboardScreenSuperAdmin.routeName;

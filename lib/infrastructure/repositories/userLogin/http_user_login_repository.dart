@@ -7,7 +7,12 @@ import 'package:appmable_desktop/domain/model/value_object/user_login_informatio
 import 'package:appmable_desktop/domain/repositories/user_login_repository.dart';
 import 'package:injectable/injectable.dart';
 import 'package:appmable_desktop/domain/services/http_service.dart';
-import 'package:fast_rsa/fast_rsa.dart';
+
+import 'package:encrypt/encrypt.dart';
+import 'package:encrypt/encrypt.dart' as enc;
+import 'package:encrypt/encrypt_io.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:pointycastle/asymmetric/api.dart';
 
 @Injectable(as: UserLoginRepository)
 class HttpUserLoginRepository implements UserLoginRepository {
@@ -26,18 +31,24 @@ class HttpUserLoginRepository implements UserLoginRepository {
     required String password,
   }) async {
 
-    // var passwordEncrypted = await RSA.encryptPKCS1v15(password, 'publicKey'); TODO: pending
+    // TODO: Service Encrypter
+    final Response responsePublicKey = await _httpService.get(Uri.parse('${const String.fromEnvironment("server")}users/public/'));
+    String publicPem = responsePublicKey.body.replaceAll('PublicKey(', '').replaceAll(')', '').replaceAll(', ', ',');
+    List<String> publicKeyArray = publicPem.split(',');
+    RSAPublicKey publicKey = RSAPublicKey(BigInt.parse(publicKeyArray[0]), BigInt.parse(publicKeyArray[1]));
+    final Encrypter encrypter = Encrypter(RSA(publicKey: publicKey));
 
-    var passwordEncrypted = password;
+    final Encrypted passwordEncrypted = encrypter.encrypt(password);
 
-    final String urlLogin = urlUserLogin.replaceAll('<username>', username).replaceAll('<password>', passwordEncrypted);
+    final String urlLogin =
+        urlUserLogin.replaceAll('<username>', username).replaceAll('<password>', passwordEncrypted.base64);
 
     final Response response = await _httpService.get(Uri.parse(urlLogin));
 
     if (response.statusCode == 200) {
       List<String> userLoginInformation = jsonDecode(response.body)[0].split(':');
 
-      if(userLoginInformation.length == 3){
+      if (userLoginInformation.length == 3) {
         return UserLoginInformation(
           userId: int.parse(userLoginInformation[0]),
           userName: userLoginInformation[1],

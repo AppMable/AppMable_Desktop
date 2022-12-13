@@ -13,8 +13,5 @@ mixin UserMixin {
   UserLoginInformation getUserLoginInformation() =>
       UserLoginInformation.fromMap(jsonDecode(_localStorageService.read(LoginScreen.userLoginInformation)));
 
-  User getUser() {
-    var test = _localStorageService.read(UserInfo.userInformation);
-    return User.fromMap(jsonDecode(_localStorageService.read(UserInfo.userInformation)));
-  }
+  User getUser() => User.fromMap(jsonDecode(_localStorageService.read(UserInfo.userInformation)));
 }
