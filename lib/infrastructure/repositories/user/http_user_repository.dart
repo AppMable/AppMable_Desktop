@@ -3,31 +3,32 @@ import 'dart:convert';
 import 'package:appmable_desktop/domain/model/objects/user.dart';
 import 'package:appmable_desktop/domain/model/value_object/response.dart';
 import 'package:appmable_desktop/domain/repositories/user_repository.dart';
+import 'package:appmable_desktop/domain/services/encrypter_service.dart';
 import 'package:injectable/injectable.dart';
 import 'package:appmable_desktop/domain/services/http_service.dart';
 
 @Injectable(as: UserRepository)
 class HttpUserRepository implements UserRepository {
   final HttpService _httpService;
+  final EncrypterService _encrypterService;
 
   HttpUserRepository(
     this._httpService,
+    this._encrypterService,
   );
 
   static const String urlGetAllUsers = '${const String.fromEnvironment("server")}users/?c=<userToken>&t=<userType>';
   static const String urlCreateUser = '${const String.fromEnvironment("server")}users/?c=register&t=<userType>';
-  static const String urlCrud = '${const String.fromEnvironment("server")}users/d/?id=<userId>&t=<userType>&c=<userToken>';
+  static const String urlCrud =
+      '${const String.fromEnvironment("server")}users/d/?id=<userId>&t=<userType>&c=<userToken>';
   static const String urlCreateAdminUser = '${const String.fromEnvironment("server")}users/';
-
 
   @override
   Future<List<User>> getAllUsers({
     required String userToken,
   }) async {
-    final String url = urlCrud
-        .replaceAll('<userId>', '1')
-        .replaceAll('<userType>', 'admin')
-        .replaceAll('<userToken>', userToken);
+    final String url =
+        urlCrud.replaceAll('<userId>', '1').replaceAll('<userType>', 'admin').replaceAll('<userToken>', userToken);
 
     final Response response = await _httpService.get(Uri.parse(url));
 
@@ -37,6 +38,7 @@ class HttpUserRepository implements UserRepository {
       List<dynamic> usersDecoded = jsonDecode(utf8.decode(response.bodyBytes));
 
       for (Map<String, dynamic> user in usersDecoded) {
+        user['password'] = _encrypterService.decrypt(user['password']);
         users.add(User.fromMap(user));
       }
 
@@ -64,7 +66,10 @@ class HttpUserRepository implements UserRepository {
       List<dynamic> usersDecoded = jsonDecode(utf8.decode(response.bodyBytes));
 
       for (Map<String, dynamic> user in usersDecoded) {
-        if(user['id_user_reference'] == userReferenceId) users.add(User.fromMap(user));
+        if (user['id_user_reference'] == userReferenceId) {
+          user['password'] = _encrypterService.decrypt(user['password']);
+          users.add(User.fromMap(user));
+        }
       }
 
       return users;
@@ -86,7 +91,6 @@ class HttpUserRepository implements UserRepository {
     final Response response = await _httpService.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
-
       List<dynamic> usersDecoded = jsonDecode(response.body);
 
       for (Map<String, dynamic> user in usersDecoded) {
@@ -95,7 +99,7 @@ class HttpUserRepository implements UserRepository {
             id: user['id'],
             identityNumber: user['identity_number'],
             username: user['username'],
-            password: user['password'],
+            password: _encrypterService.decrypt(user['password']),
             name: user['name'],
             surname: user['surname'],
             email: user['email'],
@@ -154,7 +158,6 @@ class HttpUserRepository implements UserRepository {
   Future<bool> createAdminUser({
     required Map<String, dynamic> user,
   }) async {
-
     final String urlCreateUserReplaced = urlCreateUser.replaceAll('<userType>', 'admin');
 
     try {

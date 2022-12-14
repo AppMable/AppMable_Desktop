@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:appmable_desktop/domain/model/objects/user.dart';
 import 'package:appmable_desktop/domain/model/value_object/response.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
+import 'package:appmable_desktop/domain/services/encrypter_service.dart';
 import 'package:appmable_desktop/infrastructure/repositories/user/http_user_repository.dart';
 import 'package:faker/faker.dart';
 import 'package:mockito/annotations.dart';
@@ -14,12 +15,19 @@ import '../../../domain/model/objects/mock/user_mock.dart';
 import '../../../domain/model/value_objects/mock/user_login_mock.dart';
 import 'http_user_repository_test.mocks.dart';
 
-@GenerateMocks([HttpService])
+@GenerateMocks([
+  HttpService,
+  EncrypterService,
+])
 void main() {
   group('Tests over User Repository', () {
     final Faker faker = Faker();
     final HttpService httpService = MockHttpService();
-    final HttpUserRepository repository = HttpUserRepository(httpService);
+    final EncrypterService encrypterService = MockEncrypterService();
+    final HttpUserRepository repository = HttpUserRepository(
+      httpService,
+      encrypterService,
+    );
 
     final UserLoginInformation userLoginInformation = userLoginInformationMockGenerator();
 

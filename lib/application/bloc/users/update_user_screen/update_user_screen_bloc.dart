@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:appmable_desktop/application/bloc/users/users_screen/users_screen_bloc.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
+import 'package:appmable_desktop/domain/services/encrypter_service.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
 import 'package:appmable_desktop/domain/services/user_service.dart';
 import 'package:appmable_desktop/ui/screens/login_screen/login_screen.dart';
@@ -19,11 +20,13 @@ class UpdateUserScreenBloc extends Bloc<UpdateUserScreenEvent, UpdateUserScreenS
   final UsersScreenBloc _usersScreenBloc;
   final UserService _userService;
   final LocalStorageService _localStorageService;
+  final EncrypterService _encrypterService;
 
   UpdateUserScreenBloc(
     this._usersScreenBloc,
     this._userService,
     this._localStorageService,
+    this._encrypterService,
   ) : super(const UpdateUserScreenInitial()) {
     on<UpdateUserEvent>(_handleUpdateUser);
   }
@@ -39,6 +42,8 @@ class UpdateUserScreenBloc extends Bloc<UpdateUserScreenEvent, UpdateUserScreenS
       DateTime dateOfBirth = DateFormat("dd-MM-yyyy").parse(event.user['date_of_birth']);
       event.user['date_of_birth'] = DateFormat('yyyy-MM-dd').format(dateOfBirth);
     }
+
+    event.user['password'] = _encrypterService.encrypt(event.user['password']);
 
     event.user.remove('id_user_role');
 
