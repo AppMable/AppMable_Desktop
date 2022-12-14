@@ -6,6 +6,7 @@
 import 'dart:async' as _i3;
 
 import 'package:appmable_desktop/domain/model/objects/user.dart' as _i4;
+import 'package:appmable_desktop/domain/services/encrypter_service.dart' as _i5;
 import 'package:appmable_desktop/domain/services/user_service.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -126,4 +127,39 @@ class MockUserService extends _i1.Mock implements _i2.UserService {
         ),
         returnValue: _i3.Future<bool>.value(false),
       ) as _i3.Future<bool>);
+}
+
+/// A class which mocks [EncrypterService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockEncrypterService extends _i1.Mock implements _i5.EncrypterService {
+  MockEncrypterService() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.Future<void> init() => (super.noSuchMethod(
+        Invocation.method(
+          #init,
+          [],
+        ),
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
+  @override
+  String encrypt(String? message) => (super.noSuchMethod(
+        Invocation.method(
+          #encrypt,
+          [message],
+        ),
+        returnValue: '',
+      ) as String);
+  @override
+  String decrypt(String? message) => (super.noSuchMethod(
+        Invocation.method(
+          #decrypt,
+          [message],
+        ),
+        returnValue: '',
+      ) as String);
 }

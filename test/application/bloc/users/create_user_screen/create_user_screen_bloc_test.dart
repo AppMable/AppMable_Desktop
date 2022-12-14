@@ -4,6 +4,7 @@ import 'package:appmable_desktop/application/bloc/users/create_user_screen/creat
 import 'package:appmable_desktop/application/bloc/users/users_screen/users_screen_bloc.dart';
 import 'package:appmable_desktop/domain/model/objects/user.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
+import 'package:appmable_desktop/domain/services/encrypter_service.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
 import 'package:appmable_desktop/domain/services/user_service.dart';
 import 'package:appmable_desktop/ui/screens/login_screen/login_screen.dart';
@@ -21,11 +22,13 @@ import 'create_user_screen_bloc_test.mocks.dart';
 @GenerateMocks([
   UsersScreenBloc,
   UserService,
+  EncrypterService,
 ])
 void main() {
   final UsersScreenBloc usersScreenBloc = MockUsersScreenBloc();
   final UserService userService = MockUserService();
   final LocalStorageService localStorageService = LocalStorageServiceMock();
+  final EncrypterService encrypterService = MockEncrypterService();
 
   final UserLoginInformation userLoginInformation = userLoginInformationMockGenerator();
   localStorageService.write(LoginScreen.userLoginInformation, userLoginInformation.toJson());
@@ -38,7 +41,6 @@ void main() {
   onCreateError(String error) => log(error);
 
   group('Create User Screen BLoC', () {
-
     // Create
 
     blocTest<CreateUserScreenBloc, CreateUserScreenState>(
@@ -52,6 +54,7 @@ void main() {
         usersScreenBloc,
         userService,
         localStorageService,
+        encrypterService,
       ),
       act: (CreateUserScreenBloc bloc) => bloc.add(CreateUserEvent(
         user: userToCreate,
@@ -81,6 +84,7 @@ void main() {
         usersScreenBloc,
         userService,
         localStorageService,
+        encrypterService,
       ),
       act: (CreateUserScreenBloc bloc) => bloc.add(CreateUserEvent(
         user: userToCreate,
@@ -110,6 +114,7 @@ void main() {
         usersScreenBloc,
         userService,
         localStorageService,
+        encrypterService,
       ),
       act: (CreateUserScreenBloc bloc) => bloc.add(CreateUserEvent(
         user: userToCreate,
@@ -127,6 +132,5 @@ void main() {
         ]);
       },
     );
-
   });
 }

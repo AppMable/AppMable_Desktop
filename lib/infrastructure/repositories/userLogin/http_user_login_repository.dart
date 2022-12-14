@@ -8,9 +8,6 @@ import 'package:appmable_desktop/domain/repositories/user_login_repository.dart'
 import 'package:injectable/injectable.dart';
 import 'package:appmable_desktop/domain/services/http_service.dart';
 
-import 'package:encrypt/encrypt.dart';
-import 'package:pointycastle/asymmetric/api.dart';
-
 @Injectable(as: UserLoginRepository)
 class HttpUserLoginRepository implements UserLoginRepository {
   final HttpService _httpService;
@@ -28,17 +25,7 @@ class HttpUserLoginRepository implements UserLoginRepository {
     required String password,
   }) async {
 
-    // TODO: Service Encrypter
-    final Response responsePublicKey = await _httpService.get(Uri.parse('${const String.fromEnvironment("server")}users/public/'));
-    String publicPem = responsePublicKey.body.replaceAll('PublicKey(', '').replaceAll(')', '').replaceAll(', ', ',');
-    List<String> publicKeyArray = publicPem.split(',');
-    RSAPublicKey publicKey = RSAPublicKey(BigInt.parse(publicKeyArray[0]), BigInt.parse(publicKeyArray[1]));
-    final Encrypter encrypter = Encrypter(RSA(publicKey: publicKey));
-
-    final Encrypted passwordEncrypted = encrypter.encrypt(password);
-
-    final String urlLogin =
-        urlUserLogin.replaceAll('<username>', username).replaceAll('<password>', passwordEncrypted.base64);
+    final String urlLogin = urlUserLogin.replaceAll('<username>', username).replaceAll('<password>', password);
 
     final Response response = await _httpService.get(Uri.parse(urlLogin));
 

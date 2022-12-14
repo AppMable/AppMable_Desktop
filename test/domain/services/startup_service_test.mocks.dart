@@ -5,6 +5,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i3;
 
+import 'package:appmable_desktop/domain/services/encrypter_service.dart' as _i4;
 import 'package:appmable_desktop/domain/services/start_up_router_service.dart'
     as _i2;
 import 'package:mockito/mockito.dart' as _i1;
@@ -37,4 +38,39 @@ class MockStartUpRouterService extends _i1.Mock
         ),
         returnValue: _i3.Future<String>.value(''),
       ) as _i3.Future<String>);
+}
+
+/// A class which mocks [EncrypterService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockEncrypterService extends _i1.Mock implements _i4.EncrypterService {
+  MockEncrypterService() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.Future<void> init() => (super.noSuchMethod(
+        Invocation.method(
+          #init,
+          [],
+        ),
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
+  @override
+  String encrypt(String? message) => (super.noSuchMethod(
+        Invocation.method(
+          #encrypt,
+          [message],
+        ),
+        returnValue: '',
+      ) as String);
+  @override
+  String decrypt(String? message) => (super.noSuchMethod(
+        Invocation.method(
+          #decrypt,
+          [message],
+        ),
+        returnValue: '',
+      ) as String);
 }

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:appmable_desktop/application/bloc/users/change_password/change_password_bloc.dart';
 import 'package:appmable_desktop/domain/model/objects/user.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
+import 'package:appmable_desktop/domain/services/encrypter_service.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
 import 'package:appmable_desktop/domain/services/user_service.dart';
 import 'package:appmable_desktop/ui/common/widgets/user_info/user_info.dart';
@@ -21,10 +22,12 @@ import 'change_password_bloc_test.mocks.dart';
 
 @GenerateMocks([
   UserService,
+  EncrypterService,
 ])
 void main() {
   final UserService userService = MockUserService();
   final LocalStorageService localStorageService = LocalStorageServiceMock();
+  final EncrypterService encrypterService = MockEncrypterService();
 
   final UserLoginInformation userLoginInformation = userLoginInformationMockGenerator();
   localStorageService.write(LoginScreen.userLoginInformation, userLoginInformation.toJson());
@@ -55,6 +58,7 @@ void main() {
       build: () => ChangePasswordBloc(
         userService,
         localStorageService,
+        encrypterService,
       ),
       act: (ChangePasswordBloc bloc) => bloc.add(ChangePassword(
         password: userToUpdate['password'],
@@ -87,6 +91,7 @@ void main() {
       build: () => ChangePasswordBloc(
         userService,
         localStorageService,
+        encrypterService,
       ),
       act: (ChangePasswordBloc bloc) => bloc.add(ChangePassword(
         password: userToUpdate['password'],
@@ -119,6 +124,7 @@ void main() {
       build: () => ChangePasswordBloc(
         userService,
         localStorageService,
+        encrypterService,
       ),
       act: (ChangePasswordBloc bloc) => bloc.add(ChangePassword(
         password: userToUpdate['password'],
@@ -146,6 +152,7 @@ void main() {
       build: () => ChangePasswordBloc(
         userService,
         localStorageService,
+        encrypterService,
       ),
       act: (ChangePasswordBloc bloc) => bloc.add(const ClosePopupChangePassword()),
       expect: () => [

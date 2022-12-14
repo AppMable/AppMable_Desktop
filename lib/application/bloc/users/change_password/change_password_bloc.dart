@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:appmable_desktop/domain/model/objects/user.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
+import 'package:appmable_desktop/domain/services/encrypter_service.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
 import 'package:appmable_desktop/domain/services/user_service.dart';
 import 'package:appmable_desktop/ui/common/widgets/user_info/user_info.dart';
@@ -19,10 +20,12 @@ part 'change_password_state.dart';
 class ChangePasswordBloc extends Bloc<ChangePasswordEvent, ChangePasswordState> {
   final UserService _userService;
   final LocalStorageService _localStorageService;
+  final EncrypterService _encrypterService;
 
   ChangePasswordBloc(
     this._userService,
     this._localStorageService,
+    this._encrypterService,
   ) : super(const ChangePasswordInitial()) {
     on<ChangePassword>(_handleChangePassword);
     on<ClosePopupChangePassword>(_handleClosePopupChangePassword);
@@ -48,7 +51,7 @@ class ChangePasswordBloc extends Bloc<ChangePasswordEvent, ChangePasswordState> 
 
     Map<String, dynamic> userMap = user.toMap();
 
-    userMap['password'] = event.password;
+    userMap['password'] = _encrypterService.encrypt(event.password);
 
     if (userMap['date_of_birth'] != null) {
       DateTime dateOfBirth = DateFormat("yyyy-MM-dd").parse(userMap['date_of_birth']);

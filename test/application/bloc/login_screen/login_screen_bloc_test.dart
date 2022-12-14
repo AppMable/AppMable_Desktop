@@ -6,6 +6,7 @@ import 'package:appmable_desktop/application/bloc/login_screen/login_screen_bloc
 import 'package:appmable_desktop/domain/exceptions/login_exception.dart';
 import 'package:appmable_desktop/domain/exceptions/logout_exception.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
+import 'package:appmable_desktop/domain/services/encrypter_service.dart';
 import 'package:appmable_desktop/domain/services/start_up_router_service.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
 import 'package:appmable_desktop/domain/services/user_login_service.dart';
@@ -26,12 +27,14 @@ import 'login_screen_bloc_test.mocks.dart';
   StartUpRouterService,
   DashboardScreenBloc,
   DashboardScreenSuperAdminBloc,
+  EncrypterService,
 ])
 void main() {
   final UserLoginService userLoginService = MockUserLoginService();
   final StartUpRouterService startUpRouterService = MockStartUpRouterService();
   final DashboardScreenBloc dashboardScreenBloc = MockDashboardScreenBloc();
   final DashboardScreenSuperAdminBloc dashboardScreenSuperAdminBloc = MockDashboardScreenSuperAdminBloc();
+  final EncrypterService encrypterService = MockEncrypterService();
 
   final Faker faker = Faker();
 
@@ -62,6 +65,7 @@ void main() {
         startUpRouterService,
         dashboardScreenBloc,
         dashboardScreenSuperAdminBloc,
+        encrypterService,
       ),
       act: (LoginScreenBloc bloc) => bloc.add(LogInEvent(
         username: username,
@@ -101,6 +105,7 @@ void main() {
         startUpRouterService,
         dashboardScreenBloc,
         dashboardScreenSuperAdminBloc,
+        encrypterService,
       ),
       act: (LoginScreenBloc bloc) => bloc.add(LogInEvent(
         username: username,
@@ -139,6 +144,7 @@ void main() {
         startUpRouterService,
         dashboardScreenBloc,
         dashboardScreenSuperAdminBloc,
+        encrypterService,
       ),
       act: (LoginScreenBloc bloc) => bloc.add(LogInEvent(
         username: username,
@@ -178,6 +184,7 @@ void main() {
         startUpRouterService,
         dashboardScreenBloc,
         dashboardScreenSuperAdminBloc,
+        encrypterService,
       ),
       act: (LoginScreenBloc bloc) => bloc.add(LogOutEvent(
         onLogOutSuccess: onLogOutSuccess,
@@ -215,6 +222,7 @@ void main() {
         startUpRouterService,
         dashboardScreenBloc,
         dashboardScreenSuperAdminBloc,
+        encrypterService,
       ),
       act: (LoginScreenBloc bloc) => bloc.add(LogOutEvent(
         onLogOutSuccess: onLogOutSuccess,
@@ -252,6 +260,7 @@ void main() {
         startUpRouterService,
         dashboardScreenBloc,
         dashboardScreenSuperAdminBloc,
+        encrypterService,
       ),
       act: (LoginScreenBloc bloc) => bloc.add(LogOutEvent(
         onLogOutSuccess: onLogOutSuccess,

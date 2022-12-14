@@ -11,6 +11,7 @@ import 'package:appmable_desktop/application/bloc/dashboard_screen_super_admin/d
     as _i3;
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart'
     as _i6;
+import 'package:appmable_desktop/domain/services/encrypter_service.dart' as _i9;
 import 'package:appmable_desktop/domain/services/start_up_router_service.dart'
     as _i7;
 import 'package:appmable_desktop/domain/services/user_login_service.dart'
@@ -355,4 +356,39 @@ class MockDashboardScreenSuperAdminBloc extends _i1.Mock
         ),
         returnValueForMissingStub: null,
       );
+}
+
+/// A class which mocks [EncrypterService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockEncrypterService extends _i1.Mock implements _i9.EncrypterService {
+  MockEncrypterService() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.Future<void> init() => (super.noSuchMethod(
+        Invocation.method(
+          #init,
+          [],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+  @override
+  String encrypt(String? message) => (super.noSuchMethod(
+        Invocation.method(
+          #encrypt,
+          [message],
+        ),
+        returnValue: '',
+      ) as String);
+  @override
+  String decrypt(String? message) => (super.noSuchMethod(
+        Invocation.method(
+          #decrypt,
+          [message],
+        ),
+        returnValue: '',
+      ) as String);
 }

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:appmable_desktop/application/bloc/users/users_screen/users_screen_bloc.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
+import 'package:appmable_desktop/domain/services/encrypter_service.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
 import 'package:appmable_desktop/domain/services/user_service.dart';
 import 'package:appmable_desktop/ui/screens/login_screen/login_screen.dart';
@@ -19,11 +20,13 @@ class CreateUserScreenBloc extends Bloc<CreateUserScreenEvent, CreateUserScreenS
   final UsersScreenBloc _usersScreenBloc;
   final UserService _userService;
   final LocalStorageService _localStorageService;
+  final EncrypterService _encrypterService;
 
   CreateUserScreenBloc(
     this._usersScreenBloc,
     this._userService,
     this._localStorageService,
+    this._encrypterService,
   ) : super(const CreateUserScreenInitial()) {
     on<CreateUserEvent>(_handleCreateUser);
     on<CreateAdminUserEvent>(_handleCreateAdminUser);
@@ -37,6 +40,8 @@ class CreateUserScreenBloc extends Bloc<CreateUserScreenEvent, CreateUserScreenS
         UserLoginInformation.fromMap(jsonDecode(_localStorageService.read(LoginScreen.userLoginInformation)));
 
     event.user['id_user_reference'] = userLoginInformation.userId;
+
+    event.user['password'] = _encrypterService.encrypt(event.user['password']);
 
     DateTime dateOfBirth = DateFormat("dd-MM-yyyy").parse(event.user['date_of_birth']);
 

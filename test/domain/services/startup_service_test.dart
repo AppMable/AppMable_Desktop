@@ -1,3 +1,4 @@
+import 'package:appmable_desktop/domain/services/encrypter_service.dart';
 import 'package:appmable_desktop/domain/services/start_up_router_service.dart';
 import 'package:appmable_desktop/domain/services/start_up_service.dart';
 import 'package:faker/faker.dart';
@@ -10,6 +11,7 @@ import 'storage/mock/local_storage_service_mock.dart';
 
 @GenerateMocks([
   StartUpRouterService,
+  EncrypterService,
 ])
 void main() {
   group('Startup service', () {
@@ -18,6 +20,7 @@ void main() {
 
       final StartUpRouterService startupRouterService = MockStartUpRouterService();
       final LocalStorageServiceMock localStorageService = LocalStorageServiceMock();
+      final EncrypterService encrypterService = MockEncrypterService();
 
       final String returnPageRoute = '/${faker.lorem.words(2).join('-')}';
 
@@ -26,6 +29,7 @@ void main() {
       final StartUpService startupService = StartUpService(
         startupRouterService,
         localStorageService,
+        encrypterService,
       );
 
       final route = await startupService.execute();

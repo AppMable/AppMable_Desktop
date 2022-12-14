@@ -4,6 +4,7 @@ import 'package:appmable_desktop/application/bloc/dashboard_screen/dashboard_scr
 import 'package:appmable_desktop/application/bloc/dashboard_screen_super_admin/dashboard_screen_super_admin_bloc.dart';
 import 'package:appmable_desktop/domain/exceptions/logout_exception.dart';
 import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
+import 'package:appmable_desktop/domain/services/encrypter_service.dart';
 import 'package:appmable_desktop/domain/services/start_up_router_service.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
 import 'package:appmable_desktop/domain/services/user_login_service.dart';
@@ -24,6 +25,7 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
   final StartUpRouterService _startUpRouterService;
   final DashboardScreenBloc _dashboardScreenBloc;
   final DashboardScreenSuperAdminBloc _dashboardScreenSuperAdminBloc;
+  final EncrypterService _encrypterService;
 
   LoginScreenBloc(
     this._userLoginService,
@@ -31,6 +33,7 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
     this._startUpRouterService,
     this._dashboardScreenBloc,
     this._dashboardScreenSuperAdminBloc,
+    this._encrypterService,
   ) : super(const LoginScreenInitial()) {
     on<LogInEvent>(_handleLogin);
     on<LogOutEvent>(_handleLogOut);
@@ -46,7 +49,7 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
     try {
       final UserLoginInformation? userLoginInformation = await _userLoginService.logIn(
         username: event.username,
-        password: event.password,
+        password: _encrypterService.encrypt(event.password),
       );
 
       if (userLoginInformation != null) {
