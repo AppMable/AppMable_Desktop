@@ -9,9 +9,6 @@ import 'package:injectable/injectable.dart';
 import 'package:appmable_desktop/domain/services/http_service.dart';
 
 import 'package:encrypt/encrypt.dart';
-import 'package:encrypt/encrypt.dart' as enc;
-import 'package:encrypt/encrypt_io.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:pointycastle/asymmetric/api.dart';
 
 @Injectable(as: UserLoginRepository)
