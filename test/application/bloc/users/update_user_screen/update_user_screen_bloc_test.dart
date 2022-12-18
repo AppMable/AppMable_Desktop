@@ -33,7 +33,10 @@ void main() {
   final UserLoginInformation userLoginInformation = userLoginInformationMockGenerator();
   localStorageService.write(LoginScreen.userLoginInformation, userLoginInformation.toJson());
 
-  final User user = userMockGenerator();
+  const String passwordEncrypted = 'password_encrypted';
+  const String passwordDecrypted = '1234';
+
+  final User user = userMockGenerator(password: passwordDecrypted);
   final Map<String, dynamic> userToUpdate = user.toMap();
   userToUpdate.remove('id_user_role');
 
@@ -44,9 +47,12 @@ void main() {
 
     // UpdateUserEvent
 
+    when(encrypterService.encrypt(user.password)).thenAnswer((_) => passwordEncrypted);
+
     blocTest<UpdateUserScreenBloc, UpdateUserScreenState>(
       'Success Update',
       setUp: () {
+        userToUpdate['password'] = passwordDecrypted;
         when(userService.updateUser(
           user: userToUpdate,
           userType: 'user',
@@ -82,6 +88,7 @@ void main() {
     blocTest<UpdateUserScreenBloc, UpdateUserScreenState>(
       'User Update - False',
       setUp: () {
+        userToUpdate['password'] = passwordDecrypted;
         when(userService.updateUser(
           user: userToUpdate,
           userType: 'user',
@@ -117,6 +124,7 @@ void main() {
     blocTest<UpdateUserScreenBloc, UpdateUserScreenState>(
       'User Update - Exception',
       setUp: () {
+        userToUpdate['password'] = passwordDecrypted;
         when(userService.updateUser(
           user: userToUpdate,
           userType: 'user',

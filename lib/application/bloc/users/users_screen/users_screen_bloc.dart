@@ -50,24 +50,25 @@ class UsersScreenBloc extends Bloc<UsersScreenEvent, UsersScreenState> {
     UsersScreenDeleteEvent event,
     Emitter<UsersScreenState> emit,
   ) async {
-    emit(const UsersScreenLoading());
+
 
     final UserLoginInformation userLoginInformation =
         UserLoginInformation.fromMap(jsonDecode(_localStorageService.read(LoginScreen.userLoginInformation)));
 
     try {
-      if (await _userService.deleteUser(
-        userId: event.userId,
+      if (await _userService.disableUser(
+        user: event.user.toMap(),
         userType: 'user',
         userToken: userLoginInformation.userToken,
       )) {
+        emit(const UsersScreenLoading());
         event.onSuccess();
         add(const UsersScreenEventLoad());
       } else {
-        event.onError('No se ha podido eliminar');
+        event.onError('No se ha podido desactivar');
       }
     } catch (_) {
-      event.onError('No se ha podido eliminar por algo raro');
+      event.onError('No se ha podido desactivar por algo raro');
     }
   }
 }

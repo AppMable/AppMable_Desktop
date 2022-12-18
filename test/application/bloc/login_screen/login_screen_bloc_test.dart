@@ -40,6 +40,8 @@ void main() {
 
   final String username = faker.lorem.words(1).first;
   final String password = faker.lorem.words(1).first;
+  final String passwordEncrypted = faker.lorem.words(1).first;
+  ;
   onLogInSuccess(String routeName) => log('success');
   onLogInError(String error) => log(error);
 
@@ -56,8 +58,15 @@ void main() {
     blocTest<LoginScreenBloc, LoginScreenState>(
       'Success Login',
       setUp: () {
-        when(userLoginService.logIn(username: username, password: password))
-            .thenAnswer((_) => Future.value(userLoginInformation));
+        when(userLoginService.logIn(
+          username: username,
+          password: passwordEncrypted,
+        )).thenAnswer((_) => Future.value(userLoginInformation));
+
+        when(encrypterService.encrypt(password)).thenAnswer((_) => passwordEncrypted);
+
+        when(startUpRouterService.execute()).thenAnswer((_) => Future.value(faker.lorem.words(1).first));
+
       },
       build: () => LoginScreenBloc(
         userLoginService,
@@ -83,7 +92,7 @@ void main() {
           'LoginScreen.userLogged value in local storage should be a String',
         );
         verifyInOrder([
-          userLoginService.logIn(username: username, password: password),
+          userLoginService.logIn(username: username, password: passwordEncrypted),
         ]);
       },
     );
@@ -96,8 +105,13 @@ void main() {
       'LoginException',
       setUp: () {
         when(
-          userLoginService.logIn(username: username, password: password),
+          userLoginService.logIn(
+            username: username,
+            password: passwordEncrypted,
+          ),
         ).thenThrow((_) => LoginException(faker.lorem.words(5).toString()));
+
+        when(encrypterService.encrypt(password)).thenAnswer((_) => passwordEncrypted);
       },
       build: () => LoginScreenBloc(
         userLoginService,
@@ -122,7 +136,7 @@ void main() {
           'LoginScreen.userLogged value in local storage should be same than ${null}',
         );
         verifyInOrder([
-          userLoginService.logIn(username: username, password: password),
+          userLoginService.logIn(username: username, password: passwordEncrypted),
         ]);
       },
     );
@@ -135,8 +149,9 @@ void main() {
       'RandomException',
       setUp: () {
         when(
-          userLoginService.logIn(username: username, password: password),
+          userLoginService.logIn(username: username, password: passwordEncrypted),
         ).thenThrow((_) => UnimplementedError());
+        when(encrypterService.encrypt(password)).thenAnswer((_) => passwordEncrypted);
       },
       build: () => LoginScreenBloc(
         userLoginService,
@@ -161,7 +176,7 @@ void main() {
           'LoginScreen.userLogged value in local storage should be same than ${null}',
         );
         verifyInOrder([
-          userLoginService.logIn(username: username, password: password),
+          userLoginService.logIn(username: username, password: passwordEncrypted),
         ]);
       },
     );

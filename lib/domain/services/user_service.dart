@@ -12,9 +12,11 @@ class UserService {
 
   Future<List<User>> getAllUsers({
     required String userToken,
+    required int userId,
   }) async {
     return _userRepository.getAllUsers(
       userToken: userToken,
+      userId: userId,
     );
   }
 
@@ -34,6 +36,18 @@ class UserService {
   }) async {
     return _userRepository.getUser(
       userId: userId,
+      userToken: userToken,
+    );
+  }
+
+  Future<bool> disableUser({
+    required Map<String, dynamic> user,
+    required String userType,
+    required userToken,
+  }) async {
+    return _userRepository.disableUser(
+      user: user,
+      userType: userType,
       userToken: userToken,
     );
   }

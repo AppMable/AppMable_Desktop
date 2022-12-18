@@ -1,3 +1,4 @@
+import 'package:appmable_desktop/domain/model/value_object/user_login_information.dart';
 import 'package:appmable_desktop/domain/services/start_up_router_service.dart';
 import 'package:appmable_desktop/domain/services/storage/local_storage_service.dart';
 import 'package:appmable_desktop/ui/screens/login_screen/login_screen.dart';
@@ -39,7 +40,7 @@ void main() {
     test('Startup Router Service - User logged --> Show Dashboard Screen', () async {
       final LocalStorageService localStorageService = LocalStorageServiceMock();
 
-      await localStorageService.write(LoginScreen.userLoginInformation, userLoginInformationMockGenerator());
+      await localStorageService.write(LoginScreen.userLoginInformation, userLoginInformationMockGenerator(userRole: UserLoginInformation.tutorRole).toJson());
 
       final StartUpRouterService startupRouterService = StartUpRouterService(
         localStorageService,

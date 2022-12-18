@@ -17,3 +17,22 @@ class DashboardScreenSuperAdminEventReset extends DashboardScreenSuperAdminEvent
   @override
   List<Object?> get props => [];
 }
+
+class DashboardScreenSuperAdminDeleteEvent extends DashboardScreenSuperAdminEvent {
+  final int userId;
+  final Function onSuccess;
+  final Function(String error) onError;
+
+  const DashboardScreenSuperAdminDeleteEvent({
+    required this.userId,
+    required this.onSuccess,
+    required this.onError,
+  });
+
+  @override
+  List<Object?> get props => [
+        userId,
+        onSuccess,
+        onError,
+      ];
+}

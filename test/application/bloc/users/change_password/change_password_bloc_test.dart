@@ -32,7 +32,10 @@ void main() {
   final UserLoginInformation userLoginInformation = userLoginInformationMockGenerator();
   localStorageService.write(LoginScreen.userLoginInformation, userLoginInformation.toJson());
 
-  final User user = userMockGenerator();
+  const String passwordEncrypted = 'password_encrypted';
+  const String passwordDecrypted = '1234';
+
+  final User user = userMockGenerator(password: passwordEncrypted);
   localStorageService.write(UserInfo.userInformation, user.toJson());
 
   final Map<String, dynamic> userToUpdate = user.toMap();
@@ -45,6 +48,9 @@ void main() {
   onUpdateSuccess() => log('Success');
 
   group('Change Password Events', () {
+
+    when(encrypterService.encrypt(passwordDecrypted)).thenAnswer((_) => passwordEncrypted);
+
     blocTest<ChangePasswordBloc, ChangePasswordState>(
       'True',
       setUp: () {
@@ -53,7 +59,6 @@ void main() {
           userType: 'admin',
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(true));
-
       },
       build: () => ChangePasswordBloc(
         userService,
@@ -61,7 +66,7 @@ void main() {
         encrypterService,
       ),
       act: (ChangePasswordBloc bloc) => bloc.add(ChangePassword(
-        password: userToUpdate['password'],
+        password: passwordDecrypted,
         onSuccess: onUpdateSuccess,
       )),
       expect: () => [
@@ -94,7 +99,7 @@ void main() {
         encrypterService,
       ),
       act: (ChangePasswordBloc bloc) => bloc.add(ChangePassword(
-        password: userToUpdate['password'],
+        password: passwordDecrypted,
         onSuccess: onUpdateSuccess,
       )),
       expect: () => [
@@ -127,7 +132,7 @@ void main() {
         encrypterService,
       ),
       act: (ChangePasswordBloc bloc) => bloc.add(ChangePassword(
-        password: userToUpdate['password'],
+        password: passwordDecrypted,
         onSuccess: onUpdateSuccess,
       )),
       expect: () => [

@@ -6,6 +6,7 @@ import 'package:appmable_desktop/domain/repositories/user_repository.dart';
 import 'package:appmable_desktop/domain/services/encrypter_service.dart';
 import 'package:injectable/injectable.dart';
 import 'package:appmable_desktop/domain/services/http_service.dart';
+import 'package:intl/intl.dart';
 
 @Injectable(as: UserRepository)
 class HttpUserRepository implements UserRepository {
@@ -26,26 +27,40 @@ class HttpUserRepository implements UserRepository {
   @override
   Future<List<User>> getAllUsers({
     required String userToken,
+    required int userId,
   }) async {
-    final String url =
-        urlCrud.replaceAll('<userId>', '1').replaceAll('<userType>', 'admin').replaceAll('<userToken>', userToken);
+    List<User> users = await _getListUsers(
+      userToken: userToken,
+      userType: 'admin',
+      userIdToExclude: userId,
+    );
+
+    users.addAll(await _getListUsers(userToken: userToken, userType: 'user'));
+
+    return users;
+  }
+
+  Future<List<User>> _getListUsers({
+    required String userToken,
+    required String userType,
+    int? userIdToExclude,
+  }) async {
+    List<User> users = [];
+
+    final String url = urlGetAllUsers.replaceAll('<userType>', userType).replaceAll('<userToken>', userToken);
 
     final Response response = await _httpService.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
-      List<User> users = [];
-
       List<dynamic> usersDecoded = jsonDecode(utf8.decode(response.bodyBytes));
 
       for (Map<String, dynamic> user in usersDecoded) {
         user['password'] = _encrypterService.decrypt(user['password']);
-        users.add(User.fromMap(user));
+        if (userIdToExclude != user['id']) users.add(User.fromMap(user));
       }
-
-      return users;
     }
 
-    return [];
+    return users;
   }
 
   @override
@@ -104,6 +119,7 @@ class HttpUserRepository implements UserRepository {
             surname: user['surname'],
             email: user['email'],
             phoneNumber: user['phone_number'],
+            isActive: user['active'],
             dateOfBirth: user['date_of_birth'] != null ? DateTime.parse(user['date_of_birth']) : null,
             dateCreated: user['date_created'] != null ? DateTime.parse(user['date_created']) : null,
             dateLastLogin: user['date_last_login'] != null ? DateTime.parse(user['date_last_login']) : null,
@@ -116,6 +132,39 @@ class HttpUserRepository implements UserRepository {
       }
     }
     return null;
+  }
+
+  @override
+  Future<bool> disableUser({
+    required Map<String, dynamic> user,
+    required String userType,
+    required String userToken,
+  }) async {
+
+    DateTime dateOfBirth = DateTime.parse(user['date_of_birth']);
+    user['date_of_birth'] = DateFormat('yyyy-MM-dd').format(dateOfBirth);
+
+    user['active'] = false;
+    user['password'] = _encrypterService.encrypt(user['password']);
+    user.remove('id_user_role');
+
+    final String urlUpdateUser = urlCrud
+        .replaceAll('<userId>', user['id'].toString())
+        .replaceAll('<userType>', userType)
+        .replaceAll('<userToken>', userToken);
+
+    try {
+      final Response response = await _httpService.put(
+        Uri.parse(urlUpdateUser),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(user),
+      );
+      return response.statusCode == 200;
+    } catch (_) {
+      rethrow;
+    }
   }
 
   @override

@@ -33,7 +33,10 @@ void main() {
   final UserLoginInformation userLoginInformation = userLoginInformationMockGenerator();
   localStorageService.write(LoginScreen.userLoginInformation, userLoginInformation.toJson());
 
-  final User user = userMockGenerator();
+  const String passwordEncrypted = 'password_encrypted';
+  const String passwordDecrypted = '1234';
+
+  final User user = userMockGenerator(password: passwordDecrypted);
   final Map<String, dynamic> userToCreate = user.toMap();
   userToCreate.remove('id_user_role');
 
@@ -41,11 +44,15 @@ void main() {
   onCreateError(String error) => log(error);
 
   group('Create User Screen BLoC', () {
+
+    when(encrypterService.encrypt(user.password)).thenAnswer((_) => passwordEncrypted);
+
     // Create
 
     blocTest<CreateUserScreenBloc, CreateUserScreenState>(
       'Success Create',
       setUp: () {
+        userToCreate['password'] = passwordDecrypted;
         when(userService.createUser(
           user: userToCreate,
         )).thenAnswer((_) => Future.value(true));
@@ -76,6 +83,7 @@ void main() {
     blocTest<CreateUserScreenBloc, CreateUserScreenState>(
       'User Create - false',
       setUp: () {
+        userToCreate['password'] = passwordDecrypted;
         when(userService.createUser(
           user: userToCreate,
         )).thenAnswer((_) => Future.value(false));
@@ -106,6 +114,7 @@ void main() {
     blocTest<CreateUserScreenBloc, CreateUserScreenState>(
       'User Create - Exception',
       setUp: () {
+        userToCreate['password'] = passwordDecrypted;
         when(userService.createUser(
           user: userToCreate,
         )).thenThrow((_) => UnimplementedError());

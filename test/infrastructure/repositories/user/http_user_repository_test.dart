@@ -29,9 +29,14 @@ void main() {
       encrypterService,
     );
 
+    const String passwordEncrypted = 'password_encrypted';
+    const String passwordDecrypted = '1234';
+
     final UserLoginInformation userLoginInformation = userLoginInformationMockGenerator();
 
     // Read All Users
+
+    when(encrypterService.decrypt(passwordEncrypted)).thenAnswer((_) => passwordDecrypted);
 
     test('Read All Users - OK', () async {
       List<User> usersExpected = List<User>.generate(
@@ -39,6 +44,7 @@ void main() {
           (int index) => userMockGeneratorFromHttpResponse(
                 id: index,
                 idUserReference: userLoginInformation.userId,
+                password: passwordDecrypted,
               ));
 
       final String url = HttpUserRepository.urlCrud
@@ -46,7 +52,11 @@ void main() {
           .replaceAll('<userType>', 'user')
           .replaceAll('<userToken>', userLoginInformation.userToken);
 
-      final String bodyResponse = getUsersHttpString(users: usersExpected, areAdminUsers: false);
+      final String bodyResponse = getUsersHttpString(
+        users: usersExpected,
+        areAdminUsers: false,
+        password: passwordEncrypted,
+      );
 
       when(httpService.get(Uri.parse(url))).thenAnswer(
         (_) => Future.value(
@@ -101,9 +111,13 @@ void main() {
           faker.randomGenerator.integer(10, min: 1),
           (int index) => userMockGenerator(
                 id: index,
+                password: passwordDecrypted,
               ));
 
-      User userExpected = userAdminMockGeneratorFromHttpResponse(id: usersExpected.last.id + 1);
+      User userExpected = userAdminMockGeneratorFromHttpResponse(
+        id: usersExpected.last.id + 1,
+        password: passwordDecrypted,
+      );
       usersExpected.add(userExpected);
 
       final String url = HttpUserRepository.urlCrud
@@ -114,7 +128,7 @@ void main() {
       when(httpService.get(Uri.parse(url))).thenAnswer(
         (_) => Future.value(
           Response(
-            body: getUsersHttpString(users: usersExpected),
+            body: getUsersHttpString(users: usersExpected, password: passwordEncrypted),
             statusCode: 200,
             headers: const {'header': 'mock'},
             bodyBytes: Uint8List.fromList(faker.randomGenerator.numbers(5, 5)),
@@ -131,7 +145,9 @@ void main() {
     });
 
     test('Get User - KO', () async {
-      User userExpected = userMockGeneratorFromHttpResponse();
+      User userExpected = userMockGeneratorFromHttpResponse(
+        password: passwordDecrypted,
+      );
 
       final String url = HttpUserRepository.urlCrud
           .replaceAll('<userId>', userExpected.id.toString())
@@ -141,7 +157,10 @@ void main() {
       when(httpService.get(Uri.parse(url))).thenAnswer(
         (_) => Future.value(
           Response(
-            body: getAdminUserHttpString(userExpected),
+            body: getAdminUserHttpString(
+              userExpected,
+              passwordEncrypted,
+            ),
             statusCode: 403,
             headers: const {'header': 'mock'},
             bodyBytes: Uint8List.fromList(faker.randomGenerator.numbers(5, 5)),
@@ -224,7 +243,9 @@ void main() {
     // Create User
 
     test('Create User - OK', () async {
-      final User user = userMockGenerator();
+      final User user = userMockGenerator(
+        password: passwordDecrypted,
+      );
 
       final String url = HttpUserRepository.urlCreateUser.replaceAll('<userType>', 'user');
 
@@ -253,7 +274,9 @@ void main() {
     });
 
     test('Create User - KO', () async {
-      final User user = userMockGenerator();
+      final User user = userMockGenerator(
+        password: passwordDecrypted,
+      );
 
       final String url = HttpUserRepository.urlCreateUser.replaceAll('<userType>', 'user');
 
@@ -284,7 +307,9 @@ void main() {
     // Update User
 
     test('Update User - OK', () async {
-      final User user = userMockGenerator();
+      final User user = userMockGenerator(
+        password: passwordDecrypted,
+      );
       final String userId = user.id.toString();
       final String userType = faker.lorem.words(1).first;
       final String userToken = faker.lorem.words(1).first;
@@ -321,7 +346,9 @@ void main() {
     });
 
     test('Update User - KO', () async {
-      final User user = userMockGenerator();
+      final User user = userMockGenerator(
+        password: passwordDecrypted,
+      );
       final String userId = user.id.toString();
       final String userType = faker.lorem.words(1).first;
       final String userToken = faker.lorem.words(1).first;

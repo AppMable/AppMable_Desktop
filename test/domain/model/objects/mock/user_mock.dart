@@ -11,6 +11,7 @@ User userMockGenerator({
   String? surname,
   String? email,
   String? phoneNumber,
+  bool? isActive,
   DateTime? dateOfBirth,
   DateTime? dateCreated,
   DateTime? dateLastLogin,
@@ -27,6 +28,7 @@ User userMockGenerator({
     surname: surname ?? faker.address.person.lastName(),
     email: email ?? faker.internet.email(),
     phoneNumber: phoneNumber ?? faker.phoneNumber.toString(),
+    isActive: isActive ?? faker.randomGenerator.boolean(),
     dateOfBirth: dateOfBirth ?? faker.date.dateTime(),
     dateCreated: dateCreated ?? faker.date.dateTime(),
     dateLastLogin: dateLastLogin ?? faker.date.dateTime(),
@@ -46,6 +48,7 @@ User userAdminMockGeneratorFromHttpResponse({
   String? surname,
   String? email,
   String? phoneNumber,
+  bool? isActive,
   DateTime? dateOfBirth,
   DateTime? dateCreated,
   DateTime? dateLastLogin,
@@ -60,6 +63,7 @@ User userAdminMockGeneratorFromHttpResponse({
     surname: surname ?? faker.address.person.lastName(),
     email: email ?? faker.internet.email(),
     phoneNumber: phoneNumber ?? faker.phoneNumber.toString(),
+    isActive: isActive ?? faker.randomGenerator.boolean(),
     dateOfBirth: dateOfBirth ?? faker.date.dateTime(),
     dateCreated: dateCreated ?? faker.date.dateTime(),
     dateLastLogin: dateLastLogin ?? faker.date.dateTime(),
@@ -77,6 +81,7 @@ User userMockGeneratorFromHttpResponse({
   String? surname,
   String? email,
   String? phoneNumber,
+  bool? isActive,
   DateTime? dateOfBirth,
   DateTime? dateCreated,
   DateTime? dateLastLogin,
@@ -93,6 +98,7 @@ User userMockGeneratorFromHttpResponse({
     surname: surname ?? faker.address.person.lastName(),
     email: email ?? faker.internet.email(),
     phoneNumber: phoneNumber ?? faker.phoneNumber.toString(),
+    isActive: isActive ?? faker.randomGenerator.boolean(),
     dateOfBirth: dateOfBirth ?? faker.date.dateTime(),
     dateCreated: dateCreated ?? faker.date.dateTime(),
     dateLastLogin: dateLastLogin ?? faker.date.dateTime(),
@@ -101,17 +107,18 @@ User userMockGeneratorFromHttpResponse({
   );
 }
 
-String getAdminUserHttpString(User user) {
+String getAdminUserHttpString(User user, String password) {
   return '''
   {
     "id": ${user.id},
     "identity_number": "${user.identityNumber}",
     "username": "${user.username}",
-    "password": "${user.password}",
+    "password": "$password",
     "name": "${user.name}",
     "surname": "${user.surname}",
     "email": "${user.email}",
     "phone_number": "${user.phoneNumber}",
+    "active": ${user.isActive},
     "date_of_birth": "${user.dateOfBirth.toString()}",
     "date_created": "${user.dateCreated?.toString()}",
     "date_last_login": "${user.dateLastLogin?.toString()}",
@@ -120,17 +127,21 @@ String getAdminUserHttpString(User user) {
 ''';
 }
 
-String getUserHttpString(User user) {
+String getUserHttpString(
+  User user,
+  String password,
+) {
   return '''
   {
     "id": ${user.id},
     "identity_number": "${user.identityNumber}",
     "username": "${user.username}",
-    "password": "${user.password}",
+    "password": "$password",
     "name": "${user.name}",
     "surname": "${user.surname}",
     "email": "${user.email}",
     "phone_number": "${user.phoneNumber}",
+    "active": ${user.isActive},
     "date_of_birth": "${user.dateOfBirth?.toString()}",
     "date_created": "${user.dateCreated?.toString()}",
     "date_last_login": "${user.dateLastLogin?.toString()}",
@@ -141,7 +152,11 @@ String getUserHttpString(User user) {
  ''';
 }
 
-String getUsersHttpString({ required List<User> users, bool areAdminUsers = true}) {
+String getUsersHttpString({
+  required List<User> users,
+  required String password,
+  bool areAdminUsers = true,
+}) {
   String list = '[';
 
   final int numOfUsers = users.length;
@@ -149,7 +164,7 @@ String getUsersHttpString({ required List<User> users, bool areAdminUsers = true
 
   for (User user in users) {
     i++;
-    list += areAdminUsers ? getAdminUserHttpString(user) : getUserHttpString(user);
+    list += areAdminUsers ? getAdminUserHttpString(user, password) : getUserHttpString(user, password);
     if (i != numOfUsers) list += ',';
   }
   list += ']';

@@ -46,6 +46,7 @@ void main() {
         userService,
         userInfoBloc,
       ),
+      act: (DashboardScreenBloc bloc) => bloc.add(const DashboardScreenEventLoad()),
       expect: () => [
         const DashboardScreenLoading(),
         const DashboardScreenLoaded(),
@@ -84,6 +85,7 @@ void main() {
         userService,
         userInfoBloc,
       ),
+      act: (DashboardScreenBloc bloc) => bloc.add(const DashboardScreenEventLoad()),
       expect: () => [
         const DashboardScreenLoading(),
         const DashboardScreenLoaded(),

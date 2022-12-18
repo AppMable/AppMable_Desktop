@@ -4,6 +4,7 @@ abstract class UserRepository {
 
   Future<List<User>> getAllUsers({
     required String userToken,
+    required int userId,
   });
 
   Future<List<User>> getUsers({
@@ -13,6 +14,12 @@ abstract class UserRepository {
 
   Future<User?> getUser({
     required int userId,
+    required String userToken,
+  });
+
+  Future<bool> disableUser({
+    required Map<String, dynamic> user,
+    required String userType,
     required String userToken,
   });
 

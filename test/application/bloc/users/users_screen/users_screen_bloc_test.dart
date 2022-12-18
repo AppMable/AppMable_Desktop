@@ -68,7 +68,7 @@ void main() {
 
     // UsersScreenDeleteEvent
 
-    final int userIdToDelete = faker.randomGenerator.integer(5);
+    final Map<String, dynamic> userToDisable = userMockGenerator(idUserReference: 1).toMap();
 
     blocTest<UsersScreenBloc, UsersScreenState>(
       'Success Delete',
@@ -78,8 +78,8 @@ void main() {
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(users));
 
-        when(userService.deleteUser(
-          userId: userIdToDelete,
+        when(userService.disableUser(
+          user: userToDisable,
           userType: 'user',
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(true));
@@ -90,7 +90,7 @@ void main() {
       ),
       wait: Duration(milliseconds: Config.defaultDelay * 2),
       act: (UsersScreenBloc bloc) => bloc.add(UsersScreenDeleteEvent(
-        userId: userIdToDelete,
+        user: User.fromMap(userToDisable),
         onSuccess: onDeleteSuccess,
         onError: onDeleteError,
       )),
@@ -100,8 +100,8 @@ void main() {
       ],
       verify: (_) {
         verifyInOrder([
-          userService.deleteUser(
-            userId: userIdToDelete,
+          userService.disableUser(
+            user: userToDisable,
             userType: 'user',
             userToken: userLoginInformation.userToken,
           ),
@@ -121,8 +121,8 @@ void main() {
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(users));
 
-        when(userService.deleteUser(
-          userId: userIdToDelete,
+        when(userService.disableUser(
+          user: userToDisable,
           userType: 'user',
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(false));
@@ -133,7 +133,7 @@ void main() {
       ),
       wait: Duration(milliseconds: Config.defaultDelay * 2),
       act: (UsersScreenBloc bloc) => bloc.add(UsersScreenDeleteEvent(
-        userId: userIdToDelete,
+        user: User.fromMap(userToDisable),
         onSuccess: onDeleteSuccess,
         onError: onDeleteError,
       )),
@@ -147,8 +147,8 @@ void main() {
             userReferenceId: userLoginInformation.userId,
             userToken: userLoginInformation.userToken,
           ),
-          userService.deleteUser(
-            userId: userIdToDelete,
+          userService.disableUser(
+            user: userToDisable,
             userType: 'user',
             userToken: userLoginInformation.userToken,
           ),
@@ -164,8 +164,8 @@ void main() {
           userToken: userLoginInformation.userToken,
         )).thenAnswer((_) => Future.value(users));
 
-        when(userService.deleteUser(
-          userId: userIdToDelete,
+        when(userService.disableUser(
+          user: userToDisable,
           userType: 'user',
           userToken: userLoginInformation.userToken,
         )).thenThrow((_) => UnimplementedError());
@@ -176,7 +176,7 @@ void main() {
       ),
       wait: Duration(milliseconds: Config.defaultDelay * 2),
       act: (UsersScreenBloc bloc) => bloc.add(UsersScreenDeleteEvent(
-        userId: userIdToDelete,
+        user: User.fromMap(userToDisable),
         onSuccess: onDeleteSuccess,
         onError: onDeleteError,
       )),
@@ -190,8 +190,8 @@ void main() {
             userReferenceId: userLoginInformation.userId,
             userToken: userLoginInformation.userToken,
           ),
-          userService.deleteUser(
-            userId: userIdToDelete,
+          userService.disableUser(
+            user: userToDisable,
             userType: 'user',
             userToken: userLoginInformation.userToken,
           ),

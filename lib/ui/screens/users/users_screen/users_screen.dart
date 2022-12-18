@@ -98,6 +98,15 @@ class UsersScreen extends StatelessWidget {
                                                 ),
                                               ),
                                             ),
+                                            DataColumn(
+                                              label: Center(
+                                                child: Text(
+                                                  'Estado',
+                                                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                            ),
                                             DataColumn(label: SizedBox.shrink()),
                                           ],
                                           rows: state.users
@@ -146,12 +155,18 @@ class UsersScreen extends StatelessWidget {
                                                             ? 'No se ha connectado aún'
                                                             : DateFormat('dd-MM-yyyy HH:mm')
                                                                 .format(user.dateLastLogin!))),
+                                                        DataCell(Text(
+                                                          user.isActive ? 'Activado' : 'Desactivado',
+                                                          style: TextStyle(
+                                                            color: user.isActive ? const Color(0xff5cb85c) : Colors.red,
+                                                          ),
+                                                        )),
                                                         DataCell(Center(
-                                                          child: IconButton(
+                                                          child: user.isActive ? IconButton(
                                                             onPressed: () {
                                                               _usersScreenBloc.add(
                                                                 UsersScreenDeleteEvent(
-                                                                  userId: user.id,
+                                                                  user: user,
                                                                   onError: (String errorMsg) {
                                                                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                                                       backgroundColor: AppTheme.error600,
@@ -169,7 +184,7 @@ class UsersScreen extends StatelessWidget {
                                                                         .showSnackBar(const SnackBar(
                                                                       backgroundColor: Color(0xff5cb85c),
                                                                       content: Text(
-                                                                        'Se ha eliminado correctamente',
+                                                                        'Se ha desactivado',
                                                                         style: TextStyle(
                                                                           fontWeight: FontWeight.bold,
                                                                           color: Colors.white,
@@ -182,7 +197,7 @@ class UsersScreen extends StatelessWidget {
                                                             },
                                                             icon: const Icon(Icons.remove_circle_rounded),
                                                             color: Colors.red,
-                                                          ),
+                                                          ) : const SizedBox.shrink(),
                                                         )),
                                                       ],
                                                     )),

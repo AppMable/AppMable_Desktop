@@ -42,12 +42,18 @@ class MockUserService extends _i1.Mock implements _i3.UserService {
   }
 
   @override
-  _i4.Future<List<_i5.User>> getAllUsers({required String? userToken}) =>
+  _i4.Future<List<_i5.User>> getAllUsers({
+    required String? userToken,
+    required int? userId,
+  }) =>
       (super.noSuchMethod(
         Invocation.method(
           #getAllUsers,
           [],
-          {#userToken: userToken},
+          {
+            #userToken: userToken,
+            #userId: userId,
+          },
         ),
         returnValue: _i4.Future<List<_i5.User>>.value(<_i5.User>[]),
       ) as _i4.Future<List<_i5.User>>);
@@ -83,6 +89,24 @@ class MockUserService extends _i1.Mock implements _i3.UserService {
         ),
         returnValue: _i4.Future<_i5.User?>.value(),
       ) as _i4.Future<_i5.User?>);
+  @override
+  _i4.Future<bool> disableUser({
+    required Map<String, dynamic>? user,
+    required String? userType,
+    required dynamic userToken,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #disableUser,
+          [],
+          {
+            #user: user,
+            #userType: userType,
+            #userToken: userToken,
+          },
+        ),
+        returnValue: _i4.Future<bool>.value(false),
+      ) as _i4.Future<bool>);
   @override
   _i4.Future<bool> deleteUser({
     required int? userId,

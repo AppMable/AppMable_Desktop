@@ -4,7 +4,6 @@ import 'package:equatable/equatable.dart';
 import 'package:appmable_desktop/domain/exceptions/malformed_map_exception.dart';
 
 class User extends Equatable {
-
   static const idAdminRole = 1;
   static const idTutorRole = 2;
 
@@ -17,6 +16,7 @@ class User extends Equatable {
   final String surname;
   final String email;
   final String phoneNumber;
+  final bool isActive;
   final DateTime? dateOfBirth;
   final DateTime? dateCreated;
   final DateTime? dateLastLogin;
@@ -33,6 +33,7 @@ class User extends Equatable {
     required this.surname,
     required this.email,
     required this.phoneNumber,
+    required this.isActive,
     this.dateOfBirth,
     this.dateCreated,
     this.dateLastLogin,
@@ -57,6 +58,7 @@ class User extends Equatable {
         surname,
         email,
         phoneNumber,
+        isActive,
         dateOfBirth,
         dateCreated,
         dateLastLogin,
@@ -78,6 +80,7 @@ class User extends Equatable {
       'surname': surname,
       'email': email,
       'phone_number': phoneNumber,
+      'active': isActive,
       'date_of_birth': dateOfBirth != null ? dateOfBirth.toString() : dateOfBirth,
       'date_created': dateCreated != null ? dateCreated.toString() : dateCreated,
       'date_last_login': dateLastLogin != null ? dateLastLogin.toString() : dateLastLogin,
@@ -86,10 +89,10 @@ class User extends Equatable {
       'id_user_reference': idUserReference,
     };
 
-    if(dateOfBirth == null) map.remove('date_of_birth');
-    if(dateCreated == null) map.remove('date_created');
-    if(dateLastLogin == null) map.remove('date_last_login');
-    if(dateLastLogout == null) map.remove('date_last_logout');
+    if (dateOfBirth == null) map.remove('date_of_birth');
+    if (dateCreated == null) map.remove('date_created');
+    if (dateLastLogin == null) map.remove('date_last_login');
+    if (dateLastLogout == null) map.remove('date_last_logout');
 
     return map;
   }
@@ -102,6 +105,7 @@ class User extends Equatable {
         map['name'] is! String ||
         map['surname'] is! String ||
         map['email'] is! String ||
+        map['active'] is! bool ||
         (map['health_card_identifier'] is! String?) ||
         (map['id_user_role'] is! int?) ||
         (map['id_user_reference'] is! int?) ||
@@ -121,10 +125,17 @@ class User extends Equatable {
       surname: map['surname'],
       email: map['email'],
       phoneNumber: map['phone_number'],
-      dateOfBirth: map['date_of_birth'] != null && map['date_of_birth'] != 'null' ? DateTime.parse(map['date_of_birth']) : null,
-      dateCreated: map['date_created'] != null && map['date_created'] != 'null' ? DateTime.parse(map['date_created']) : null,
-      dateLastLogin: map['date_last_login'] != null && map['date_last_login'] != 'null' ? DateTime.parse(map['date_last_login']) : null,
-      dateLastLogout: map['date_last_logout'] != null && map['date_last_logout'] != 'null' ? DateTime.parse(map['date_last_logout']) : null,
+        isActive: map['active'],
+      dateOfBirth:
+          map['date_of_birth'] != null && map['date_of_birth'] != 'null' ? DateTime.parse(map['date_of_birth']) : null,
+      dateCreated:
+          map['date_created'] != null && map['date_created'] != 'null' ? DateTime.parse(map['date_created']) : null,
+      dateLastLogin: map['date_last_login'] != null && map['date_last_login'] != 'null'
+          ? DateTime.parse(map['date_last_login'])
+          : null,
+      dateLastLogout: map['date_last_logout'] != null && map['date_last_logout'] != 'null'
+          ? DateTime.parse(map['date_last_logout'])
+          : null,
       idUserRole: map['id_user_role'],
       idUserReference: map['id_user_reference'],
     );

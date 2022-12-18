@@ -12,19 +12,19 @@ class UsersScreenEventLoad extends UsersScreenEvent {
 }
 
 class UsersScreenDeleteEvent extends UsersScreenEvent {
-  final int userId;
+  final User user;
   final Function onSuccess;
   final Function(String error) onError;
 
   const UsersScreenDeleteEvent({
-    required this.userId,
+    required this.user,
     required this.onSuccess,
     required this.onError,
   });
 
   @override
   List<Object?> get props => [
-    userId,
+    user,
     onSuccess,
     onError,
   ];

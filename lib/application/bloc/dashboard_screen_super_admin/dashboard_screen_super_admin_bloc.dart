@@ -29,6 +29,7 @@ class DashboardScreenSuperAdminBloc extends Bloc<DashboardScreenSuperAdminEvent,
   ) : super(const DashboardScreenSuperAdminInitial()) {
     on<DashboardScreenSuperAdminEventLoad>(_handleLoad);
     on<DashboardScreenSuperAdminEventReset>(_handleReset);
+    on<DashboardScreenSuperAdminDeleteEvent>(_handleDeleteUser);
   }
 
   Future<void> _handleLoad(
@@ -51,7 +52,10 @@ class DashboardScreenSuperAdminBloc extends Bloc<DashboardScreenSuperAdminEvent,
       _userInfoBloc.add(UserInfoEventLoad(user: user));
     }
 
-    final List<User> users = await _userService.getAllUsers(userToken: userLoginInformation.userToken);
+    final List<User> users = await _userService.getAllUsers(
+      userToken: userLoginInformation.userToken,
+      userId: userLoginInformation.userId,
+    );
 
     emit(DashboardScreenSuperAdminLoaded(users: users));
   }
@@ -61,5 +65,30 @@ class DashboardScreenSuperAdminBloc extends Bloc<DashboardScreenSuperAdminEvent,
     Emitter<DashboardScreenSuperAdminState> emit,
   ) {
     emit(const DashboardScreenSuperAdminInitial());
+  }
+
+  Future<void> _handleDeleteUser(
+    DashboardScreenSuperAdminDeleteEvent event,
+    Emitter<DashboardScreenSuperAdminState> emit,
+  ) async {
+    emit(const DashboardScreenSuperAdminLoading());
+
+    final UserLoginInformation userLoginInformation =
+        UserLoginInformation.fromMap(jsonDecode(_localStorageService.read(LoginScreen.userLoginInformation)));
+
+    try {
+      if (await _userService.deleteUser(
+        userId: event.userId,
+        userType: 'user',
+        userToken: userLoginInformation.userToken,
+      )) {
+        event.onSuccess();
+        add(const DashboardScreenSuperAdminEventLoad());
+      } else {
+        event.onError('No se ha podido eliminar');
+      }
+    } catch (_) {
+      event.onError('No se ha podido eliminar por algo raro');
+    }
   }
 }
