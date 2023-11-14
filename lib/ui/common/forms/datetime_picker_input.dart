@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:appmable_desktop/ui/theme/app_theme.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:intl/intl.dart';
 
 typedef DateTimeCallback = void Function(DateTime val);
@@ -131,15 +131,16 @@ class _Field extends StatelessWidget {
         const SizedBox(height: 5),
         TextFormField(
           onTap: () {
-
             DateTime currentTime = value == null ? DateTime.now() : value!;
 
             DatePicker.showDateTimePicker(
               context,
               showTitleActions: true,
               currentTime: currentTime,
-              minTime: DateTime(currentTime.year - 2, currentTime.month, currentTime.day, currentTime.hour, currentTime.minute),
-              maxTime: DateTime(currentTime.year + 2, currentTime.month, currentTime.day, currentTime.hour, currentTime.minute),
+              minTime: DateTime(
+                  currentTime.year - 2, currentTime.month, currentTime.day, currentTime.hour, currentTime.minute),
+              maxTime: DateTime(
+                  currentTime.year + 2, currentTime.month, currentTime.day, currentTime.hour, currentTime.minute),
               onConfirm: (DateTime date) {
                 String dateFormatted = DateFormat('dd-MM-yyyy HH:mm').format(date);
 

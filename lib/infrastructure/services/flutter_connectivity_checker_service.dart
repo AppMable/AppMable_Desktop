@@ -21,5 +21,6 @@ class FlutterConnectivityCheckerService implements ConnectivityCheckerService {
       case ConnectivityResult.bluetooth:
         return false;
     }
+    return false;
   }
 }
